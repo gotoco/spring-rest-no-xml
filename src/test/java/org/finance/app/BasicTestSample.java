@@ -24,7 +24,7 @@ public class BasicTestSample {
     @Test
     public void testIfTestsWorks(){
 
-        System.out.println("#### Test Runed:)");
+        System.out.println("#### Tests Run:)");
 
         Assert.assertEquals(true, true);
     }

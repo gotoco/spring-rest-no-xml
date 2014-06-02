@@ -9,6 +9,7 @@ import org.finance.app.core.domain.events.SimpleEventPublisher;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
 import org.finance.app.core.domain.events.impl.RequestWasSubmitted;
 import org.finance.app.ddd.system.DomainEventPublisher;
+import org.finance.app.ddd.system.events.EventHandler;
 import org.finance.app.mocks.event.EventReceiveNotifier;
 import org.finance.test.ConfigTest;
 
@@ -44,23 +45,11 @@ public class CustomerServiceTest {
         CustomerService customerService = new CustomerService(publisher);
         Form correctlyFilledForm = new Form();
         RequestWasSubmitted event = new RequestWasSubmitted(correctlyFilledForm);
-        Class <?> eventType = event.getClass();
-
-        try {
-            Method method = EventReceiveNotifier.class.getMethod("handle", new Class[]{Object.class});
-
-            new SpringEventHandler(eventType, "EventReceiveNotifier", method, appContext).handle(event);
-
-            EventReceiveNotifier eventReceiveNotifier = (EventReceiveNotifier) appContext.getBean("EventReceiveNotifier");
-
-            assertTrue(eventReceiveNotifier.isRightEventOccurred());
-
-        } catch(NoSuchMethodException ex){
-            fail();
-        }
+        //EventHandler fillFormCorrectlyEvent = new SpringEventHandler()
 
         //when
         customerService.fillOutTheForm(correctlyFilledForm);
+        //publisher.registerEventHandler();
 
         //then
     }

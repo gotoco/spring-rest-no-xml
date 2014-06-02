@@ -10,12 +10,17 @@ import org.springframework.stereotype.Component;
 public class EventReceiveNotifier {
 
     private Boolean eventOccurred;
+    private Class<?> latestEventType;
 
     public void handle(Object event) {
+        this.latestEventType = event.getClass();
         this.eventOccurred = true;
     }
 
-    public Boolean isRightEventOccurred(){
-        return this.eventOccurred;
+    public Boolean isRightEventOccurred(Object eventType){
+
+        Boolean result = this.latestEventType.isAssignableFrom(eventType.getClass());
+
+        return result;
     }
 }

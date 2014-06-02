@@ -20,7 +20,7 @@ public class BasicTestSample {
     @Test
     public void testIfTestsWorks(){
 
-        System.out.println("#### Test Runed:)");
+        System.out.println("#### Tests Ran:)");
 
         Assert.assertEquals(true, true);
     }
