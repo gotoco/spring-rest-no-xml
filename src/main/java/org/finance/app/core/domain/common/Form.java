@@ -1,12 +1,59 @@
 package org.finance.app.core.domain.common;
 
 import org.finance.app.ddd.annotation.ValueObject;
+import org.joda.time.DateTime;
 
 import java.io.Serializable;
+import java.net.InetAddress;
 
 /**
  * Created by maciek on 02.06.14.
  */
 @ValueObject
-public class Form implements Serializable{
+public class Form implements Serializable {
+
+    private PersonalData personalData;
+
+    private Money applyingAmount;
+
+    private InetAddress applyingIpAddress;
+
+    private Integer maturityInDays;
+
+    private DateTime submissionDate;
+
+    public Form(PersonalData personalData, Money applyingAmount,
+                    InetAddress applyingIpAddress, Integer maturityInDays, DateTime submissionDate) {
+        this.personalData = personalData;
+        this.applyingAmount = applyingAmount;
+        this.applyingIpAddress = applyingIpAddress;
+        this.maturityInDays = maturityInDays;
+        this.submissionDate = submissionDate;
+    }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof Form)) return false;
+
+        Form form = (Form) o;
+
+        if (!applyingAmount.equals(form.applyingAmount)) return false;
+        if (!applyingIpAddress.equals(form.applyingIpAddress)) return false;
+        if (!maturityInDays.equals(form.maturityInDays)) return false;
+        if (!personalData.equals(form.personalData)) return false;
+        if (!submissionDate.equals(form.submissionDate)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = personalData.hashCode();
+        result = 31 * result + applyingAmount.hashCode();
+        result = 31 * result + applyingIpAddress.hashCode();
+        result = 31 * result + maturityInDays.hashCode();
+        result = 31 * result + submissionDate.hashCode();
+        return result;
+    }
 }

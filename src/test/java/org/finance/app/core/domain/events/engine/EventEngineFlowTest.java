@@ -1,9 +1,5 @@
 package org.finance.app.core.domain.events.engine;
 
-/**
- * Created by maciek on 02.06.14.
- */
-
 import org.finance.app.core.domain.events.engine.mocks.BaseEventReceiveNotifier;
 import org.finance.app.core.domain.events.engine.mocks.RandomEventReceiveNotifier;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
@@ -63,12 +59,13 @@ public class EventEngineFlowTest {
             Method method = BaseEventReceiveNotifier.class.getMethod("handle", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler(wellKnownEventType, BaseEventHandlerName, method, applicationContext);
+
             eventPublisher.registerEventHandler(eventHandler);
             eventPublisher.publish(wellKnowEvent);
 
             baseEventReceiveNotifier = (BaseEventReceiveNotifier) applicationContext.getBean(BaseEventHandlerName);
 
-        } catch(NoSuchMethodException ex){
+        } catch(NoSuchMethodException ex) {
             fail();
         }
 

@@ -1,5 +1,6 @@
 package org.finance.app.core.domain.loan;
 
+import org.finance.app.core.domain.common.Money;
 import org.finance.app.ddd.annotation.ValueObject;
 
 /**
@@ -7,4 +8,13 @@ import org.finance.app.ddd.annotation.ValueObject;
  */
 @ValueObject
 public class Loan {
+
+    private Loan basedOnLoan;
+
+    private Money value;
+
+    public Loan(){
+
+    }
+
 }

@@ -23,6 +23,7 @@
           <element id="library" level="project" name="Maven: ch.qos.logback:logback-core:1.1.1" />
           <element id="library" level="project" name="Maven: org.slf4j:jcl-over-slf4j:1.7.6" />
           <element id="library" level="project" name="Maven: org.slf4j:log4j-over-slf4j:1.7.6" />
+          <element id="library" level="project" name="Maven: joda-time:joda-time:2.0" />
         </element>
       </element>
     </root>

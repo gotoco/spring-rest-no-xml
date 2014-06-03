@@ -7,9 +7,6 @@ import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Currency;
 
-/**
- * Created by maciek on 02.06.14.
- */
 @ValueObject
 public class Money implements Serializable {
 
