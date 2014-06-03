@@ -6,11 +6,8 @@ package org.finance.app.core.domain;
 
 import org.finance.app.core.domain.common.Form;
 import org.finance.app.core.domain.events.SimpleEventPublisher;
-import org.finance.app.core.domain.events.handlers.SpringEventHandler;
 import org.finance.app.core.domain.events.impl.RequestWasSubmitted;
 import org.finance.app.ddd.system.DomainEventPublisher;
-import org.finance.app.ddd.system.events.EventHandler;
-import org.finance.app.mocks.event.EventReceiveNotifier;
 import org.finance.test.ConfigTest;
 
 import org.junit.Assert;
@@ -22,8 +19,6 @@ import org.springframework.context.ApplicationContext;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
-
-import java.lang.reflect.Method;
 
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
