@@ -1,7 +1,7 @@
 package org.finance.app.core.domain;
 
 import org.finance.app.core.domain.common.Form;
-import org.finance.app.core.domain.loan.Loan;
+import org.finance.app.core.domain.common.Loan;
 import org.finance.app.core.domain.risk.Decision;
 import org.finance.app.core.domain.risk.Risk;
 import org.finance.app.ddd.annotation.AggregateRoot;

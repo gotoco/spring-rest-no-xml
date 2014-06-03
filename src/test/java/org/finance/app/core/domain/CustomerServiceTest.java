@@ -56,7 +56,7 @@ public class CustomerServiceTest {
         //given
         DomainEventPublisher publisher = new SimpleEventPublisher();
         CustomerService customerService = new CustomerService(publisher);
-        Form correctlyFilledForm = new Form();
+        Form correctlyFilledForm = new Form(null, null, null, null, null);
         RequestWasSubmitted event = new RequestWasSubmitted(correctlyFilledForm);
 
 
@@ -76,17 +76,18 @@ public class CustomerServiceTest {
         }
 
         //when
-        customerService.SubmitTheForm(correctlyFilledForm);
+        customerService.submitTheForm(correctlyFilledForm);
+        customerService.applyForaLoan();
 
         //then
-        //assertTrue(requestSubmittedHandler.isRightEventOccurred());
+        assertTrue(requestSubmittedHandler.isRightEventOccurred());
 
         requestSubmittedHandler.cleanUpEventShadow();
     }
 
     @Test
     public void whenEmptyFormSubmittedNoEventFired(){
-        Assert.assertFalse(new Form()  == null);
+        Assert.assertFalse(new Integer(2)  == null);
     }
 
 }

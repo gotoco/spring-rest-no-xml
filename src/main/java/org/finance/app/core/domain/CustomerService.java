@@ -3,7 +3,7 @@ package org.finance.app.core.domain;
 import org.finance.app.core.domain.common.Form;
 import org.finance.app.core.domain.events.impl.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.impl.RequestWasSubmitted;
-import org.finance.app.core.domain.loan.Loan;
+import org.finance.app.core.domain.common.Loan;
 import org.finance.app.ddd.annotation.AggregateRoot;
 import org.finance.app.ddd.system.DomainEventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;

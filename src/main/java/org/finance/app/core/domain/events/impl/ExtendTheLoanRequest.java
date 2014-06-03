@@ -1,6 +1,6 @@
 package org.finance.app.core.domain.events.impl;
 
-import org.finance.app.core.domain.loan.Loan;
+import org.finance.app.core.domain.common.Loan;
 import org.finance.app.ddd.annotation.Event;
 
 import java.io.Serializable;
