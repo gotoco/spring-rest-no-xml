@@ -2,11 +2,13 @@ package org.finance.app.core.domain.common;
 
 import org.finance.app.ddd.annotation.ValueObject;
 
+import javax.persistence.Embeddable;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
 import java.util.Currency;
 
+@Embeddable
 @ValueObject
 public class Money implements Serializable {
 

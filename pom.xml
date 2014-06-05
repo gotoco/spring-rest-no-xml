@@ -40,7 +40,15 @@
 			<scope>runtime</scope>
 		</dependency>
 
-		<!-- logging -->
+        <!--Java EE-->
+        <dependency>
+            <groupId>javax.persistence</groupId>
+            <artifactId>persistence-api</artifactId>
+            <version>1.0.2</version>
+        </dependency>
+
+
+        <!-- logging -->
 
 		<dependency>
 			<groupId>org.slf4j</groupId>
