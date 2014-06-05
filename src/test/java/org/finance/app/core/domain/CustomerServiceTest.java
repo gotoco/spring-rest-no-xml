@@ -5,14 +5,18 @@ package org.finance.app.core.domain;
  */
 
 import org.finance.app.core.domain.common.Form;
-import org.finance.app.core.domain.events.SimpleEventPublisher;
+import org.finance.app.core.domain.common.Loan;
+import org.finance.app.core.domain.common.Money;
+import org.finance.app.core.domain.common.PersonalData;
 import org.finance.app.core.domain.events.engine.mocks.BaseEventReceiveNotifier;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
-import org.finance.app.core.domain.events.impl.RequestWasSubmitted;
+import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
+import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
+import org.finance.app.ddd.annotation.Event;
 import org.finance.app.ddd.system.DomainEventPublisher;
 import org.finance.test.ConfigTest;
 
-import org.junit.Assert;
+import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 
@@ -22,8 +26,13 @@ import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 
+import java.io.Serializable;
 import java.lang.reflect.Method;
+import java.math.BigDecimal;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 
+import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
@@ -37,12 +46,19 @@ public class CustomerServiceTest {
 
     private DomainEventPublisher eventPublisher;
 
+    private CustomerService customerService;
+
     private static final String BaseEventHandlerName = "BaseEventReceiveNotifier" ;
     private static final String RandomEventHandlerName = "RandomEventReceiveNotifier" ;
 
     @Autowired
     public void setApplicationContext(ApplicationContext applicationContext){
         this.applicationContext = applicationContext;
+    }
+
+    @Autowired
+    public void setCustomerService(CustomerService customerService){
+        this.customerService = customerService;
     }
 
     @Autowired
@@ -54,14 +70,86 @@ public class CustomerServiceTest {
     public void whenFillFormCorrectlyEventFired(){
 
         //given
-        DomainEventPublisher publisher = new SimpleEventPublisher();
-        CustomerService customerService = new CustomerService(publisher);
-        Form correctlyFilledForm = new Form(null, null, null, null, null);
+        Form correctlyFilledForm = fillTheForm();
         RequestWasSubmitted event = new RequestWasSubmitted(correctlyFilledForm);
+        BaseEventReceiveNotifier requestSubmittedHandler = registerAndGetSubmittedRequestNotifier(event);
 
+        //when
+        applyForLoan(correctlyFilledForm);
 
-        //Prepare Event handler to check if event was published
-        BaseEventReceiveNotifier requestSubmittedHandler = null;
+        //then
+        assertTrue(requestSubmittedHandler.isRightEventOccurred());
+        requestSubmittedHandler.cleanUpEventShadow();
+    }
+
+    @Test
+    public void whenEmptyFormSubmittedNoEventFired(){
+
+        //given
+        Form empty = getEmptyForm();
+        RequestWasSubmitted event = new RequestWasSubmitted(empty);
+        BaseEventReceiveNotifier requestSubmittedHandler = registerAndGetSubmittedRequestNotifier(event);
+
+        //when
+        try {
+            applyForLoan(empty);
+            fail("Empty form can't apply for loan");
+        } catch (IllegalStateException ise){
+
+        }
+        //then
+        assertFalse(requestSubmittedHandler.isRightEventOccurred());
+        requestSubmittedHandler.cleanUpEventShadow();
+    }
+
+    @Test
+    public void whenLoanExtendRequestSubmitEventFired(){
+
+        //given
+        Loan basedLoan = prepareBasicLoan();
+        ExtendTheLoanRequest event = new ExtendTheLoanRequest(basedLoan);
+        BaseEventReceiveNotifier extendedLoamRequestReceiveNotifier = registerAndGetSubmittedRequestNotifier(event);
+
+        //when
+        requestForExtendLoan(basedLoan);
+
+        //then
+        assertTrue(extendedLoamRequestReceiveNotifier.isRightEventOccurred());
+        extendedLoamRequestReceiveNotifier.cleanUpEventShadow();
+    }
+
+    private Form fillTheForm() {
+        PersonalData personalData = new PersonalData();
+        Money applyingAmount = new Money(new BigDecimal(3000));
+        Integer maturityInDays = 30;
+        DateTime submissionDate = new DateTime();
+        InetAddress applyingIpAddress = null;
+        try {
+            applyingIpAddress = InetAddress.getByAddress(new byte[]{127, 0, 0, 1});
+        } catch (UnknownHostException e) {
+            e.printStackTrace();
+        }
+
+        return new Form(personalData, applyingAmount, applyingIpAddress, maturityInDays, submissionDate);
+    }
+
+    private Form getEmptyForm(){
+        return new Form(null, null, null, null, null);
+    }
+
+    private BaseEventReceiveNotifier registerAndGetSubmittedRequestNotifier(Serializable event){
+
+        return registerAndGetEventNotifier(event);
+    }
+
+    private BaseEventReceiveNotifier registerAndGetLoanExtendedNotifier(Serializable event){
+
+        return registerAndGetEventNotifier(event);
+    }
+
+    private BaseEventReceiveNotifier registerAndGetEventNotifier(Serializable event){
+
+        BaseEventReceiveNotifier eventNotifier = null;
         try {
             Method method = BaseEventReceiveNotifier.class.getMethod("handle", new Class[]{Object.class});
 
@@ -69,25 +157,32 @@ public class CustomerServiceTest {
 
             eventPublisher.registerEventHandler(eventHandler);
 
-            requestSubmittedHandler = (BaseEventReceiveNotifier) applicationContext.getBean(BaseEventHandlerName);
+            eventNotifier = (BaseEventReceiveNotifier) applicationContext.getBean(BaseEventHandlerName);
 
         } catch(NoSuchMethodException ex) {
-            fail();
+            fail(ex.getMessage());
         }
 
-        //when
-        customerService.submitTheForm(correctlyFilledForm);
-        customerService.applyForaLoan();
-
-        //then
-        assertTrue(requestSubmittedHandler.isRightEventOccurred());
-
-        requestSubmittedHandler.cleanUpEventShadow();
+        return eventNotifier;
     }
 
-    @Test
-    public void whenEmptyFormSubmittedNoEventFired(){
-        Assert.assertFalse(new Integer(2)  == null);
+    private void applyForLoan(Form submittedForm){
+        customerService.submitTheForm(submittedForm);
+        customerService.applyForaLoan();
+    }
+
+    private void requestForExtendLoan(Loan loan){
+        customerService.extendTheLoan(loan);
+    }
+
+    private Loan prepareBasicLoan(){
+        Loan basedOnLoan = null;
+        Money value = new Money(new BigDecimal(3000));
+        Money interest = new Money(new BigDecimal(0));
+        DateTime expirationDate  = new DateTime().plusDays(30);
+        DateTime effectiveDate  = new DateTime();
+
+        return new Loan(basedOnLoan, value, interest, expirationDate, effectiveDate);
     }
 
 }

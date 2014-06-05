@@ -56,4 +56,12 @@ public class Form implements Serializable {
         result = 31 * result + submissionDate.hashCode();
         return result;
     }
+
+    public boolean isFormEmpty(){
+        return      this.personalData       == null &&
+                    this.applyingAmount     == null &&
+                    this.applyingIpAddress  == null &&
+                    this.maturityInDays     == null &&
+                    this.submissionDate     == null;
+    }
 }

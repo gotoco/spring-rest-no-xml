@@ -1,4 +1,4 @@
-package org.finance.app.core.domain.events.impl;
+package org.finance.app.core.domain.events.impl.customerservice;
 
 import org.finance.app.core.domain.common.Form;
 import org.finance.app.ddd.annotation.Event;
