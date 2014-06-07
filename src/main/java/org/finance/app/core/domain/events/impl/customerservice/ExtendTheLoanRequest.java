@@ -1,6 +1,7 @@
 package org.finance.app.core.domain.events.impl.customerservice;
 
-import org.finance.app.core.domain.common.Loan;
+import org.finance.app.core.domain.common.AggregateId;
+import org.finance.app.core.domain.common.loan.Loan;
 import org.finance.app.ddd.annotation.Event;
 
 import java.io.Serializable;
@@ -8,9 +9,15 @@ import java.io.Serializable;
 @Event
 public class ExtendTheLoanRequest implements Serializable {
 
-    private Loan basedLoan;
+    private Loan baseLoan;
+    private final AggregateId aggregateId;
 
-    public ExtendTheLoanRequest(Loan loan) {
-        basedLoan = loan;
+    public ExtendTheLoanRequest(Loan loan, AggregateId aggregateId) {
+        this.baseLoan = loan;
+        this.aggregateId = aggregateId;
+    }
+
+    public Long getLoanId(){
+        return this.baseLoan.getId();
     }
 }

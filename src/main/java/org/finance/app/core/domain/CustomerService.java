@@ -1,9 +1,10 @@
 package org.finance.app.core.domain;
 
+import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.common.Form;
 import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
-import org.finance.app.core.domain.common.Loan;
+import org.finance.app.core.domain.common.loan.Loan;
 import org.finance.app.ddd.annotation.AggregateRoot;
 import org.finance.app.ddd.system.DomainEventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class CustomerService {
         if( submittedForm != null ){
             Form formToSend = submittedForm;
             cleanUpForm();
-            eventPublisher.publish(new RequestWasSubmitted(formToSend));
+            eventPublisher.publish(new RequestWasSubmitted(formToSend, AggregateId.generate()));
         } else {
             throw new IllegalStateException("Before applying for a Loan Form must be submitted"); //TODO: create spifi class
         }
@@ -49,7 +50,7 @@ public class CustomerService {
     }
 
     public void extendTheLoan(Loan loan){
-        eventPublisher.publish(new ExtendTheLoanRequest(loan));
+        eventPublisher.publish(new ExtendTheLoanRequest(loan, AggregateId.generate()) );
     }
 
     private Boolean validateForm(Form form) {

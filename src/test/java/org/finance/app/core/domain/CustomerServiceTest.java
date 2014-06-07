@@ -4,15 +4,12 @@ package org.finance.app.core.domain;
  * Created by maciek on 02.06.14.
  */
 
-import org.finance.app.core.domain.common.Form;
-import org.finance.app.core.domain.common.Loan;
-import org.finance.app.core.domain.common.Money;
-import org.finance.app.core.domain.common.PersonalData;
+import org.finance.app.core.domain.common.*;
+import org.finance.app.core.domain.common.loan.Loan;
 import org.finance.app.core.domain.events.engine.mocks.BaseEventReceiveNotifier;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
 import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
-import org.finance.app.ddd.annotation.Event;
 import org.finance.app.ddd.system.DomainEventPublisher;
 import org.finance.test.ConfigTest;
 
@@ -71,7 +68,7 @@ public class CustomerServiceTest {
 
         //given
         Form correctlyFilledForm = fillTheForm();
-        RequestWasSubmitted event = new RequestWasSubmitted(correctlyFilledForm);
+        RequestWasSubmitted event = new RequestWasSubmitted(correctlyFilledForm, AggregateId.generate());
         BaseEventReceiveNotifier requestSubmittedHandler = registerAndGetSubmittedRequestNotifier(event);
 
         //when
@@ -87,7 +84,7 @@ public class CustomerServiceTest {
 
         //given
         Form empty = getEmptyForm();
-        RequestWasSubmitted event = new RequestWasSubmitted(empty);
+        RequestWasSubmitted event = new RequestWasSubmitted(empty, AggregateId.generate());
         BaseEventReceiveNotifier requestSubmittedHandler = registerAndGetSubmittedRequestNotifier(event);
 
         //when
@@ -107,7 +104,7 @@ public class CustomerServiceTest {
 
         //given
         Loan basedLoan = prepareBasicLoan();
-        ExtendTheLoanRequest event = new ExtendTheLoanRequest(basedLoan);
+        ExtendTheLoanRequest event = new ExtendTheLoanRequest(basedLoan, AggregateId.generate());
         BaseEventReceiveNotifier extendedLoamRequestReceiveNotifier = registerAndGetSubmittedRequestNotifier(event);
 
         //when
