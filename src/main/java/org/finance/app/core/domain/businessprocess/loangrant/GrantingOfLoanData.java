@@ -70,4 +70,6 @@ public class GrantingOfLoanData {
     public void setLoanId(Long loanId) {
         this.loanId = loanId;
     }
+
+
 }
