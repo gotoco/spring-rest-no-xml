@@ -4,6 +4,7 @@ package org.finance.app.core.domain;
  * Created by maciek on 02.06.14.
  */
 
+import org.finance.app.annotations.IntegrationTest;
 import org.finance.app.core.domain.common.*;
 import org.finance.app.core.domain.common.loan.Loan;
 import org.finance.app.core.domain.events.engine.mocks.BaseEventReceiveNotifier;
@@ -15,6 +16,7 @@ import org.finance.test.ConfigTest;
 
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,6 +35,7 @@ import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
 import static org.junit.Assert.fail;
 
+@Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(

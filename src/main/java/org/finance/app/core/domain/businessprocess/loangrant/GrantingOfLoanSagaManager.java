@@ -7,6 +7,7 @@ import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitt
 import org.finance.app.core.domain.saga.SagaManager;
 import org.finance.app.ddd.annotation.LoadSaga;
 import org.finance.app.ddd.system.DomainEventPublisher;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -28,6 +29,11 @@ public class GrantingOfLoanSagaManager implements
 
     @PersistenceContext
     private EntityManager entityManager;
+
+    @Autowired
+    public void setApplicationContext(ApplicationContext applicationContext){
+        this.applicationContext = applicationContext;
+    }
 
     @LoadSaga
     public GrantingOfLoanData loadSaga(RequestWasSubmitted event) {
@@ -71,15 +77,11 @@ public class GrantingOfLoanSagaManager implements
         return (GrantingOfLoanData) query.getSingleResult();
     }
 
-    public void handleRequestSubmittedEvent(){
-
-    }
-
     @PostConstruct
     public void registerEventHandler() {
 
         try {
-            Method method = GrantingOfLoanSagaManager.class.getMethod("handle", new Class[]{Object.class});
+            Method method = GrantingOfLoanSagaManager.class.getMethod("handleRequestWasSubmitted", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler(RequestWasSubmitted.class, "GrantingOfLoanSagaManager", method, applicationContext);
 
@@ -90,11 +92,33 @@ public class GrantingOfLoanSagaManager implements
         }
     }
 
+    public void handleRequestWasSubmitted(Object event) {
 
-    public void handle(Object event) {
-        //Request handled:
-        //new saga created or existing is loading
+        RequestWasSubmitted requestEvent = (RequestWasSubmitted)event;
+        GrantingOfLoanData sagaData = null;
+        try{
+            sagaData = loadSaga(requestEvent);
+        }catch(Exception ex){
+            sagaData = createNewSagaData(requestEvent.getRequestId());
+        }
 
+        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("GrantingOfLoanSaga", sagaData);
+
+        saga.completeLoanRequest();
+    }
+
+    public void handleExtendTheLoanRequest(Object event){
+        ExtendTheLoanRequest requestEvent = (ExtendTheLoanRequest)event;
+        GrantingOfLoanData sagaData = null;
+        try{
+            sagaData = loadSaga(requestEvent);
+        }catch(Exception ex){
+            sagaData = createNewSagaData(requestEvent.getAggregateId());
+        }
+
+        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("GrantingOfLoanSaga", sagaData);
+
+        saga.completeExtendsLoan();
     }
 
     @Autowired

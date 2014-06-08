@@ -2,6 +2,8 @@ package org.finance.app.core.domain.businessprocess.loangrant;
 
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.common.Money;
+import org.finance.app.core.domain.common.loan.Loan;
+import org.joda.time.DateTime;
 
 import javax.persistence.*;
 import java.util.Date;
@@ -38,10 +40,22 @@ public class GrantingOfLoanData {
         return this.loanId;
     }
 
+    @Column(name="newExpirationDate")
+    public Date getNewExpirationDate(){
+        return this.newExpirationDate;
+    }
+
+    @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="loan", referencedColumnName="id_plec")
+    public Loan getLoan() {
+        return loan;
+    }
+
     private Long loanId;
     private String ip;
     private Date dateOfApplication;
-
+    private Date newExpirationDate;
+    private Loan loan;
 
     public Money getTotalCost() {
         return totalCost;
@@ -71,5 +85,15 @@ public class GrantingOfLoanData {
         this.loanId = loanId;
     }
 
+    public void setNewExpirationDate(DateTime newDate){
+        this.newExpirationDate = newDate.toDate();
+    }
 
+    public Long getFixedId(){
+        return this.id;
+    }
+
+    public void setLoan(Loan loan){
+        this.loan = loan;
+    }
 }

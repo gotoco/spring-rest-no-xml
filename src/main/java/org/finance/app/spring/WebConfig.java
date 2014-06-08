@@ -3,10 +3,9 @@ package org.finance.app.spring;
 /**
  * Created by maciek on 01.06.14.
  */
-import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.ComponentScan;
-import org.springframework.context.annotation.Configuration;
-import org.springframework.context.annotation.ImportResource;
+import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanData;
+import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanSaga;
+import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -56,4 +55,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         configurer.enable();
     }
 
+    @Bean(name="GrantingOfLoanSaga")
+    @Scope("prototype")
+    public GrantingOfLoanSaga grantingOfLoanSaga(GrantingOfLoanData sagaData) {
+        return new GrantingOfLoanSaga(sagaData);
+    }
 }

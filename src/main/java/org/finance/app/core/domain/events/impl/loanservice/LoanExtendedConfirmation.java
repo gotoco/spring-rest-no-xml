@@ -5,15 +5,13 @@ import org.finance.app.ddd.annotation.Event;
 
 import java.io.Serializable;
 
-/**
- * Created by maciek on 05.06.14.
- */
+
 @Event
-public class LoanExtended implements Serializable {
+public class LoanExtendedConfirmation implements Serializable {
 
     private final AggregateId aggregateId;
 
-    public LoanExtended(AggregateId aggregateId) {
+    public LoanExtendedConfirmation(AggregateId aggregateId) {
         this.aggregateId = aggregateId;
     }
 }

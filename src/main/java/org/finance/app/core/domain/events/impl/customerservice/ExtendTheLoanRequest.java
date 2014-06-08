@@ -17,7 +17,16 @@ public class ExtendTheLoanRequest implements Serializable {
         this.aggregateId = aggregateId;
     }
 
+    public ExtendTheLoanRequest(Loan loan) {
+        this.baseLoan = loan;
+        this.aggregateId = AggregateId.generate();
+    }
+
     public Long getLoanId(){
         return this.baseLoan.getId();
+    }
+
+    public AggregateId getAggregateId(){
+        return this.aggregateId;
     }
 }

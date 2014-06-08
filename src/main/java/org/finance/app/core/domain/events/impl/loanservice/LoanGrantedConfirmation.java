@@ -9,11 +9,11 @@ import java.io.Serializable;
  * Created by maciek on 05.06.14.
  */
 @Event
-public class LoanGranted implements Serializable {
+public class LoanGrantedConfirmation implements Serializable {
 
     private final AggregateId aggregateId;
 
-    public LoanGranted(AggregateId aggregateId) {
+    public LoanGrantedConfirmation(AggregateId aggregateId) {
         this.aggregateId = aggregateId;
     }
 }

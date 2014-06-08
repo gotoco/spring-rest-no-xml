@@ -1,11 +1,15 @@
 package org.finance.app.core.domain.common;
 
 import junit.framework.Assert;
+import org.finance.app.annotations.IntegrationTest;
+import org.finance.app.annotations.UnitTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
 import java.math.BigDecimal;
 import java.util.Currency;
 
+@Category(UnitTest.class)
 public class MoneyTest {
 
     @Test

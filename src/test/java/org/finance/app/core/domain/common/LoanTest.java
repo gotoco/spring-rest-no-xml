@@ -1,10 +1,10 @@
 package org.finance.app.core.domain.common;
 
+import org.finance.app.annotations.UnitTest;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
-/**
- * Created by maciek on 03.06.14.
- */
+@Category(UnitTest.class)
 public class LoanTest {
 
     @Test

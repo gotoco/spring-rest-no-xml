@@ -17,6 +17,11 @@ public class RequestWasSubmitted implements Serializable {
         this.aggregateId = aggregateId;
     }
 
+    public RequestWasSubmitted(Form form) {
+        this.request = form;
+        this.aggregateId = AggregateId.generate();
+    }
+
     public Form getRequest(){
         return this.request;
     }
