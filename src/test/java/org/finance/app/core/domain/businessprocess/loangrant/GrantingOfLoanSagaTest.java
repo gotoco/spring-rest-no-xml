@@ -43,8 +43,8 @@ public class GrantingOfLoanSagaTest {
 
     private GrantingOfLoanSagaManager sagaManager;
 
-    private static String checkIpRequestHandlerName = "CheckIpRequestHandler";
-    private static String doRiskAnalysisRequestHandlerName = "DoRiskAnalysisRequestHandler";
+    private final static String checkIpRequestHandlerName = "CheckIpRequestHandler";
+    private final static String doRiskAnalysisRequestHandlerName = "DoRiskAnalysisRequestHandler";
 
     @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) {

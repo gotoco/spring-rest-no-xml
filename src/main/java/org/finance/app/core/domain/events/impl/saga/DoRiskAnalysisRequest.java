@@ -7,9 +7,6 @@ import org.joda.time.DateTime;
 
 import java.io.Serializable;
 
-/**
- * Created by maciek on 08.06.14.
- */
 @Event
 public class DoRiskAnalysisRequest implements Serializable {
 
@@ -26,5 +23,21 @@ public class DoRiskAnalysisRequest implements Serializable {
         this.applicationTime = applicationTime;
         this.loanValue = value;
         this.expirationDate = date;
+    }
+
+    public AggregateId getSagaDataId() {
+        return sagaDataId;
+    }
+
+    public DateTime getApplicationTime() {
+        return applicationTime;
+    }
+
+    public DateTime getExpirationDate() {
+        return expirationDate;
+    }
+
+    public Money getLoanValue() {
+        return loanValue;
     }
 }

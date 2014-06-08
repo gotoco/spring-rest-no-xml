@@ -7,6 +7,6 @@ import org.finance.app.core.domain.events.impl.saga.DoRiskAnalysisRequest;
  */
 public interface RiskAnalysisFunction {
 
-    public Decision analyze(DoRiskAnalysisRequest request);
+    public Risk analyze(DoRiskAnalysisRequest request);
 
 }

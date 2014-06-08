@@ -11,7 +11,7 @@ import java.util.Date;
 
 @ValueObject
 @Entity
-public class Loan implements java.io.Serializable {
+public class Loan {
     @Transient
     private final static BigDecimal extendFactor = new BigDecimal(1.5);
     @Transient

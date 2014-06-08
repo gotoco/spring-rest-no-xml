@@ -16,15 +16,11 @@ public class GrantingOfLoanData {
     private Long id;
 
     @Column(name="ip")
-    public String getIp() {
-        return ip;
-    }
+    private String ip;
 
     @Column(name="date_of_application")
     @Temporal(javax.persistence.TemporalType.DATE)
-    public Date getDateOfApplication() {
-        return dateOfApplication;
-    }
+    private Date dateOfApplication;
 
     @AttributeOverrides({
             @AttributeOverride(name = "denomination", column = @Column(name = "totalCost_denomination")),
@@ -35,26 +31,19 @@ public class GrantingOfLoanData {
             @AttributeOverride(name = "aggregateId", column = @Column(name = "requestId"))})
     private AggregateId requestId;
 
-    @Column(name="loanId")
-    public Long getLoanId(){
-        return this.loanId;
-    }
-
     @Column(name="newExpirationDate")
+    private Date newExpirationDate;
+
+    @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="loan", referencedColumnName="loan_id")
+    private Loan loan;
+
+    @Column(name="loanId")
+    private Long loanId;
+
     public Date getNewExpirationDate(){
         return this.newExpirationDate;
     }
-
-    @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy = "GrantingOfLoanData")
-    public Loan getLoan() {
-        return loan;
-    }
-
-    private Long loanId;
-    private String ip;
-    private Date dateOfApplication;
-    private Date newExpirationDate;
-    private Loan loan;
 
     public Money getTotalCost() {
         return totalCost;
@@ -94,5 +83,21 @@ public class GrantingOfLoanData {
 
     public void setLoan(Loan loan){
         this.loan = loan;
+    }
+
+    public Loan getLoan() {
+        return loan;
+    }
+
+    public Long getLoanId(){
+        return this.loanId;
+    }
+
+    public Date getDateOfApplication() {
+        return dateOfApplication;
+    }
+
+    public String getIp() {
+        return ip;
     }
 }
