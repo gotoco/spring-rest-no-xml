@@ -11,7 +11,7 @@ import java.util.Date;
 
 @ValueObject
 @Entity
-public class Loan {
+public class Loan implements java.io.Serializable {
     @Transient
     private final static BigDecimal extendFactor = new BigDecimal(1.5);
     @Transient
@@ -25,7 +25,12 @@ public class Loan {
 
     @Id
     @GeneratedValue
-    private Long id;
+    @Column(name="loan_id")
+    private Long loan_id;
+
+    public Long getLoan_id() {
+        return loan_id;
+    }
 
     @AttributeOverrides({
             @AttributeOverride(name = "denomination",
@@ -103,11 +108,7 @@ public class Loan {
         this.extendTheLoanFunction = extendTheLoanFunction;
     }
 
-    public Long getId() {
-        return id;
-    }
-
-    public void setId(Long id) {
-        this.id = id;
+    public void setLoan_id(Long loan_id) {
+        this.loan_id = loan_id;
     }
 }

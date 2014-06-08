@@ -7,13 +7,11 @@ package org.finance.app.adapters;
  * Time: 11:11 AM
  */
 import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanData;
-import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanSaga;
 import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanSagaManager;
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.common.Money;
 import org.finance.app.core.domain.common.loan.Loan;
 import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
-import org.finance.app.core.domain.saga.SagaManager;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -66,7 +64,7 @@ public class HelloWorldController {
         }
 
         Loan loan = new Loan(null, new Money(1000), new Money(10), DateTime.now(), DateTime.now().plusDays(30));
-        loan.setId(Long.decode(id));
+        loan.setLoan_id(Long.decode(id));
         ExtendTheLoanRequest resuest = new ExtendTheLoanRequest(loan, AggregateId.generate());
 
         GrantingOfLoanData sagaData = null;

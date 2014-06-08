@@ -65,13 +65,11 @@ public class EventEngineFlowTest {
 
             baseEventReceiveNotifier = (BaseEventReceiveNotifier) applicationContext.getBean(BaseEventHandlerName);
 
+        //Then
         } catch(NoSuchMethodException ex) {
             fail();
         }
-
-        //Then
         assertTrue(baseEventReceiveNotifier.isRightEventOccurred());
-
         baseEventReceiveNotifier.cleanUpEventShadow();
     }
 

@@ -23,7 +23,7 @@ public class ExtendTheLoanRequest implements Serializable {
     }
 
     public Long getLoanId(){
-        return this.baseLoan.getId();
+        return this.baseLoan.getLoan_id();
     }
 
     public AggregateId getAggregateId(){

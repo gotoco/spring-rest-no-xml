@@ -45,8 +45,7 @@ public class GrantingOfLoanData {
         return this.newExpirationDate;
     }
 
-    @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
-    @JoinColumn(name="loan", referencedColumnName="id_plec")
+    @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy = "GrantingOfLoanData")
     public Loan getLoan() {
         return loan;
     }
