@@ -2,12 +2,15 @@ package org.finance.app.core.application.closure.risk;
 
 
 import junit.framework.Assert;
+import org.finance.app.annotations.UnitTest;
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.common.Money;
 import org.finance.app.core.domain.events.impl.saga.DoRiskAnalysisRequest;
 import org.joda.time.DateTime;
 import org.junit.Test;
+import org.junit.experimental.categories.Category;
 
+@Category(UnitTest.class)
 public class BasicRiskAnalysisTest {
 
     @Test
