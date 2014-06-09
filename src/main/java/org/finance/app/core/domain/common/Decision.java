@@ -1,4 +1,4 @@
-package org.finance.app.core.domain.risk;
+package org.finance.app.core.domain.common;
 
 import org.finance.app.ddd.annotation.ValueObject;
 
@@ -7,4 +7,5 @@ import org.finance.app.ddd.annotation.ValueObject;
  */
 @ValueObject
 public class Decision {
+
 }

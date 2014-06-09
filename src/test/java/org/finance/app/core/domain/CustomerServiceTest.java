@@ -14,6 +14,7 @@ import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitt
 import org.finance.app.ddd.system.DomainEventPublisher;
 import org.finance.test.ConfigTest;
 
+import org.finance.test.builders.FormBuilder;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -86,7 +87,7 @@ public class CustomerServiceTest {
     public void whenEmptyFormSubmittedNoEventFired(){
 
         //given
-        Form empty = getEmptyForm();
+        Form empty = new FormBuilder().withEmptyForm().build();
         RequestWasSubmitted event = new RequestWasSubmitted(empty, AggregateId.generate());
         BaseEventReceiveNotifier requestSubmittedHandler = registerAndGetSubmittedRequestNotifier(event);
 
@@ -133,10 +134,6 @@ public class CustomerServiceTest {
         return new Form(personalData, applyingAmount, applyingIpAddress, maturityInDays, submissionDate);
     }
 
-    private Form getEmptyForm(){
-        return new Form(null, null, null, null, null);
-    }
-
     private BaseEventReceiveNotifier registerAndGetSubmittedRequestNotifier(Serializable event){
 
         return registerAndGetEventNotifier(event);
@@ -167,8 +164,7 @@ public class CustomerServiceTest {
     }
 
     private void applyForLoan(Form submittedForm){
-        customerService.submitTheForm(submittedForm);
-        customerService.applyForaLoan();
+        customerService.applyForaLoan(submittedForm);
     }
 
     private void requestForExtendLoan(Loan loan){

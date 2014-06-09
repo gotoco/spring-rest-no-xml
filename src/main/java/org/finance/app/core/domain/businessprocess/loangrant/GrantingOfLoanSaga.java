@@ -11,7 +11,6 @@ import org.finance.app.ddd.annotation.SagaAction;
 import org.finance.app.ddd.system.DomainEventPublisher;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.ApplicationContext;
 
 /**
  * Created by maciek on 05.06.14.
@@ -33,15 +32,23 @@ public class GrantingOfLoanSaga  extends SagaInstance<GrantingOfLoanData> {
 
     @SagaAction
     public void completeLoanRequest() {
-
         requestForIpCheck();
         requestForRiskAnalysis();
     }
 
     @SagaAction
     public void completeExtendsLoan(){
-
         requestForLoanExtended();
+    }
+
+    @SagaAction
+    public void completeCheckIp(){
+        completeIfPossible();
+    }
+
+    @SagaAction
+    public void completeRiskAnalysis(){
+        completeIfPossible();
     }
 
     private void requestForIpCheck(){
@@ -72,5 +79,13 @@ public class GrantingOfLoanSaga  extends SagaInstance<GrantingOfLoanData> {
         DoExtendLoanRequest extendLoanRequest = new DoExtendLoanRequest(sagaFixedId, loan, expirationDate, id, loanValue);
 
         eventPublisher.publish(extendLoanRequest);
+    }
+
+    private void completeIfPossible() {
+        if (sagaData.hasRisk() != null && sagaData.hasValidIp() != null ) {
+            //TODO move process forward, ex call service or publish event
+
+            markAsCompleted();
+        }
     }
 }

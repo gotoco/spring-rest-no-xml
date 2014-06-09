@@ -4,11 +4,8 @@ package org.finance.app.core.domain.risk.analysis;
 import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanData;
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
-import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
 import org.finance.app.core.domain.events.impl.saga.CheckIpRequest;
-import org.finance.app.core.domain.events.impl.saga.DoRiskAnalysisRequest;
 import org.finance.app.core.domain.events.impl.saga.IpCheckedResponse;
-import org.finance.app.core.domain.risk.RiskAnalysisFunction;
 import org.finance.app.ddd.annotation.DomainService;
 import org.finance.app.ddd.system.DomainEventPublisher;
 import org.joda.time.DateTime;
@@ -80,9 +77,9 @@ public class RequestMultipleValidator {
         GrantingOfLoanData entityToUpdate = (GrantingOfLoanData) selectEntityToUpdate.getSingleResult();
 
         if(result){
-            entityToUpdate.setHasValidIp(true);
+            entityToUpdate.setValidIp(true);
         } else {
-            entityToUpdate.setHasValidIp(false);
+            entityToUpdate.setValidIp(false);
         }
 
         entityManager.persist(entityToUpdate);

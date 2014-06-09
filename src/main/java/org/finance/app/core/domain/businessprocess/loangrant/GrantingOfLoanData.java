@@ -110,19 +110,19 @@ public class GrantingOfLoanData {
         return ip;
     }
 
-    public Boolean getHasValidIp() {
+    public Boolean hasValidIp() {
         return hasValidIp;
     }
 
-    public void setHasValidIp(Boolean hasValidIp) {
+    public void setValidIp(Boolean hasValidIp) {
         this.hasValidIp = hasValidIp;
     }
 
-    public Boolean getHasRisk() {
+    public Boolean hasRisk() {
         return hasRisk;
     }
 
-    public void setHasRisk(Boolean hasRisk) {
+    public void setRisk(Boolean hasRisk) {
         this.hasRisk = hasRisk;
     }
 
@@ -131,8 +131,8 @@ public class GrantingOfLoanData {
         this.setDateOfApplication(form.getSubmissionDate());
         this.setLoan(null);
         this.setLoanId(null);
-        this.setHasValidIp(null);
-        this.setHasRisk(null);
+        this.setValidIp(null);
+        this.setRisk(null);
         this.setTotalCost(form.getApplyingAmount());
         this.setNewExpirationDate(form.getSubmissionDate().plusDays(form.getMaturityInDays()));
     }

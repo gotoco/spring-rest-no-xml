@@ -5,6 +5,8 @@ import org.finance.app.core.domain.common.Form;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
 import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
+import org.finance.app.core.domain.events.impl.saga.IpCheckedResponse;
+import org.finance.app.core.domain.events.impl.saga.RiskAnalyzedResponse;
 import org.finance.app.core.domain.saga.SagaManager;
 import org.finance.app.ddd.annotation.LoadSaga;
 import org.finance.app.ddd.system.DomainEventPublisher;
@@ -97,12 +99,60 @@ public class GrantingOfLoanSagaManager implements
 
     @PostConstruct
     public void registerEventHandler() {
+        registerSubmittedRequestHandler();
+        registerExtendLoanRequestHandler();
+        registerForRiskAnalyzedEvent();
+        registerForCheckedIpEvent();
+    }
 
+    private void registerSubmittedRequestHandler(){
         try {
             Method method = GrantingOfLoanSagaManager.class.getMethod("handleRequestWasSubmitted", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler
-                                (RequestWasSubmitted.class, "GrantingOfLoanSagaManager", method, applicationContext);
+                    (RequestWasSubmitted.class, "GrantingOfLoanSagaManager", method, applicationContext);
+
+            eventPublisher.registerEventHandler(eventHandler);
+
+        } catch(NoSuchMethodException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void registerExtendLoanRequestHandler(){
+        try {
+            Method method = GrantingOfLoanSagaManager.class.getMethod("handleExtendTheLoanRequest", new Class[]{Object.class});
+
+            SpringEventHandler eventHandler = new SpringEventHandler
+                    (ExtendTheLoanRequest.class, "GrantingOfLoanSagaManager", method, applicationContext);
+
+            eventPublisher.registerEventHandler(eventHandler);
+
+        } catch(NoSuchMethodException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void registerForCheckedIpEvent(){
+        try {
+            Method method = GrantingOfLoanSagaManager.class.getMethod("handleCheckedIpEvent", new Class[]{Object.class});
+
+            SpringEventHandler eventHandler = new SpringEventHandler
+                    (IpCheckedResponse.class, "GrantingOfLoanSagaManager", method, applicationContext);
+
+            eventPublisher.registerEventHandler(eventHandler);
+
+        } catch(NoSuchMethodException ex) {
+            ex.printStackTrace();
+        }
+    }
+
+    private void registerForRiskAnalyzedEvent(){
+        try {
+            Method method = GrantingOfLoanSagaManager.class.getMethod("handleRiskAnalyzedEvent", new Class[]{Object.class});
+
+            SpringEventHandler eventHandler = new SpringEventHandler
+                    (RiskAnalyzedResponse.class, "GrantingOfLoanSagaManager", method, applicationContext);
 
             eventPublisher.registerEventHandler(eventHandler);
 
@@ -139,6 +189,25 @@ public class GrantingOfLoanSagaManager implements
 
         saga.completeExtendsLoan();
     }
+
+    public void handleCheckedIpEvent(Object event){
+        IpCheckedResponse response = (IpCheckedResponse)event;
+
+        GrantingOfLoanData sagaData = findByRequestId(response.getSagaDataId());
+        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("GrantingOfLoanSaga", sagaData);
+
+        saga.completeCheckIp();
+    }
+
+    public void handleRiskAnalyzedEvent(Object event){
+        RiskAnalyzedResponse response = (RiskAnalyzedResponse)event;
+
+        GrantingOfLoanData sagaData = findByRequestId(response.getSagaDataId());
+        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("GrantingOfLoanSaga", sagaData);
+
+        saga.completeRiskAnalysis();
+    }
+
 
     @Autowired
     public GrantingOfLoanSagaManager(DomainEventPublisher eventPublisher, ApplicationContext applicationContext) {

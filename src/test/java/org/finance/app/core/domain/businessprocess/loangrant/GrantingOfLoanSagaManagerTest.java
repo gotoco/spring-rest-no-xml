@@ -7,6 +7,7 @@ import org.finance.app.core.domain.common.Form;
 import org.finance.app.core.domain.common.loan.Loan;
 import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
+import org.finance.app.core.domain.events.impl.saga.IpCheckedResponse;
 import org.finance.app.core.domain.saga.SagaManager;
 import org.finance.app.ddd.system.DomainEventPublisher;
 import org.finance.test.ConfigTest;
@@ -99,7 +100,7 @@ public class GrantingOfLoanSagaManagerTest {
     public void requestWasSubmittedHandled(){
 
         //Given
-        Form form = createEmptyForm();
+        Form form = new FormBuilder().withCorrectlyFilledForm().build();
         AggregateId aggregateId = AggregateId.generate();
         sagaManager.createNewSagaData(aggregateId);
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, aggregateId);
@@ -118,7 +119,7 @@ public class GrantingOfLoanSagaManagerTest {
     public void extendTheLoanRequestHandled(){
 
         //Given
-        Form form = createEmptyForm();
+        Form form = new FormBuilder().withCorrectlyFilledForm().build();
         AggregateId aggregateId = AggregateId.generate();
         sagaManager.createNewSagaData(aggregateId);
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, aggregateId);
@@ -137,7 +138,7 @@ public class GrantingOfLoanSagaManagerTest {
 
         //Given
         AggregateId aggregateId = AggregateId.generate();
-        RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(createEmptyForm(), aggregateId);
+        RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(new FormBuilder().withEmptyForm().build(), aggregateId);
         GrantingOfLoanData sagaData = null;
 
         //When
@@ -154,11 +155,17 @@ public class GrantingOfLoanSagaManagerTest {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void prepareEventInDb(AggregateId id){
-        Form form = new Form(null, null, null, null, null);
+        Form form = new FormBuilder().withCorrectlyFilledForm().build();
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, id);
     }
 
-    private Form createEmptyForm(){
-        return new Form(null, null, null, null, null); //TODO: create assembler
+    @Test
+    private void shouldHandleRiskAnalyzedEvent(){
+
+    }
+
+    @Test
+    private void shouldHandleIpCheckedResponseEvent(){
+
     }
 }

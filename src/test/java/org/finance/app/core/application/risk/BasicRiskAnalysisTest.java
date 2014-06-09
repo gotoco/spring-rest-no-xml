@@ -1,8 +1,9 @@
-package org.finance.app.core.application.closure.risk;
+package org.finance.app.core.application.risk;
 
 
 import junit.framework.Assert;
 import org.finance.app.annotations.UnitTest;
+import org.finance.app.core.application.closure.risk.BasicRiskAnalysis;
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.common.Money;
 import org.finance.app.core.domain.events.impl.saga.DoRiskAnalysisRequest;
