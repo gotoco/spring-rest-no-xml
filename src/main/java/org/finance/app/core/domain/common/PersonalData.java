@@ -8,9 +8,11 @@ import java.io.Serializable;
 @ValueObject
 public class PersonalData implements Serializable {
 
+    private Long clientId;
+
     private String firstName;
 
-    private String LastName;
+    private String lastName;
 
     private String address;
 
@@ -25,11 +27,11 @@ public class PersonalData implements Serializable {
     }
 
     public String getLastName() {
-        return LastName;
+        return lastName;
     }
 
     public void setLastName(String lastName) {
-        LastName = lastName;
+        lastName = lastName;
     }
 
     public String getAddress() {
@@ -48,5 +50,23 @@ public class PersonalData implements Serializable {
         this.dateOfBirth = dateOfBirth;
     }
 
+    public Long getClientId() {
+        return clientId;
+    }
 
+    public void setClientId(Long clientId) {
+        this.clientId = clientId;
+    }
+
+    public PersonalData(Long clientId, String firstName, String lastName, DateTime dateOfBirth, String address) {
+        this.clientId = clientId;
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.dateOfBirth = dateOfBirth;
+        this.address = address;
+    }
+
+    public PersonalData(){
+
+    }
 }

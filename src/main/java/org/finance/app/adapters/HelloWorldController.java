@@ -8,10 +8,7 @@ package org.finance.app.adapters;
  */
 import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanData;
 import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanSagaManager;
-import org.finance.app.core.domain.common.AggregateId;
-import org.finance.app.core.domain.common.Form;
-import org.finance.app.core.domain.common.Money;
-import org.finance.app.core.domain.common.PersonalData;
+import org.finance.app.core.domain.common.*;
 import org.finance.app.core.domain.common.loan.Loan;
 import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
@@ -60,7 +57,7 @@ public class HelloWorldController {
         entityManager.persist(sagaData);
 
         for(int i=0; i<5; i++) {
-            PersonalData personalData = null;
+            Client personalData = null;
             Money applyingAmount = new Money(2000);
             InetAddress applyingIpAddress = null;
             try {

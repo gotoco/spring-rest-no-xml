@@ -5,6 +5,7 @@ import org.finance.app.annotations.IntegrationTest;
 import org.finance.app.core.domain.businessprocess.loangrant.mocks.CheckIpRequestHandler;
 import org.finance.app.core.domain.businessprocess.loangrant.mocks.DoRiskAnalysisRequestHandler;
 import org.finance.app.core.domain.common.AggregateId;
+import org.finance.app.core.domain.common.Client;
 import org.finance.app.core.domain.common.Form;
 import org.finance.app.core.domain.events.engine.mocks.BaseEventReceiveNotifier;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
@@ -14,6 +15,7 @@ import org.finance.app.core.domain.events.impl.saga.DoRiskAnalysisRequest;
 import org.finance.app.ddd.system.DomainEventPublisher;
 import org.finance.test.ConfigTest;
 import org.finance.test.builders.FormBuilder;
+import org.finance.test.builders.PersonalDataBuilder;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -24,6 +26,8 @@ import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
 import org.springframework.transaction.annotation.Transactional;
 
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
 import java.lang.reflect.Method;
 
 import static org.junit.Assert.fail;
@@ -37,6 +41,9 @@ import static org.junit.Assert.fail;
 @ContextConfiguration(
         classes = ConfigTest.class)
 public class GrantingOfLoanSagaTest {
+
+    @PersistenceContext
+    EntityManager entityManager;
 
     private ApplicationContext applicationContext;
 
@@ -67,7 +74,9 @@ public class GrantingOfLoanSagaTest {
     public void onCompleteEventsTriggered(){
 
         //Given
-        Form form = new FormBuilder().withCorrectlyFilledForm().build();
+        Client client = new PersonalDataBuilder().withCorrectlyFilledData().build();
+        entityManager.persist(client);
+        Form form = new FormBuilder().withCorrectlyFilledForm(client).build();
         AggregateId aggregateId = AggregateId.generate();
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, aggregateId);
 //TODO: Fix to assembler method!
@@ -98,10 +107,5 @@ public class GrantingOfLoanSagaTest {
         //Then
         Assert.assertTrue(checkIpEventNotifier.isRightEventOccurred());
         Assert.assertTrue(riskAnalysisRequestNotifier.isRightEventOccurred());
-    }
-
-
-    private Form createEmptyForm(){
-        return new Form(null, null, null, null, null); //TODO: create assembler
     }
 }

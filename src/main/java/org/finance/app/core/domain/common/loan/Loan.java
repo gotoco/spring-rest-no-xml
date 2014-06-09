@@ -1,5 +1,6 @@
 package org.finance.app.core.domain.common.loan;
 
+import org.finance.app.core.domain.common.Client;
 import org.finance.app.core.domain.common.Money;
 import org.finance.app.ddd.annotation.ValueObject;
 import org.joda.time.DateTime;
@@ -12,10 +13,6 @@ import java.util.Date;
 @ValueObject
 @Entity
 public class Loan {
-    @Transient
-    private final static BigDecimal extendFactor = new BigDecimal(1.5);
-    @Transient
-    private final static Integer extendDays = 7;
 
     @Transient
     private Loan basedOnLoan;
@@ -54,6 +51,10 @@ public class Loan {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date effectiveDate;
 
+    @ManyToOne
+    @JoinColumn(name="client_id")
+    private Client loanHolder;
+
     public Loan(Loan basedOnLoan, Money value, Money interest, DateTime expirationDate, DateTime effectiveDate) {
         this.basedOnLoan = basedOnLoan;
         this.value = value;
@@ -69,10 +70,8 @@ public class Loan {
         }
 
         this.expirationDate = changeDate.toDate();
-        Loan futureLoan = new Loan(this, value, interest.multiplyBy(extendFactor),
-                new DateTime(expirationDate).plusDays(extendDays), changeDate );
 
-        return futureLoan;
+        return extendTheLoanFunction.extend(changeDate);
     }
 
     public void increaseLoanValue(Money money){
@@ -110,5 +109,53 @@ public class Loan {
 
     public void setLoan_id(Long loan_id) {
         this.loan_id = loan_id;
+    }
+
+    public Loan getBasedOnLoan() {
+        return basedOnLoan;
+    }
+
+    public void setBasedOnLoan(Loan basedOnLoan) {
+        this.basedOnLoan = basedOnLoan;
+    }
+
+    public Money getValue() {
+        return value;
+    }
+
+    public void setValue(Money value) {
+        this.value = value;
+    }
+
+    public Money getInterest() {
+        return interest;
+    }
+
+    public void setInterest(Money interest) {
+        this.interest = interest;
+    }
+
+    public Date getExpirationDate() {
+        return expirationDate;
+    }
+
+    public void setExpirationDate(Date expirationDate) {
+        this.expirationDate = expirationDate;
+    }
+
+    public Date getEffectiveDate() {
+        return effectiveDate;
+    }
+
+    public void setEffectiveDate(Date effectiveDate) {
+        this.effectiveDate = effectiveDate;
+    }
+
+    public Client getLoanHolder() {
+        return loanHolder;
+    }
+
+    public void setLoanHolder(Client loanHolder) {
+        this.loanHolder = loanHolder;
     }
 }

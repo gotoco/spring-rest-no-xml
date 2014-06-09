@@ -12,7 +12,7 @@ import java.net.InetAddress;
 @ValueObject
 public class Form implements Serializable {
 
-    private PersonalData personalData;
+    private Client personalData;
 
     private Money applyingAmount;
 
@@ -22,7 +22,7 @@ public class Form implements Serializable {
 
     private DateTime submissionDate;
 
-    public Form(PersonalData personalData, Money applyingAmount,
+    public Form(Client personalData, Money applyingAmount,
                     InetAddress applyingIpAddress, Integer maturityInDays, DateTime submissionDate) {
         this.personalData = personalData;
         this.applyingAmount = applyingAmount;
@@ -65,7 +65,7 @@ public class Form implements Serializable {
                     this.submissionDate     == null;
     }
 
-    public PersonalData getPersonalData() {
+    public Client getPersonalData() {
         return personalData;
     }
 

@@ -3,6 +3,7 @@ package org.finance.app.core.domain.businessprocess.loangrant;
 import junit.framework.Assert;
 import org.finance.app.annotations.IntegrationTest;
 import org.finance.app.core.domain.common.AggregateId;
+import org.finance.app.core.domain.common.Client;
 import org.finance.app.core.domain.common.Form;
 import org.finance.app.core.domain.common.loan.Loan;
 import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
@@ -12,6 +13,7 @@ import org.finance.app.core.domain.saga.SagaManager;
 import org.finance.app.ddd.system.DomainEventPublisher;
 import org.finance.test.ConfigTest;
 import org.finance.test.builders.FormBuilder;
+import org.finance.test.builders.PersonalDataBuilder;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -66,7 +68,9 @@ public class GrantingOfLoanSagaManagerTest {
     public void newRequestSubmittedNewSagaCreated(){
 
         //Given
-        Form form = new FormBuilder().withCorrectlyFilledForm().build();
+        Client client = new PersonalDataBuilder().withCorrectlyFilledData().build();
+        entityManager.persist(client);
+        Form form = new FormBuilder().withCorrectlyFilledForm(client).build();
         AggregateId aggregateId = AggregateId.generate();
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, aggregateId);
 
@@ -100,7 +104,9 @@ public class GrantingOfLoanSagaManagerTest {
     public void requestWasSubmittedHandled(){
 
         //Given
-        Form form = new FormBuilder().withCorrectlyFilledForm().build();
+        Client client = new PersonalDataBuilder().withCorrectlyFilledData().build();
+        entityManager.persist(client);
+        Form form = new FormBuilder().withCorrectlyFilledForm(client).build();
         AggregateId aggregateId = AggregateId.generate();
         sagaManager.createNewSagaData(aggregateId);
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, aggregateId);
@@ -119,7 +125,9 @@ public class GrantingOfLoanSagaManagerTest {
     public void extendTheLoanRequestHandled(){
 
         //Given
-        Form form = new FormBuilder().withCorrectlyFilledForm().build();
+        Client client = new PersonalDataBuilder().withCorrectlyFilledData().build();
+        entityManager.persist(client);
+        Form form = new FormBuilder().withCorrectlyFilledForm(client).build();
         AggregateId aggregateId = AggregateId.generate();
         sagaManager.createNewSagaData(aggregateId);
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, aggregateId);
@@ -153,19 +161,13 @@ public class GrantingOfLoanSagaManagerTest {
         }
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    private void prepareEventInDb(AggregateId id){
-        Form form = new FormBuilder().withCorrectlyFilledForm().build();
-        RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, id);
-    }
-
     @Test
-    private void shouldHandleRiskAnalyzedEvent(){
+    public void shouldHandleRiskAnalyzedEvent(){
 
     }
 
     @Test
-    private void shouldHandleIpCheckedResponseEvent(){
+    public void shouldHandleIpCheckedResponseEvent(){
 
     }
 }

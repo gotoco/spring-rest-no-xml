@@ -1,6 +1,7 @@
 package org.finance.app.core.domain.businessprocess.loangrant;
 
 import org.finance.app.core.domain.common.AggregateId;
+import org.finance.app.core.domain.common.Client;
 import org.finance.app.core.domain.common.Form;
 import org.finance.app.core.domain.common.Money;
 import org.finance.app.core.domain.common.loan.Loan;
@@ -49,6 +50,10 @@ public class GrantingOfLoanData {
 
     @Column(name="loan_id")
     private Long loanId;
+
+    @ManyToOne //(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @JoinColumn(name="client_id", referencedColumnName = "client_id")
+    private Client client;
 
     public Date getNewExpirationDate(){
         return this.newExpirationDate;
@@ -126,6 +131,14 @@ public class GrantingOfLoanData {
         this.hasRisk = hasRisk;
     }
 
+    public Client getClient() {
+        return client;
+    }
+
+    public void setClient(Client client) {
+        this.client = client;
+    }
+
     public void fillDataFromForm(Form form){
         this.setIp(form.getApplyingIpAddress().getHostAddress());
         this.setDateOfApplication(form.getSubmissionDate());
@@ -135,10 +148,15 @@ public class GrantingOfLoanData {
         this.setRisk(null);
         this.setTotalCost(form.getApplyingAmount());
         this.setNewExpirationDate(form.getSubmissionDate().plusDays(form.getMaturityInDays()));
+        this.setClient(form.getPersonalData());
     }
 
     public void fillDataFromRequest(ExtendTheLoanRequest requestEvent) {
         this.setLoan(requestEvent.getBaseLoan());
         this.setLoanId(requestEvent.getLoanId());
+    }
+
+    public GrantingOfLoanData(){
+
     }
 }

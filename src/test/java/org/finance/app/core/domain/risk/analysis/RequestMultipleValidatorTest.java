@@ -4,16 +4,14 @@ import junit.framework.Assert;
 import org.finance.app.annotations.IntegrationTest;
 import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanSagaManager;
 import org.finance.app.core.domain.businessprocess.loangrant.mocks.IpCheckedResponseHandler;
-import org.finance.app.core.domain.common.AggregateId;
-import org.finance.app.core.domain.common.Form;
-import org.finance.app.core.domain.common.Money;
-import org.finance.app.core.domain.common.PersonalData;
+import org.finance.app.core.domain.common.*;
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
 import org.finance.app.core.domain.events.impl.saga.CheckIpRequest;
 import org.finance.app.core.domain.events.impl.saga.IpCheckedResponse;
 import org.finance.app.ddd.system.DomainEventPublisher;
 import org.finance.test.ConfigTest;
 import org.finance.test.builders.FormBuilder;
+import org.finance.test.builders.PersonalDataBuilder;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -79,10 +77,13 @@ public class RequestMultipleValidatorTest {
     @Test
     @Transactional
     public void whenCheckIpEventTriggeredRejectMultipleIp() {
+
         //Given
         AggregateId eventId = AggregateId.generate();
         prepareRequestsWithSameIp();
-        Form form = new FormBuilder().withCorrectlyFilledForm().build();
+        Client client = new PersonalDataBuilder().withCorrectlyFilledData().build();
+        entityManager.persist(client);
+        Form form = new FormBuilder().withCorrectlyFilledForm(client).build();
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, eventId);
         sagaManager.handleRequestWasSubmitted(requestWasSubmitted);
         CheckIpRequest checkIpRequest = new CheckIpRequest(eventId, "127.0.0.1", new DateTime());
@@ -106,12 +107,13 @@ public class RequestMultipleValidatorTest {
      //   Assert.assertFalse(responseHandler.isValidIpAddress());
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     private void prepareRequestsWithSameIp() {
         RequestWasSubmitted requestWasSubmitted;
 
         for(int i=0; i<5; i++) {
-            PersonalData personalData = null;
+            Client personalData = new PersonalDataBuilder().withCorrectlyFilledData().withFirstName("Jan"+i).build();
+            entityManager.persist(personalData);
             Money applyingAmount = new Money(2000);
             InetAddress applyingIpAddress = null;
             try {

@@ -15,6 +15,7 @@ import org.finance.app.ddd.system.DomainEventPublisher;
 import org.finance.test.ConfigTest;
 
 import org.finance.test.builders.FormBuilder;
+import org.finance.test.builders.PersonalDataBuilder;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -120,7 +121,7 @@ public class CustomerServiceTest {
     }
 
     private Form fillTheForm() {
-        PersonalData personalData = new PersonalData();
+        Client personalData = new PersonalDataBuilder().withCorrectlyFilledData().build();
         Money applyingAmount = new Money(new BigDecimal(3000));
         Integer maturityInDays = 30;
         DateTime submissionDate = new DateTime();
