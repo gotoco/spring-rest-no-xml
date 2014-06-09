@@ -1,6 +1,6 @@
 package org.finance.app.core.domain.common;
 
-import org.finance.app.ddd.annotation.ValueObject;
+import org.finance.app.core.ddd.annotation.ValueObject;
 
 import javax.persistence.Embeddable;
 import java.io.Serializable;

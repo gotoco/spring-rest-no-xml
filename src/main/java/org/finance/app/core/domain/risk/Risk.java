@@ -1,6 +1,6 @@
 package org.finance.app.core.domain.risk;
 
-import org.finance.app.ddd.annotation.ValueObject;
+import org.finance.app.core.ddd.annotation.ValueObject;
 
 @ValueObject
 public class Risk {

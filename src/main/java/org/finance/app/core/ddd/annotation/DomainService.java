@@ -1,6 +1,4 @@
-package org.finance.app.ddd.annotation;
-
-import org.springframework.stereotype.Component;
+package org.finance.app.core.ddd.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

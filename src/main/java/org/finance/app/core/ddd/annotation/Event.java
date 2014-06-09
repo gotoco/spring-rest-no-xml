@@ -1,4 +1,4 @@
-package org.finance.app.ddd.annotation;
+package org.finance.app.core.ddd.annotation;
 
 /**
  * Created by maciek on 02.06.14.

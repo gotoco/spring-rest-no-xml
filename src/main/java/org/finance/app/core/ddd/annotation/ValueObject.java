@@ -1,4 +1,4 @@
-package org.finance.app.ddd.annotation;
+package org.finance.app.core.ddd.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;
@@ -8,9 +8,8 @@ import java.lang.annotation.Target;
 /**
  * Created by maciek on 02.06.14.
  */
-@Target(ElementType.TYPE)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface AggregateRoot {
+@Target(ElementType.TYPE)
+public @interface ValueObject {
 
 }
-

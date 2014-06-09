@@ -4,7 +4,7 @@ import org.finance.app.core.domain.common.Form;
 import org.finance.app.core.domain.common.loan.Loan;
 import org.finance.app.core.domain.common.Decision;
 import org.finance.app.core.domain.risk.Risk;
-import org.finance.app.ddd.annotation.AggregateRoot;
+import org.finance.app.core.ddd.annotation.AggregateRoot;
 
 /**
  * Created by maciek on 02.06.14.

@@ -2,12 +2,11 @@ package org.finance.app.core.domain.common.loan;
 
 import org.finance.app.core.domain.common.Client;
 import org.finance.app.core.domain.common.Money;
-import org.finance.app.ddd.annotation.ValueObject;
+import org.finance.app.core.ddd.annotation.ValueObject;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
-import java.math.BigDecimal;
 import java.util.Date;
 
 @ValueObject

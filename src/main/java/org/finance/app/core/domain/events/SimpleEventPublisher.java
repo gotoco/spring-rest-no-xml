@@ -5,9 +5,8 @@ package org.finance.app.core.domain.events;
  */
 
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
-import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
-import org.finance.app.ddd.system.DomainEventPublisher;
-import org.finance.app.ddd.system.events.EventHandler;
+import org.finance.app.core.ddd.system.DomainEventPublisher;
+import org.finance.app.core.ddd.system.events.EventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.beans.factory.BeanFactory;

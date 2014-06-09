@@ -1,10 +1,10 @@
-package org.finance.app.ddd.system;
+package org.finance.app.core.ddd.system;
 
 /**
  * Created by maciek on 02.06.14.
  */
 
-import org.finance.app.ddd.system.events.EventHandler;
+import org.finance.app.core.ddd.system.events.EventHandler;
 import org.springframework.beans.factory.BeanFactory;
 
 import java.io.Serializable;

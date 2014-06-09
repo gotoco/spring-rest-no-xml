@@ -1,7 +1,7 @@
 package org.finance.app.core.domain.events.impl.saga;
 
 import org.finance.app.core.domain.common.AggregateId;
-import org.finance.app.ddd.annotation.Event;
+import org.finance.app.core.ddd.annotation.Event;
 
 import java.io.Serializable;
 

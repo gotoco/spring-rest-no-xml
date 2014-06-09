@@ -1,6 +1,6 @@
 package org.finance.app.core.domain.saga;
 
-import org.finance.app.ddd.annotation.Saga;
+import org.finance.app.core.ddd.annotation.Saga;
 
 /**
  * Created by maciek on 05.06.14.

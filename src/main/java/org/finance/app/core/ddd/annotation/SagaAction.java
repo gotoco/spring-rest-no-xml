@@ -1,4 +1,4 @@
-package org.finance.app.ddd.annotation;
+package org.finance.app.core.ddd.annotation;
 
 import java.lang.annotation.Retention;
 import java.lang.annotation.RetentionPolicy;

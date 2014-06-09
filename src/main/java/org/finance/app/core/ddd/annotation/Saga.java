@@ -1,4 +1,4 @@
-package org.finance.app.ddd.annotation;
+package org.finance.app.core.ddd.annotation;
 
 import org.springframework.beans.factory.config.BeanDefinition;
 import org.springframework.context.annotation.Scope;

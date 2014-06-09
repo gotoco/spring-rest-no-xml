@@ -1,7 +1,4 @@
-package org.finance.app.ddd.annotation;
-
-import org.springframework.transaction.annotation.Propagation;
-import org.springframework.transaction.annotation.Transactional;
+package org.finance.app.core.ddd.annotation;
 
 import java.lang.annotation.ElementType;
 import java.lang.annotation.Retention;

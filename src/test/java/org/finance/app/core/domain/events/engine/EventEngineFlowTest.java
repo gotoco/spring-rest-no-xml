@@ -3,8 +3,8 @@ package org.finance.app.core.domain.events.engine;
 import org.finance.app.core.domain.events.engine.mocks.BaseEventReceiveNotifier;
 import org.finance.app.core.domain.events.engine.mocks.RandomEventReceiveNotifier;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
-import org.finance.app.ddd.annotation.Event;
-import org.finance.app.ddd.system.DomainEventPublisher;
+import org.finance.app.core.ddd.annotation.Event;
+import org.finance.app.core.ddd.system.DomainEventPublisher;
 import org.finance.test.ConfigTest;
 
 import org.junit.Test;

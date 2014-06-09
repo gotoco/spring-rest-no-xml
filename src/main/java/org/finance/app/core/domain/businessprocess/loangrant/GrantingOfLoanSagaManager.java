@@ -1,20 +1,17 @@
 package org.finance.app.core.domain.businessprocess.loangrant;
 
 import org.finance.app.core.domain.common.AggregateId;
-import org.finance.app.core.domain.common.Form;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
 import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
 import org.finance.app.core.domain.events.impl.saga.IpCheckedResponse;
 import org.finance.app.core.domain.events.impl.saga.RiskAnalyzedResponse;
 import org.finance.app.core.domain.saga.SagaManager;
-import org.finance.app.ddd.annotation.LoadSaga;
-import org.finance.app.ddd.system.DomainEventPublisher;
-import org.springframework.beans.factory.BeanFactory;
+import org.finance.app.core.ddd.annotation.LoadSaga;
+import org.finance.app.core.ddd.system.DomainEventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;

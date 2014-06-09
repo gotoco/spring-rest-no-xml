@@ -7,12 +7,11 @@ import org.finance.app.core.domain.businessprocess.loangrant.mocks.DoRiskAnalysi
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.common.Client;
 import org.finance.app.core.domain.common.Form;
-import org.finance.app.core.domain.events.engine.mocks.BaseEventReceiveNotifier;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
 import org.finance.app.core.domain.events.impl.saga.CheckIpRequest;
 import org.finance.app.core.domain.events.impl.saga.DoRiskAnalysisRequest;
-import org.finance.app.ddd.system.DomainEventPublisher;
+import org.finance.app.core.ddd.system.DomainEventPublisher;
 import org.finance.test.ConfigTest;
 import org.finance.test.builders.FormBuilder;
 import org.finance.test.builders.PersonalDataBuilder;

@@ -159,4 +159,43 @@ public class GrantingOfLoanData {
     public GrantingOfLoanData(){
 
     }
+
+    @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (!(o instanceof GrantingOfLoanData)) return false;
+
+        GrantingOfLoanData that = (GrantingOfLoanData) o;
+
+        if (client != null ? !client.equals(that.client) : that.client != null) return false;
+        if (!dateOfApplication.equals(that.dateOfApplication)) return false;
+        if (hasRisk != null ? !hasRisk.equals(that.hasRisk) : that.hasRisk != null) return false;
+        if (hasValidIp != null ? !hasValidIp.equals(that.hasValidIp) : that.hasValidIp != null) return false;
+        if (!id.equals(that.id)) return false;
+        if (ip != null ? !ip.equals(that.ip) : that.ip != null) return false;
+        if (loan != null ? !loan.equals(that.loan) : that.loan != null) return false;
+        if (loanId != null ? !loanId.equals(that.loanId) : that.loanId != null) return false;
+        if (newExpirationDate != null ? !newExpirationDate.equals(that.newExpirationDate) : that.newExpirationDate != null)
+            return false;
+        if (requestId != null ? !requestId.equals(that.requestId) : that.requestId != null) return false;
+        if (!totalCost.equals(that.totalCost)) return false;
+
+        return true;
+    }
+
+    @Override
+    public int hashCode() {
+        int result = id.hashCode();
+        result = 31 * result + (ip != null ? ip.hashCode() : 0);
+        result = 31 * result + (hasValidIp != null ? hasValidIp.hashCode() : 0);
+        result = 31 * result + (hasRisk != null ? hasRisk.hashCode() : 0);
+        result = 31 * result + dateOfApplication.hashCode();
+        result = 31 * result + totalCost.hashCode();
+        result = 31 * result + (requestId != null ? requestId.hashCode() : 0);
+        result = 31 * result + (newExpirationDate != null ? newExpirationDate.hashCode() : 0);
+        result = 31 * result + (loan != null ? loan.hashCode() : 0);
+        result = 31 * result + (loanId != null ? loanId.hashCode() : 0);
+        result = 31 * result + (client != null ? client.hashCode() : 0);
+        return result;
+    }
 }

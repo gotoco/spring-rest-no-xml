@@ -5,8 +5,8 @@ import org.finance.app.core.domain.common.Form;
 import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
 import org.finance.app.core.domain.common.loan.Loan;
-import org.finance.app.ddd.annotation.DomainService;
-import org.finance.app.ddd.system.DomainEventPublisher;
+import org.finance.app.core.ddd.annotation.DomainService;
+import org.finance.app.core.ddd.system.DomainEventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 

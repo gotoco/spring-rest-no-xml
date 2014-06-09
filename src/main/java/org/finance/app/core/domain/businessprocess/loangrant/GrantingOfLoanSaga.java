@@ -7,8 +7,8 @@ import org.finance.app.core.domain.events.impl.saga.CheckIpRequest;
 import org.finance.app.core.domain.events.impl.saga.DoExtendLoanRequest;
 import org.finance.app.core.domain.events.impl.saga.DoRiskAnalysisRequest;
 import org.finance.app.core.domain.saga.SagaInstance;
-import org.finance.app.ddd.annotation.SagaAction;
-import org.finance.app.ddd.system.DomainEventPublisher;
+import org.finance.app.core.ddd.annotation.SagaAction;
+import org.finance.app.core.ddd.system.DomainEventPublisher;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 

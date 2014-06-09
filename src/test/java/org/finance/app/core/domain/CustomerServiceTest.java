@@ -11,7 +11,7 @@ import org.finance.app.core.domain.events.engine.mocks.BaseEventReceiveNotifier;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
 import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
-import org.finance.app.ddd.system.DomainEventPublisher;
+import org.finance.app.core.ddd.system.DomainEventPublisher;
 import org.finance.test.ConfigTest;
 
 import org.finance.test.builders.FormBuilder;
