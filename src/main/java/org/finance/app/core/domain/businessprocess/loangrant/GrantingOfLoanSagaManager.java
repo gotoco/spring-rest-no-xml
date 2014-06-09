@@ -1,6 +1,7 @@
 package org.finance.app.core.domain.businessprocess.loangrant;
 
 import org.finance.app.core.domain.common.AggregateId;
+import org.finance.app.core.domain.common.Form;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
 import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
@@ -58,12 +59,29 @@ public class GrantingOfLoanSagaManager implements
         return sagaData;
     }
 
-    public GrantingOfLoanData createNewSagaData(AggregateId id) {
+    public GrantingOfLoanData createNewSagaData(AggregateId id ) {
         GrantingOfLoanData sagaData = new GrantingOfLoanData();
         sagaData.setRequestId(id);
         entityManager.persist(sagaData);
         return sagaData;
     }
+
+    public GrantingOfLoanData createAndFillNewSagaData(AggregateId id, RequestWasSubmitted requestEvent) {
+        GrantingOfLoanData sagaData = new GrantingOfLoanData();
+        sagaData.setRequestId(id);
+        sagaData.fillDataFromForm(requestEvent.getRequest());
+        entityManager.persist(sagaData);
+        return sagaData;
+    }
+
+    public GrantingOfLoanData createAndFillNewSagaData(AggregateId id, ExtendTheLoanRequest requestEvent) {
+        GrantingOfLoanData sagaData = new GrantingOfLoanData();
+        sagaData.setRequestId(id);
+        sagaData.fillDataFromRequest(requestEvent);
+        entityManager.persist(sagaData);
+        return sagaData;
+    }
+
 
     private GrantingOfLoanData findByRequestId(AggregateId requestId) {
         Query query = entityManager.createQuery("from GrantingOfLoanData where requestId=:requestId")
@@ -83,7 +101,8 @@ public class GrantingOfLoanSagaManager implements
         try {
             Method method = GrantingOfLoanSagaManager.class.getMethod("handleRequestWasSubmitted", new Class[]{Object.class});
 
-            SpringEventHandler eventHandler = new SpringEventHandler(RequestWasSubmitted.class, "GrantingOfLoanSagaManager", method, applicationContext);
+            SpringEventHandler eventHandler = new SpringEventHandler
+                                (RequestWasSubmitted.class, "GrantingOfLoanSagaManager", method, applicationContext);
 
             eventPublisher.registerEventHandler(eventHandler);
 
@@ -99,7 +118,7 @@ public class GrantingOfLoanSagaManager implements
         try{
             sagaData = loadSaga(requestEvent);
         }catch(Exception ex){
-            sagaData = createNewSagaData(requestEvent.getRequestId());
+            sagaData = createAndFillNewSagaData(requestEvent.getRequestId(), requestEvent);
         }
 
         GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("GrantingOfLoanSaga", sagaData);
@@ -113,7 +132,7 @@ public class GrantingOfLoanSagaManager implements
         try{
             sagaData = loadSaga(requestEvent);
         }catch(Exception ex){
-            sagaData = createNewSagaData(requestEvent.getAggregateId());
+            sagaData = createAndFillNewSagaData(requestEvent.getAggregateId(), requestEvent);
         }
 
         GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("GrantingOfLoanSaga", sagaData);

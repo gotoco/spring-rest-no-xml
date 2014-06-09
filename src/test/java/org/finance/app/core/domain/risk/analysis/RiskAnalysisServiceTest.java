@@ -2,6 +2,7 @@ package org.finance.app.core.domain.risk.analysis;
 
 import org.finance.app.annotations.IntegrationTest;
 import org.finance.test.ConfigTest;
+import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.test.context.ContextConfiguration;
@@ -14,4 +15,9 @@ import org.springframework.test.context.web.WebAppConfiguration;
 @ContextConfiguration(
         classes = ConfigTest.class)
 public class RiskAnalysisServiceTest {
+
+    @Test
+    public void dummyTest(){
+
+    }
 }

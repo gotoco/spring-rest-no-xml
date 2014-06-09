@@ -9,9 +9,12 @@ package org.finance.app.adapters;
 import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanData;
 import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanSagaManager;
 import org.finance.app.core.domain.common.AggregateId;
+import org.finance.app.core.domain.common.Form;
 import org.finance.app.core.domain.common.Money;
+import org.finance.app.core.domain.common.PersonalData;
 import org.finance.app.core.domain.common.loan.Loan;
 import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
+import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +25,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import java.net.InetAddress;
+import java.net.UnknownHostException;
 import java.util.Calendar;
+import java.util.List;
+import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -46,12 +54,42 @@ public class HelloWorldController {
 
 
         GrantingOfLoanData sagaData = new GrantingOfLoanData();
-        sagaData.setDateOfApplication(Calendar.getInstance().getTime());
+        sagaData.setDateOfApplication(new DateTime(Calendar.getInstance().getTime()) );
         sagaData.setRequestId(AggregateId.generate());
         sagaData.setIp(ipAddress);
         entityManager.persist(sagaData);
 
-        return "helloworld";
+        for(int i=0; i<5; i++) {
+            PersonalData personalData = null;
+            Money applyingAmount = new Money(2000);
+            InetAddress applyingIpAddress = null;
+            try {
+                applyingIpAddress = InetAddress.getByName("127.0.0.1");
+            } catch(UnknownHostException ex){
+                ex.printStackTrace();
+            }
+            Integer maturityInDays = 30;
+            DateTime submissionDate = new DateTime();
+            Form form = new Form(personalData, applyingAmount, applyingIpAddress, maturityInDays, submissionDate);
+            RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, AggregateId.generate());
+            sagaManager.handleRequestWasSubmitted(requestWasSubmitted);
+        }
+
+        DateTime currentDate = new DateTime();
+        DateTime startDate = currentDate.minusDays(1);
+        DateTime endDateDate = currentDate;
+
+
+        Query query = entityManager.createQuery("from GrantingOfLoanData g WHERE g.dateOfApplication > :startDate AND g.ip = :ipAddress AND g.hasValidIp IS NOT NULL")
+                                        .setParameter("startDate", startDate.toDate(), TemporalType.DATE)
+                                        .setParameter("ipAddress", ipAddress );
+
+/*        Query query = entityManager.createQuery("from GrantingOfLoanData where requestId=:requestId")
+                .setParameter("requestId", requestId);*/
+
+        List<GrantingOfLoanData> result =  query.getResultList();
+
+        return "helloworld" + result.size();
     }
 
     @Transactional
@@ -77,7 +115,7 @@ public class HelloWorldController {
 
         if(sagaData == null) {
             sagaData = new GrantingOfLoanData();
-            sagaData.setDateOfApplication(Calendar.getInstance().getTime());
+            sagaData.setDateOfApplication(new DateTime(Calendar.getInstance().getTime()) );
             sagaData.setRequestId(AggregateId.generate());
             sagaData.setIp(ipAddress);
         }

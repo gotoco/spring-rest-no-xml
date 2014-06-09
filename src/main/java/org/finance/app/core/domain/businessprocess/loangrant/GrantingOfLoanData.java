@@ -1,8 +1,10 @@
 package org.finance.app.core.domain.businessprocess.loangrant;
 
 import org.finance.app.core.domain.common.AggregateId;
+import org.finance.app.core.domain.common.Form;
 import org.finance.app.core.domain.common.Money;
 import org.finance.app.core.domain.common.loan.Loan;
+import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -18,6 +20,12 @@ public class GrantingOfLoanData {
     @Column(name="ip")
     private String ip;
 
+    @Column(name="has_valid_ip")
+    private Boolean hasValidIp;
+
+    @Column(name="has_risk")
+    private Boolean hasRisk;
+
     @Column(name="date_of_application")
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date dateOfApplication;
@@ -31,14 +39,15 @@ public class GrantingOfLoanData {
             @AttributeOverride(name = "aggregateId", column = @Column(name = "requestId"))})
     private AggregateId requestId;
 
-    @Column(name="newExpirationDate")
+    @Column(name="new_expiration_date")
+    @Temporal(javax.persistence.TemporalType.DATE)
     private Date newExpirationDate;
 
     @OneToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name="loan", referencedColumnName="loan_id")
     private Loan loan;
 
-    @Column(name="loanId")
+    @Column(name="loan_id")
     private Long loanId;
 
     public Date getNewExpirationDate(){
@@ -65,8 +74,8 @@ public class GrantingOfLoanData {
         this.ip = ip;
     }
 
-    public void setDateOfApplication(Date dateOfApplication) {
-        this.dateOfApplication = dateOfApplication;
+    public void setDateOfApplication(DateTime dateOfApplication) {
+        this.dateOfApplication = dateOfApplication.toDate();
     }
 
     public void setLoanId(Long loanId) {
@@ -99,5 +108,37 @@ public class GrantingOfLoanData {
 
     public String getIp() {
         return ip;
+    }
+
+    public Boolean getHasValidIp() {
+        return hasValidIp;
+    }
+
+    public void setHasValidIp(Boolean hasValidIp) {
+        this.hasValidIp = hasValidIp;
+    }
+
+    public Boolean getHasRisk() {
+        return hasRisk;
+    }
+
+    public void setHasRisk(Boolean hasRisk) {
+        this.hasRisk = hasRisk;
+    }
+
+    public void fillDataFromForm(Form form){
+        this.setIp(form.getApplyingIpAddress().getHostAddress());
+        this.setDateOfApplication(form.getSubmissionDate());
+        this.setLoan(null);
+        this.setLoanId(null);
+        this.setHasValidIp(null);
+        this.setHasRisk(null);
+        this.setTotalCost(form.getApplyingAmount());
+        this.setNewExpirationDate(form.getSubmissionDate().plusDays(form.getMaturityInDays()));
+    }
+
+    public void fillDataFromRequest(ExtendTheLoanRequest requestEvent) {
+        this.setLoan(requestEvent.getBaseLoan());
+        this.setLoanId(requestEvent.getLoanId());
     }
 }

@@ -47,7 +47,8 @@ public class GrantingOfLoanSaga  extends SagaInstance<GrantingOfLoanData> {
     private void requestForIpCheck(){
         AggregateId id = this.sagaData.getRequestId();
         String addressIp = this.sagaData.getIp();
-        CheckIpRequest checkIpRequestEvent = new CheckIpRequest(id, addressIp);
+        DateTime submissionDate = new DateTime(this.sagaData.getDateOfApplication());
+        CheckIpRequest checkIpRequestEvent = new CheckIpRequest(id, addressIp, submissionDate);
 
         eventPublisher.publish(checkIpRequestEvent);
     }

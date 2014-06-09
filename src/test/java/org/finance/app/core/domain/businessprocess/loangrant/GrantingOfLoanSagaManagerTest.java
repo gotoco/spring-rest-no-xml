@@ -10,6 +10,7 @@ import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitt
 import org.finance.app.core.domain.saga.SagaManager;
 import org.finance.app.ddd.system.DomainEventPublisher;
 import org.finance.test.ConfigTest;
+import org.finance.test.builders.FormBuilder;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -64,7 +65,7 @@ public class GrantingOfLoanSagaManagerTest {
     public void newRequestSubmittedNewSagaCreated(){
 
         //Given
-        Form form = createEmptyForm();
+        Form form = new FormBuilder().withCorrectlyFilledForm().build();
         AggregateId aggregateId = AggregateId.generate();
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, aggregateId);
 
@@ -81,6 +82,7 @@ public class GrantingOfLoanSagaManagerTest {
     @Test
     @Transactional
     public void loanExistExtendLoanRequestExistingSagaLoaded(){
+        //TODO: finish
         //Given
             //Create and save loan
             //create request - extendLoanRequest

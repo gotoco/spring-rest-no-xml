@@ -1,5 +1,6 @@
 package org.finance.app.core.domain.events.impl.saga;
 
+import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.ddd.annotation.Event;
 
 import java.io.Serializable;
@@ -10,10 +11,19 @@ import java.io.Serializable;
 @Event
 public class IpCheckedResponse implements Serializable {
 
-    private final Long sagaDataId;
+    private final AggregateId sagaDataId;
+    private final Boolean validIpAddress;
 
-    public IpCheckedResponse(Long sagaDataId){
+    public IpCheckedResponse(AggregateId sagaDataId, Boolean isValidIpAddress){
         this.sagaDataId = sagaDataId;
+        this.validIpAddress = isValidIpAddress;
     }
 
+    public AggregateId getSagaDataId() {
+        return sagaDataId;
+    }
+
+    public Boolean getValidIpAddress() {
+        return validIpAddress;
+    }
 }

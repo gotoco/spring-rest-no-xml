@@ -13,6 +13,7 @@ import org.finance.app.core.domain.events.impl.saga.CheckIpRequest;
 import org.finance.app.core.domain.events.impl.saga.DoRiskAnalysisRequest;
 import org.finance.app.ddd.system.DomainEventPublisher;
 import org.finance.test.ConfigTest;
+import org.finance.test.builders.FormBuilder;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -66,7 +67,7 @@ public class GrantingOfLoanSagaTest {
     public void onCompleteEventsTriggered(){
 
         //Given
-        Form form = createEmptyForm();
+        Form form = new FormBuilder().withCorrectlyFilledForm().build();
         AggregateId aggregateId = AggregateId.generate();
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, aggregateId);
 //TODO: Fix to assembler method!

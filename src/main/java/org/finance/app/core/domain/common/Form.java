@@ -64,4 +64,24 @@ public class Form implements Serializable {
                     this.maturityInDays     == null &&
                     this.submissionDate     == null;
     }
+
+    public PersonalData getPersonalData() {
+        return personalData;
+    }
+
+    public Integer getMaturityInDays() {
+        return maturityInDays;
+    }
+
+    public Money getApplyingAmount() {
+        return applyingAmount;
+    }
+
+    public DateTime getSubmissionDate() {
+        return submissionDate;
+    }
+
+    public InetAddress getApplyingIpAddress() {
+        return applyingIpAddress;
+    }
 }

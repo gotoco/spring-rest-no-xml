@@ -4,13 +4,17 @@ package org.finance.app.core.domain.events;
  * Created by maciek on 02.06.14.
  */
 
+import org.finance.app.core.domain.events.handlers.SpringEventHandler;
+import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
 import org.finance.app.ddd.system.DomainEventPublisher;
 import org.finance.app.ddd.system.events.EventHandler;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
+import org.springframework.beans.factory.BeanFactory;
 import org.springframework.stereotype.Component;
 
 import java.io.Serializable;
+import java.lang.reflect.Method;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Set;
@@ -24,6 +28,20 @@ public class SimpleEventPublisher implements DomainEventPublisher {
 
     public void registerEventHandler(EventHandler handler) {
         eventHandlers.add(handler);
+    }
+
+    @Override
+    public void registerEventHandlerByAttributes(Class<?> eventType, String beanName, Method method, BeanFactory beanFactory) {
+
+        SpringEventHandler eventHandler = new SpringEventHandler(eventType, beanName, method, beanFactory);
+        this.registerEventHandler(eventHandler);
+    }
+
+    @Override
+    public void registerEventHandlerByAttributes(Class<?> eventType, Class<?> BeanClass, String beanName, String methodName, Class[] args, BeanFactory beanFactory) throws NoSuchMethodException {
+        Method method = BeanClass.getMethod(methodName, args);
+        SpringEventHandler eventHandler = new SpringEventHandler(eventType, beanName, method, beanFactory);
+        this.registerEventHandler(eventHandler);
     }
 
     @Override
