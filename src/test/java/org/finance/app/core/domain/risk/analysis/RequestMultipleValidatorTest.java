@@ -9,6 +9,9 @@ import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitt
 import org.finance.app.core.domain.events.impl.saga.CheckIpRequest;
 import org.finance.app.core.domain.events.impl.saga.IpCheckedResponse;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
+import org.finance.app.sharedcore.objects.Client;
+import org.finance.app.sharedcore.objects.Form;
+import org.finance.app.sharedcore.objects.Money;
 import org.finance.test.ConfigTest;
 import org.finance.test.builders.FormBuilder;
 import org.finance.test.builders.PersonalDataBuilder;

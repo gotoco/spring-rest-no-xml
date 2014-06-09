@@ -1,10 +1,10 @@
 package org.finance.app.core.domain.businessprocess.loangrant;
 
 import org.finance.app.core.domain.common.AggregateId;
-import org.finance.app.core.domain.common.Client;
-import org.finance.app.core.domain.common.Form;
-import org.finance.app.core.domain.common.Money;
-import org.finance.app.core.domain.common.loan.Loan;
+import org.finance.app.sharedcore.objects.Client;
+import org.finance.app.sharedcore.objects.Form;
+import org.finance.app.sharedcore.objects.Money;
+import org.finance.app.sharedcore.objects.Loan;
 import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
 import org.joda.time.DateTime;
 

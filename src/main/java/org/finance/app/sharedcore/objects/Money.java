@@ -1,8 +1,9 @@
-package org.finance.app.core.domain.common;
+package org.finance.app.sharedcore.objects;
 
 import org.finance.app.core.ddd.annotation.ValueObject;
 
 import javax.persistence.Embeddable;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.math.BigDecimal;
 import java.math.RoundingMode;
@@ -10,6 +11,7 @@ import java.util.Currency;
 
 @Embeddable
 @ValueObject
+@XmlRootElement
 public class Money implements Serializable {
 
     public static final Currency DEFAULT_CURRENCY = Currency.getInstance("EUR");

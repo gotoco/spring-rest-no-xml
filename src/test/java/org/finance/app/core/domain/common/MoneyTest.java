@@ -1,8 +1,8 @@
 package org.finance.app.core.domain.common;
 
 import junit.framework.Assert;
-import org.finance.app.annotations.IntegrationTest;
 import org.finance.app.annotations.UnitTest;
+import org.finance.app.sharedcore.objects.Money;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 

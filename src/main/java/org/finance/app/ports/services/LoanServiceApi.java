@@ -1,13 +1,13 @@
 package org.finance.app.ports.services;
 
 
-import org.finance.app.core.domain.common.Form;
-import org.finance.app.core.domain.common.loan.Loan;
+import org.finance.app.sharedcore.objects.Form;
+import org.finance.app.sharedcore.objects.Loan;
 
 
 public interface LoanServiceApi {
 
     public void applyForLoan(Form form);
 
-    public void extendTheLoan(Loan loan);
+    public void extendTheLoan(Long loanId, Long clientId);
 }

@@ -1,8 +1,5 @@
 package org.finance.app.application.userstories;
 
-import org.finance.app.core.domain.common.Client;
-import org.finance.app.core.domain.common.Form;
-import org.finance.test.builders.FormBuilder;
 import org.junit.Test;
 
 /**

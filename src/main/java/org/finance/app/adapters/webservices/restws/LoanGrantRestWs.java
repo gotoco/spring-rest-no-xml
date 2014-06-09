@@ -1,6 +1,9 @@
 package org.finance.app.adapters.webservices.restws;
 
 
+import org.finance.app.ports.services.LoanServiceApi;
+import org.finance.app.sharedcore.objects.Form;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -13,16 +16,17 @@ import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 
 @Controller
-@Produces({MediaType.APPLICATION_JSON})
-@Consumes({MediaType.APPLICATION_JSON})
+@Produces({MediaType.APPLICATION_JSON + "; charset=UTF-8"})
+@Consumes({MediaType.APPLICATION_JSON + "; charset=UTF-8"})
 public class LoanGrantRestWs {
 
+    LoanServiceApi loanServiceApi;
+
     @POST
-    @RequestMapping("/postLoan")
-    public Response postForLoan(
+    @RequestMapping("/applyForLoan")
+    public Response applyForLoan(
             @Context HttpServletRequest request,
-            @FormParam("name") String name,
-            @FormParam("age") int age) {
+            Form form) {
 
         String ipAddress = request.getHeader("X-FORWARDED-FOR");
         if (ipAddress == null) {
@@ -31,10 +35,31 @@ public class LoanGrantRestWs {
 
     return Response
             .status(200)
-            .entity("getUsers is called, from ").build();
+            .entity("getUsers is called, from " + ipAddress).build();
     }
 
- /*   @POST
-    @RequestMapping("/")
-    public*/
+    @POST
+    @RequestMapping("/postForExtendLoan")
+    public Response postForExtendLoan(
+            @Context HttpServletRequest request,
+            @FormParam("loanId") Long loanId,
+            @FormParam("userId") Long userId) {
+
+        String ipAddress = request.getHeader("X-FORWARDED-FOR");
+        if (ipAddress == null) {
+            ipAddress = request.getRemoteAddr();
+        }
+
+        loanServiceApi.extendTheLoan(loanId, userId);
+
+
+        return Response
+                .status(200)
+                .entity("getUsers is called, from " + ipAddress).build();
+    }
+
+    @Autowired
+    public void setLoanServiceApi(LoanServiceApi loanServiceApi) {
+        this.loanServiceApi = loanServiceApi;
+    }
 }

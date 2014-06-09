@@ -1,7 +1,7 @@
 package org.finance.app.adapters.webservices.json;
 
-import org.finance.app.core.domain.common.Client;
-import org.finance.app.core.domain.common.Money;
+import org.finance.app.sharedcore.objects.Client;
+import org.finance.app.sharedcore.objects.Money;
 import org.joda.time.DateTime;
 
 import javax.xml.bind.annotation.XmlRootElement;

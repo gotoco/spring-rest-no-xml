@@ -1,16 +1,17 @@
-package org.finance.app.core.domain.common.loan;
+package org.finance.app.sharedcore.objects;
 
-import org.finance.app.core.domain.common.Client;
-import org.finance.app.core.domain.common.Money;
+import org.finance.app.core.domain.common.loan.ExtendTheLoanFunction;
 import org.finance.app.core.ddd.annotation.ValueObject;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 @ValueObject
 @Entity
+@XmlRootElement
 public class Loan {
 
     @Transient
@@ -22,10 +23,10 @@ public class Loan {
     @Id
     @GeneratedValue
     @Column(name="loan_id")
-    private Long loan_id;
+    private Long loanId;
 
-    public Long getLoan_id() {
-        return loan_id;
+    public Long getLoanId() {
+        return loanId;
     }
 
     @AttributeOverrides({
@@ -73,6 +74,11 @@ public class Loan {
         return extendTheLoanFunction.extend(changeDate);
     }
 
+    @Autowired
+    public void setExtendTheLoanFunction(ExtendTheLoanFunction extendTheLoanFunction) {
+        this.extendTheLoanFunction = extendTheLoanFunction;
+    }
+
     public void increaseLoanValue(Money money){
         this.value.add(money);
     }
@@ -101,13 +107,8 @@ public class Loan {
         return extendTheLoanFunction;
     }
 
-    @Autowired
-    public void setExtendTheLoanFunction(ExtendTheLoanFunction extendTheLoanFunction) {
-        this.extendTheLoanFunction = extendTheLoanFunction;
-    }
-
-    public void setLoan_id(Long loan_id) {
-        this.loan_id = loan_id;
+    public void setLoan_id(Long loanId) {
+        this.loanId = loanId;
     }
 
     public Loan getBasedOnLoan() {

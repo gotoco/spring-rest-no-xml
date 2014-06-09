@@ -1,14 +1,16 @@
-package org.finance.app.core.domain.common;
+package org.finance.app.sharedcore.objects;
 
 import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanData;
 import org.finance.app.core.ddd.annotation.ValueObject;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 @ValueObject
 @Entity
+@XmlRootElement
 public class Client {
 
     @Id

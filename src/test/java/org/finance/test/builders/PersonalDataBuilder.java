@@ -1,7 +1,6 @@
 package org.finance.test.builders;
 
-import org.finance.app.core.domain.common.Client;
-import org.finance.app.core.domain.common.PersonalData;
+import org.finance.app.sharedcore.objects.Client;
 import org.joda.time.DateTime;
 
 public class PersonalDataBuilder {

@@ -1,15 +1,14 @@
-package org.finance.app.core.domain.common;
+package org.finance.app.sharedcore.objects;
 
 import org.finance.app.core.ddd.annotation.ValueObject;
 import org.joda.time.DateTime;
 
+import javax.xml.bind.annotation.XmlRootElement;
 import java.io.Serializable;
 import java.net.InetAddress;
 
-/**
- * Created by maciek on 02.06.14.
- */
 @ValueObject
+@XmlRootElement
 public class Form implements Serializable {
 
     private Client personalData;

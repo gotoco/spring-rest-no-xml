@@ -1,8 +1,8 @@
 package org.finance.app.core.domain.businessprocess.loangrant;
 
 import org.finance.app.core.domain.common.AggregateId;
-import org.finance.app.core.domain.common.Money;
-import org.finance.app.core.domain.common.loan.Loan;
+import org.finance.app.sharedcore.objects.Money;
+import org.finance.app.sharedcore.objects.Loan;
 import org.finance.app.core.domain.events.impl.saga.CheckIpRequest;
 import org.finance.app.core.domain.events.impl.saga.DoExtendLoanRequest;
 import org.finance.app.core.domain.events.impl.saga.DoRiskAnalysisRequest;

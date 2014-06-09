@@ -1,7 +1,7 @@
 package org.finance.app.core.domain.events.impl.customerservice;
 
 import org.finance.app.core.domain.common.AggregateId;
-import org.finance.app.core.domain.common.Form;
+import org.finance.app.sharedcore.objects.Form;
 import org.finance.app.core.ddd.annotation.Event;
 
 import java.io.Serializable;

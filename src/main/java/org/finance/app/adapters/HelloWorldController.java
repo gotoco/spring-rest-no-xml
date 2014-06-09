@@ -9,9 +9,12 @@ package org.finance.app.adapters;
 import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanData;
 import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanSagaManager;
 import org.finance.app.core.domain.common.*;
-import org.finance.app.core.domain.common.loan.Loan;
+import org.finance.app.sharedcore.objects.Loan;
 import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
+import org.finance.app.sharedcore.objects.Client;
+import org.finance.app.sharedcore.objects.Form;
+import org.finance.app.sharedcore.objects.Money;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -80,9 +83,6 @@ public class HelloWorldController {
         Query query = entityManager.createQuery("from GrantingOfLoanData g WHERE g.dateOfApplication > :startDate AND g.ip = :ipAddress AND g.hasValidIp IS NOT NULL")
                                         .setParameter("startDate", startDate.toDate(), TemporalType.DATE)
                                         .setParameter("ipAddress", ipAddress );
-
-/*        Query query = entityManager.createQuery("from GrantingOfLoanData where requestId=:requestId")
-                .setParameter("requestId", requestId);*/
 
         List<GrantingOfLoanData> result =  query.getResultList();
 

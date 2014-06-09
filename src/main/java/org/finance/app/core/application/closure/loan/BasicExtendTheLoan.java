@@ -1,7 +1,7 @@
 package org.finance.app.core.application.closure.loan;
 
 import org.finance.app.core.domain.common.loan.ExtendTheLoanFunction;
-import org.finance.app.core.domain.common.loan.Loan;
+import org.finance.app.sharedcore.objects.Loan;
 import org.finance.app.core.ddd.annotation.Function;
 import org.joda.time.DateTime;
 

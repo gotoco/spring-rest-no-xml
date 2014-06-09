@@ -1,15 +1,12 @@
 package org.finance.test.builders;
 
 import junit.framework.Assert;
-import org.finance.app.core.domain.common.Client;
-import org.finance.app.core.domain.common.Form;
-import org.finance.app.core.domain.common.Money;
-import org.finance.app.core.domain.common.PersonalData;
+import org.finance.app.sharedcore.objects.Client;
+import org.finance.app.sharedcore.objects.Form;
+import org.finance.app.sharedcore.objects.Money;
 import org.joda.time.DateTime;
 import org.springframework.transaction.annotation.Transactional;
 
-import javax.persistence.EntityManager;
-import javax.persistence.PersistenceContext;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
