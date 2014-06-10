@@ -1,5 +1,6 @@
 package org.finance.app.core.application.applicationservices;
 
+import org.finance.app.adapters.webservices.json.FormJSON;
 import org.finance.app.core.domain.CustomerService;
 import org.finance.app.ports.crudes.LoanReaderService;
 import org.finance.app.sharedcore.objects.Form;
@@ -28,7 +29,8 @@ public class CustomerServiceFacade implements LoanServiceApi {
         this.loanReaderService = loanReaderService;
     }
 
-    public void applyForLoan(Form form){
+    public void applyForLoan(FormJSON jsonForm){
+
         customerService.applyForaLoan(form);
     }
 

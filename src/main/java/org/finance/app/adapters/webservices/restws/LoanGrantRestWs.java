@@ -1,6 +1,7 @@
 package org.finance.app.adapters.webservices.restws;
 
 
+import org.finance.app.adapters.webservices.json.FormJSON;
 import org.finance.app.ports.services.LoanServiceApi;
 import org.finance.app.sharedcore.objects.Form;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,6 +15,7 @@ import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.math.BigDecimal;
 
 @Controller
 @Produces({MediaType.APPLICATION_JSON + "; charset=UTF-8"})
@@ -24,14 +26,14 @@ public class LoanGrantRestWs {
 
     @POST
     @RequestMapping("/applyForLoan")
-    public Response applyForLoan(
-            @Context HttpServletRequest request,
-            Form form) {
+    public Response applyForLoan( @Context HttpServletRequest request, FormJSON form) {
 
         String ipAddress = request.getHeader("X-FORWARDED-FOR");
         if (ipAddress == null) {
             ipAddress = request.getRemoteAddr();
         }
+
+        loanServiceApi.applyForLoan(form);
 
     return Response
             .status(200)

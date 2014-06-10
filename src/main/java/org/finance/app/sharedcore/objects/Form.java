@@ -8,7 +8,6 @@ import java.io.Serializable;
 import java.net.InetAddress;
 
 @ValueObject
-@XmlRootElement
 public class Form implements Serializable {
 
     private Client personalData;

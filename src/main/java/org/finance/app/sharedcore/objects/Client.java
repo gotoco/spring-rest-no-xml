@@ -10,7 +10,6 @@ import java.util.List;
 
 @ValueObject
 @Entity
-@XmlRootElement
 public class Client {
 
     @Id

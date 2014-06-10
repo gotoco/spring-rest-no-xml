@@ -11,7 +11,6 @@ import java.util.Date;
 
 @ValueObject
 @Entity
-@XmlRootElement
 public class Loan {
 
     @Transient

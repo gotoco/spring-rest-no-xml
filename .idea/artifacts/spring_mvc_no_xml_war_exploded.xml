@@ -44,11 +44,8 @@
           <element id="library" level="project" name="Maven: org.jboss:jandex:1.1.0.Final" />
           <element id="library" level="project" name="Maven: org.hsqldb:hsqldb:2.2.9" />
           <element id="library" level="project" name="Maven: javax.ws.rs:jsr311-api:1.1.1" />
-          <element id="library" level="project" name="Maven: com.sun.faces:jsf-api:2.1.7" />
-          <element id="library" level="project" name="Maven: com.sun.faces:jsf-impl:2.1.7" />
-          <element id="library" level="project" name="Maven: com.sun.facelets:jsf-facelets:1.1.14" />
-          <element id="library" level="project" name="Maven: org.glassfish.web:el-impl:2.2" />
-          <element id="library" level="project" name="Maven: javax.el:el-api:2.2" />
+          <element id="library" level="project" name="Maven: com.sun.jersey:jersey-client:1.12" />
+          <element id="library" level="project" name="Maven: com.sun.jersey:jersey-core:1.12" />
         </element>
       </element>
     </root>
