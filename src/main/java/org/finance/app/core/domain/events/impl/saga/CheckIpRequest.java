@@ -6,9 +6,6 @@ import org.joda.time.DateTime;
 
 import java.io.Serializable;
 
-/**
- * Created by maciek on 08.06.14.
- */
 @Event
 public class CheckIpRequest implements Serializable {
 

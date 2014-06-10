@@ -23,7 +23,7 @@ import javax.persistence.TemporalType;
 import java.lang.reflect.Method;
 
 @DomainService
-@Component("RequestMultipleValidator")
+@Component("requestMultipleValidator")
 public class RequestMultipleValidator {
 
     private static final Integer permittedNumberOfSubmissionsFromSingleNumber = 3;
@@ -45,7 +45,7 @@ public class RequestMultipleValidator {
     public void registerEventHandler() {
         try {
             Method method = RequestMultipleValidator.class.getMethod("validateIpAddress", new Class[]{CheckIpRequest.class});
-            SpringEventHandler eventHandler = new SpringEventHandler(CheckIpRequest.class, "RequestMultipleValidator", method, applicationContext);
+            SpringEventHandler eventHandler = new SpringEventHandler(CheckIpRequest.class, "requestMultipleValidator", method, applicationContext);
             eventPublisher.registerEventHandler(eventHandler);
         } catch(NoSuchMethodException ex) {
             ex.printStackTrace();

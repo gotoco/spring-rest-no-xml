@@ -8,9 +8,6 @@ import org.joda.time.DateTime;
 import java.io.Serializable;
 import java.util.Date;
 
-/**
- * Created by maciek on 08.06.14.
- */
 public class DoExtendLoanRequest implements Serializable {
 
     private final Long sagaDataId;

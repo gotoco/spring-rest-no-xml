@@ -3,6 +3,7 @@ package org.finance.app.core.domain.businessprocess.loangrant;
 import junit.framework.Assert;
 import org.finance.app.annotations.IntegrationTest;
 import org.finance.app.core.domain.common.AggregateId;
+import org.finance.app.core.domain.saga.SagaManager;
 import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.Form;
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
@@ -40,7 +41,7 @@ public class GrantingOfLoanSagaManagerTest {
 
     private DomainEventPublisher eventPublisher;
 
-    private GrantingOfLoanSagaManager sagaManager;
+    private SagaManager<GrantingOfLoanSaga, GrantingOfLoanData> sagaManager;
 
     @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) {
@@ -53,7 +54,7 @@ public class GrantingOfLoanSagaManagerTest {
     }
 
     @Autowired
-    public void setSagaManager(GrantingOfLoanSagaManager sagaManager) {
+    public void setSagaManager(SagaManager sagaManager) {
         this.sagaManager = sagaManager;
     }
 

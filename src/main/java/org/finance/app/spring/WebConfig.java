@@ -54,7 +54,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         configurer.enable();
     }
 
-    @Bean(name="GrantingOfLoanSaga")
+    @Bean(name="grantingOfLoanSaga")
     @Scope("prototype")
     public GrantingOfLoanSaga grantingOfLoanSaga(GrantingOfLoanData sagaData) {
         return new GrantingOfLoanSaga(sagaData);

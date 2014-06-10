@@ -7,7 +7,7 @@ import org.springframework.stereotype.Component;
 /**
  * Created by maciek on 09.06.14.
  */
-@Component("IpCheckedResponseHandler")
+@Component("ipCheckedResponseHandler")
 public class IpCheckedResponseHandler extends AbstractEventReceiver {
 
     private Boolean validIpAddress;

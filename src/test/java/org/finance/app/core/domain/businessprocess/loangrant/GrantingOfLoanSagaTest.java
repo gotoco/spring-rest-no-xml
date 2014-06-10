@@ -21,13 +21,9 @@ import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
-import org.springframework.context.annotation.Bean;
-import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
@@ -50,12 +46,12 @@ public class GrantingOfLoanSagaTest {
 
     private DomainEventPublisher eventPublisher;
 
-    private SagaManager<GrantingOfLoanSaga, GrantingOfLoanData>  sagaManager;
+    private SagaManager<GrantingOfLoanSaga, GrantingOfLoanData> sagaManager;
 
-    private final static String checkIpRequestHandlerName = "CheckIpRequestHandler";
-    private final static String doRiskAnalysisRequestHandlerName = "DoRiskAnalysisRequestHandler";
+    private final static String checkIpRequestHandlerName = "checkIpRequestHandler";
+    private final static String doRiskAnalysisRequestHandlerName = "doRiskAnalysisRequestHandler";
 
-    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    @PersistenceContext
     public void setEntityManager(EntityManager entityManager) {
         this.entityManager = entityManager;
     }
@@ -71,11 +67,12 @@ public class GrantingOfLoanSagaTest {
     }
 
     @Autowired
-    public void setSagaManager(SagaManager sagaManager) {
+    public void setSagaManager(SagaManager<GrantingOfLoanSaga, GrantingOfLoanData> sagaManager) {
         this.sagaManager = sagaManager;
     }
 
     @Test
+    @Transactional
     public void onCompleteEventsTriggered(){
 
         //Given

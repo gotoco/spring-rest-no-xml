@@ -2,13 +2,15 @@ package org.finance.app.core.domain.risk.analysis;
 
 import junit.framework.Assert;
 import org.finance.app.annotations.IntegrationTest;
-import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanSagaManager;
+import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanData;
+import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanSaga;
 import org.finance.app.core.domain.businessprocess.loangrant.mocks.IpCheckedResponseHandler;
 import org.finance.app.core.domain.common.*;
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
 import org.finance.app.core.domain.events.impl.saga.CheckIpRequest;
 import org.finance.app.core.domain.events.impl.saga.IpCheckedResponse;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
+import org.finance.app.core.domain.saga.SagaManager;
 import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.Form;
 import org.finance.app.sharedcore.objects.Money;
@@ -38,6 +40,8 @@ import java.net.UnknownHostException;
         classes = ConfigTest.class)
 public class RequestMultipleValidatorTest {
 
+    private static final String ipCheckedResponseHandlerName = "ipCheckedResponseHandler";
+
     @PersistenceContext
     EntityManager entityManager;
 
@@ -45,7 +49,7 @@ public class RequestMultipleValidatorTest {
 
     private DomainEventPublisher eventPublisher;
 
-    private GrantingOfLoanSagaManager sagaManager;
+    private SagaManager<GrantingOfLoanSaga, GrantingOfLoanData> sagaManager;
 
     @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) {
@@ -58,7 +62,7 @@ public class RequestMultipleValidatorTest {
     }
 
     @Autowired
-    public void setSagaManager(GrantingOfLoanSagaManager sagaManager) {
+    public void setSagaManager(SagaManager sagaManager) {
         this.sagaManager = sagaManager;
     }
 
@@ -105,7 +109,7 @@ public class RequestMultipleValidatorTest {
         try {
             eventPublisher.registerEventHandlerByAttributes (IpCheckedResponse.class,
                                                              IpCheckedResponseHandler.class,
-                                                             "IpCheckedResponseHandler",
+                                                             ipCheckedResponseHandlerName,
                                                              "handle",
                                                              new Class[]{Object.class},
                                                              applicationContext);
@@ -118,7 +122,7 @@ public class RequestMultipleValidatorTest {
         eventPublisher.publish(checkIpRequest);
 
         //Then
-        IpCheckedResponseHandler responseHandler = (IpCheckedResponseHandler)applicationContext.getBean("IpCheckedResponseHandler");
+        IpCheckedResponseHandler responseHandler = (IpCheckedResponseHandler)applicationContext.getBean(ipCheckedResponseHandlerName);
      //   Assert.assertFalse(responseHandler.isValidIpAddress());
     }
 

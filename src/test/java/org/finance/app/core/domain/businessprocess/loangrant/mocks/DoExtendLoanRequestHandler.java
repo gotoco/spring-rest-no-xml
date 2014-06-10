@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component;
 /**
  * Created by maciek on 08.06.14.
  */
-@Component("DoExtendLoanRequestHandler")
+@Component("doExtendLoanRequestHandler")
 public class DoExtendLoanRequestHandler extends AbstractEventReceiver {
 }

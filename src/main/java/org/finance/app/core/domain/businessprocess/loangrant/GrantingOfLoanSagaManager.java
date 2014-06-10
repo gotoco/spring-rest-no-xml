@@ -6,6 +6,7 @@ import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequ
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
 import org.finance.app.core.domain.events.impl.saga.IpCheckedResponse;
 import org.finance.app.core.domain.events.impl.saga.RiskAnalyzedResponse;
+import org.finance.app.core.domain.saga.SagaInstance;
 import org.finance.app.core.domain.saga.SagaManager;
 import org.finance.app.core.ddd.annotation.LoadSaga;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
@@ -119,10 +120,10 @@ public class GrantingOfLoanSagaManager implements
 
     private void registerSubmittedRequestHandler(){
         try {
-            Method method = GrantingOfLoanSagaManager.class.getMethod("handleRequestWasSubmitted", new Class[]{Object.class});
+            Method method = SagaManager.class.getMethod("handleRequestWasSubmitted", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler
-                    (RequestWasSubmitted.class, "GrantingOfLoanSagaManager", method, applicationContext);
+                    (RequestWasSubmitted.class, "grantingOfLoanSagaManager", method, applicationContext);
 
             eventPublisher.registerEventHandler(eventHandler);
 
@@ -133,10 +134,10 @@ public class GrantingOfLoanSagaManager implements
 
     private void registerExtendLoanRequestHandler(){
         try {
-            Method method = GrantingOfLoanSagaManager.class.getMethod("handleExtendTheLoanRequest", new Class[]{Object.class});
+            Method method = SagaManager.class.getMethod("handleExtendTheLoanRequest", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler
-                    (ExtendTheLoanRequest.class, "GrantingOfLoanSagaManager", method, applicationContext);
+                    (ExtendTheLoanRequest.class, "grantingOfLoanSagaManager", method, applicationContext);
 
             eventPublisher.registerEventHandler(eventHandler);
 
@@ -147,10 +148,10 @@ public class GrantingOfLoanSagaManager implements
 
     private void registerForCheckedIpEvent(){
         try {
-            Method method = GrantingOfLoanSagaManager.class.getMethod("handleCheckedIpEvent", new Class[]{Object.class});
+            Method method = SagaManager.class.getMethod("handleCheckedIpEvent", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler
-                    (IpCheckedResponse.class, "GrantingOfLoanSagaManager", method, applicationContext);
+                    (IpCheckedResponse.class, "grantingOfLoanSagaManager", method, applicationContext);
 
             eventPublisher.registerEventHandler(eventHandler);
 
@@ -161,10 +162,10 @@ public class GrantingOfLoanSagaManager implements
 
     private void registerForRiskAnalyzedEvent(){
         try {
-            Method method = GrantingOfLoanSagaManager.class.getMethod("handleRiskAnalyzedEvent", new Class[]{Object.class});
+            Method method = SagaManager.class.getMethod("handleRiskAnalyzedEvent", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler
-                    (RiskAnalyzedResponse.class, "GrantingOfLoanSagaManager", method, applicationContext);
+                    (RiskAnalyzedResponse.class, "grantingOfLoanSagaManager", method, applicationContext);
 
             eventPublisher.registerEventHandler(eventHandler);
 
@@ -184,7 +185,7 @@ public class GrantingOfLoanSagaManager implements
             sagaData = createAndFillNewSagaData(requestEvent.getRequestId(), requestEvent);
         }
 
-        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("GrantingOfLoanSaga", sagaData);
+        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("grantingOfLoanSaga", sagaData);
 
         saga.completeLoanRequest();
     }
@@ -199,7 +200,7 @@ public class GrantingOfLoanSagaManager implements
             sagaData = createAndFillNewSagaData(requestEvent.getAggregateId(), requestEvent);
         }
 
-        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("GrantingOfLoanSaga", sagaData);
+        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("grantingOfLoanSaga", sagaData);
 
         saga.completeExtendsLoan();
     }
@@ -209,7 +210,7 @@ public class GrantingOfLoanSagaManager implements
         IpCheckedResponse response = (IpCheckedResponse)event;
 
         GrantingOfLoanData sagaData = findByRequestId(response.getSagaDataId());
-        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("GrantingOfLoanSaga", sagaData);
+        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("grantingOfLoanSaga", sagaData);
 
         saga.completeCheckIp();
     }
@@ -219,7 +220,7 @@ public class GrantingOfLoanSagaManager implements
         RiskAnalyzedResponse response = (RiskAnalyzedResponse)event;
 
         GrantingOfLoanData sagaData = findByRequestId(response.getSagaDataId());
-        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("GrantingOfLoanSaga", sagaData);
+        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("grantingOfLoanSaga", sagaData);
 
         saga.completeRiskAnalysis();
     }

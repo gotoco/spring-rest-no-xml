@@ -6,6 +6,6 @@ import org.springframework.stereotype.Component;
 /**
  * Created by maciek on 08.06.14.
  */
-@Component("DoRiskAnalysisRequestHandler")
+@Component("doRiskAnalysisRequestHandler")
 public class DoRiskAnalysisRequestHandler extends AbstractEventReceiver {
 }

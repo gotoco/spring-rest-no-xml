@@ -5,9 +5,6 @@ import org.finance.app.core.ddd.annotation.Event;
 
 import java.io.Serializable;
 
-/**
- * Created by maciek on 08.06.14.
- */
 @Event
 public class RiskAnalyzedResponse implements Serializable {
 
