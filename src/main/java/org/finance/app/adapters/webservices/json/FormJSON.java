@@ -18,13 +18,15 @@ public class FormJSON {
 
     private BigDecimal applyingAmount;
 
-    private InetAddress applyingIpAddress;
+    private String applyingIpAddress;
 
     private Integer maturityInDays;
 
     private DateTime submissionDate;
 
     private Long clientId;
+
+    private String address;
 
     public FormJSON(String firstName, String lastName, BigDecimal applyingAmount) {
         this.firstName = firstName;
@@ -60,11 +62,11 @@ public class FormJSON {
         this.applyingAmount = applyingAmount;
     }
 
-    public InetAddress getApplyingIpAddress() {
+    public String getApplyingIpAddress() {
         return applyingIpAddress;
     }
 
-    public void setApplyingIpAddress(InetAddress applyingIpAddress) {
+    public void setApplyingIpAddress(String applyingIpAddress) {
         this.applyingIpAddress = applyingIpAddress;
     }
 
@@ -90,5 +92,13 @@ public class FormJSON {
 
     public void setClientId(Long clientId) {
         this.clientId = clientId;
+    }
+
+    public String getAddress() {
+        return address;
+    }
+
+    public void setAddress(String address) {
+        this.address = address;
     }
 }

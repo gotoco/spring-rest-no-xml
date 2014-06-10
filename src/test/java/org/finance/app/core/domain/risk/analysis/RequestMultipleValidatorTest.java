@@ -65,6 +65,20 @@ public class RequestMultipleValidatorTest {
 
     @Test
     @Transactional
+    public void validateIpWhenDbIsEmpty(){
+        //TODO: Pierwszy odczyt z bazy ma sie nie wypieprzac
+
+        //Given
+        //Prepare Event
+        //Publish Event
+        //When
+        //pick Event
+        //Then
+        //should allow This request via IP
+    }
+
+    @Test
+    @Transactional
     public void whenCheckIpEventTriggeredAllowAloneIp(){
         //Given
             //Prepare Event

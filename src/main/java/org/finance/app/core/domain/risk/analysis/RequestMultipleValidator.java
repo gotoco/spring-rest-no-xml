@@ -12,6 +12,7 @@ import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -61,7 +62,7 @@ public class RequestMultipleValidator {
         eventPublisher.publish(new IpCheckedResponse(eventId, isValid));
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     private synchronized Boolean validate(AggregateId eventId, String ipAddress, DateTime startDate){
         String queryBase = "FROM GrantingOfLoanData g WHERE g.dateOfApplication > :startDate AND g.ip = :ipAddress AND g.hasValidIp IS NOT NULL";
         Boolean result = null;

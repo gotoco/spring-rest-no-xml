@@ -28,7 +28,7 @@ public class GrantingOfLoanData {
     private Boolean hasRisk;
 
     @Column(name="date_of_application")
-    @Temporal(javax.persistence.TemporalType.DATE)
+    @Temporal(TemporalType.TIMESTAMP)
     private Date dateOfApplication;
 
     @AttributeOverrides({

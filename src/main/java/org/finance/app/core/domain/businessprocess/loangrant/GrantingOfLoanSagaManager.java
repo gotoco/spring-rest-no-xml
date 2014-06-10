@@ -12,6 +12,10 @@ import org.finance.app.core.ddd.system.DomainEventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Propagation;
+import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
 import javax.persistence.EntityManager;
@@ -19,16 +23,27 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.lang.reflect.Method;
 
-@Component("GrantingOfLoanSagaManager")
+@Component("grantingOfLoanSagaManager")
 public class GrantingOfLoanSagaManager implements
         SagaManager<GrantingOfLoanSaga, GrantingOfLoanData> {
 
-    private final DomainEventPublisher eventPublisher;
+
+    private DomainEventPublisher eventPublisher;
 
     private ApplicationContext applicationContext;
 
-    @PersistenceContext
     private EntityManager entityManager;
+
+    @PersistenceContext
+    void setEntityManager(EntityManager entityManager)
+    {
+        this.entityManager = entityManager;
+    }
+
+    @Autowired
+    public void setEventPublisher(DomainEventPublisher eventPublisher){
+        this.eventPublisher = eventPublisher;
+    }
 
     @Autowired
     public void setApplicationContext(ApplicationContext applicationContext){
@@ -58,6 +73,7 @@ public class GrantingOfLoanSagaManager implements
         return sagaData;
     }
 
+    @Transactional
     public GrantingOfLoanData createNewSagaData(AggregateId id ) {
         GrantingOfLoanData sagaData = new GrantingOfLoanData();
         sagaData.setRequestId(id);
@@ -80,7 +96,6 @@ public class GrantingOfLoanSagaManager implements
         entityManager.persist(sagaData);
         return sagaData;
     }
-
 
     private GrantingOfLoanData findByRequestId(AggregateId requestId) {
         Query query = entityManager.createQuery("from GrantingOfLoanData where requestId=:requestId")
@@ -158,6 +173,7 @@ public class GrantingOfLoanSagaManager implements
         }
     }
 
+    @Transactional
     public void handleRequestWasSubmitted(Object event) {
 
         RequestWasSubmitted requestEvent = (RequestWasSubmitted)event;
@@ -173,6 +189,7 @@ public class GrantingOfLoanSagaManager implements
         saga.completeLoanRequest();
     }
 
+    @Transactional
     public void handleExtendTheLoanRequest(Object event){
         ExtendTheLoanRequest requestEvent = (ExtendTheLoanRequest)event;
         GrantingOfLoanData sagaData = null;
@@ -187,6 +204,7 @@ public class GrantingOfLoanSagaManager implements
         saga.completeExtendsLoan();
     }
 
+    @Transactional
     public void handleCheckedIpEvent(Object event){
         IpCheckedResponse response = (IpCheckedResponse)event;
 
@@ -196,6 +214,7 @@ public class GrantingOfLoanSagaManager implements
         saga.completeCheckIp();
     }
 
+    @Transactional
     public void handleRiskAnalyzedEvent(Object event){
         RiskAnalyzedResponse response = (RiskAnalyzedResponse)event;
 
@@ -205,10 +224,4 @@ public class GrantingOfLoanSagaManager implements
         saga.completeRiskAnalysis();
     }
 
-
-    @Autowired
-    public GrantingOfLoanSagaManager(DomainEventPublisher eventPublisher, ApplicationContext applicationContext) {
-        this.eventPublisher = eventPublisher;
-        this.applicationContext = applicationContext;
-    }
 }

@@ -4,6 +4,7 @@ package org.finance.app.adapters.webservices.restws;
 import org.finance.app.adapters.webservices.json.FormJSON;
 import org.finance.app.ports.services.LoanServiceApi;
 import org.finance.app.sharedcore.objects.Form;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
@@ -33,11 +34,12 @@ public class LoanGrantRestWs {
             ipAddress = request.getRemoteAddr();
         }
 
-        loanServiceApi.applyForLoan(form);
+        DateTime applicationDate = new DateTime();
 
-    return Response
-            .status(200)
-            .entity("getUsers is called, from " + ipAddress).build();
+        loanServiceApi.applyForLoan(form, applicationDate);
+
+        return Response.status(200)
+                       .entity("Application for a loan was approved from ip address : "  + ipAddress).build();
     }
 
     @POST
@@ -45,7 +47,8 @@ public class LoanGrantRestWs {
     public Response postForExtendLoan(
             @Context HttpServletRequest request,
             @FormParam("loanId") Long loanId,
-            @FormParam("userId") Long userId) {
+            @FormParam("userId") Long userId,
+            @FormParam("newExpirationDate") DateTime newExpirationDate) {
 
         String ipAddress = request.getHeader("X-FORWARDED-FOR");
         if (ipAddress == null) {
@@ -57,7 +60,7 @@ public class LoanGrantRestWs {
 
         return Response
                 .status(200)
-                .entity("getUsers is called, from " + ipAddress).build();
+                .entity("Request for extend the loan was called from :" + ipAddress).build();
     }
 
     @Autowired

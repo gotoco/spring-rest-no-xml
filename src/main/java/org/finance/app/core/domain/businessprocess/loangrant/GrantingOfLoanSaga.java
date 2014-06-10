@@ -12,9 +12,6 @@ import org.finance.app.core.ddd.system.DomainEventPublisher;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- * Created by maciek on 05.06.14.
- */
 public class GrantingOfLoanSaga  extends SagaInstance<GrantingOfLoanData> {
 
     private final GrantingOfLoanData sagaData;

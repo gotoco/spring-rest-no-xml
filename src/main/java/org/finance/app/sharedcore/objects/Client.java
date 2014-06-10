@@ -76,6 +76,16 @@ public class Client {
         this.address = address;
     }
 
+    public Client( String firstName, String lastName, String address) {
+        this.firstName = firstName;
+        this.lastName = lastName;
+        this.address = address;
+    }
+
+    public Client(){
+
+    }
+
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;

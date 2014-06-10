@@ -35,7 +35,7 @@ import javax.servlet.http.HttpServletRequest;
 
 @Controller
 public class HelloWorldController {
-
+/*
     @PersistenceContext
     EntityManager entityManager;
 
@@ -119,6 +119,5 @@ public class HelloWorldController {
         entityManager.persist(sagaData);
 
         return "helloworld";
-    }
-
+    }*/
 }

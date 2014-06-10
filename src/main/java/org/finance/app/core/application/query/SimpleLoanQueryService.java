@@ -1,6 +1,7 @@
 package org.finance.app.core.application.query;
 
 
+import org.finance.app.core.ddd.annotation.ApplicationService;
 import org.finance.app.ports.crudes.LoanReaderService;
 import org.finance.app.sharedcore.objects.Loan;
 import org.springframework.stereotype.Component;
@@ -10,6 +11,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
 @Component("SimpleLoanQueryService")
+@ApplicationService
 public class SimpleLoanQueryService implements LoanReaderService {
 
     @PersistenceContext

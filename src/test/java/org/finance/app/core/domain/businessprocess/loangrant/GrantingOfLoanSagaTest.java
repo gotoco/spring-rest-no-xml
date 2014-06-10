@@ -5,6 +5,7 @@ import org.finance.app.annotations.IntegrationTest;
 import org.finance.app.core.domain.businessprocess.loangrant.mocks.CheckIpRequestHandler;
 import org.finance.app.core.domain.businessprocess.loangrant.mocks.DoRiskAnalysisRequestHandler;
 import org.finance.app.core.domain.common.AggregateId;
+import org.finance.app.core.domain.saga.SagaManager;
 import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.Form;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
@@ -20,20 +21,22 @@ import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.context.annotation.Bean;
+import org.springframework.stereotype.Component;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
+import org.springframework.test.context.transaction.TransactionConfiguration;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.PersistenceContextType;
 import java.lang.reflect.Method;
 
 import static org.junit.Assert.fail;
 
-/**
- * Created by maciek on 08.06.14.
- */
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
@@ -41,17 +44,21 @@ import static org.junit.Assert.fail;
         classes = ConfigTest.class)
 public class GrantingOfLoanSagaTest {
 
-    @PersistenceContext
-    EntityManager entityManager;
+    private EntityManager entityManager;
 
     private ApplicationContext applicationContext;
 
     private DomainEventPublisher eventPublisher;
 
-    private GrantingOfLoanSagaManager sagaManager;
+    private SagaManager<GrantingOfLoanSaga, GrantingOfLoanData>  sagaManager;
 
     private final static String checkIpRequestHandlerName = "CheckIpRequestHandler";
     private final static String doRiskAnalysisRequestHandlerName = "DoRiskAnalysisRequestHandler";
+
+    @PersistenceContext(type = PersistenceContextType.EXTENDED)
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
 
     @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) {
@@ -64,12 +71,11 @@ public class GrantingOfLoanSagaTest {
     }
 
     @Autowired
-    public void setSagaManager(GrantingOfLoanSagaManager sagaManager) {
+    public void setSagaManager(SagaManager sagaManager) {
         this.sagaManager = sagaManager;
     }
 
     @Test
-    @Transactional
     public void onCompleteEventsTriggered(){
 
         //Given
@@ -107,4 +113,5 @@ public class GrantingOfLoanSagaTest {
         Assert.assertTrue(checkIpEventNotifier.isRightEventOccurred());
         Assert.assertTrue(riskAnalysisRequestNotifier.isRightEventOccurred());
     }
+
 }
