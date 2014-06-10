@@ -28,6 +28,8 @@ import java.lang.reflect.Method;
 public class GrantingOfLoanSagaManager implements
         SagaManager<GrantingOfLoanSaga, GrantingOfLoanData> {
 
+    private static final String grantingOfLoanSagaName = "grantingOfLoanSaga";
+    private static final String grantingOfLoanSagaManagerName = "grantingOfLoanSagaManager";
 
     private DomainEventPublisher eventPublisher;
 
@@ -62,12 +64,14 @@ public class GrantingOfLoanSagaManager implements
     }
 
     @Override
+    @Transactional
     public void removeSaga(GrantingOfLoanSaga saga) {
         GrantingOfLoanData sagaData = entityManager.merge(saga.getData());
         entityManager.remove(sagaData);
     }
 
     @Override
+    @Transactional
     public GrantingOfLoanData createNewSagaData() {
         GrantingOfLoanData sagaData = new GrantingOfLoanData();
         entityManager.persist(sagaData);
@@ -81,7 +85,7 @@ public class GrantingOfLoanSagaManager implements
         entityManager.persist(sagaData);
         return sagaData;
     }
-
+    @Transactional
     public GrantingOfLoanData createAndFillNewSagaData(AggregateId id, RequestWasSubmitted requestEvent) {
         GrantingOfLoanData sagaData = new GrantingOfLoanData();
         sagaData.setRequestId(id);
@@ -89,7 +93,7 @@ public class GrantingOfLoanSagaManager implements
         entityManager.persist(sagaData);
         return sagaData;
     }
-
+    @Transactional
     public GrantingOfLoanData createAndFillNewSagaData(AggregateId id, ExtendTheLoanRequest requestEvent) {
         GrantingOfLoanData sagaData = new GrantingOfLoanData();
         sagaData.setRequestId(id);
@@ -123,7 +127,7 @@ public class GrantingOfLoanSagaManager implements
             Method method = SagaManager.class.getMethod("handleRequestWasSubmitted", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler
-                    (RequestWasSubmitted.class, "grantingOfLoanSagaManager", method, applicationContext);
+                    (RequestWasSubmitted.class, grantingOfLoanSagaManagerName, method, applicationContext);
 
             eventPublisher.registerEventHandler(eventHandler);
 
@@ -137,7 +141,7 @@ public class GrantingOfLoanSagaManager implements
             Method method = SagaManager.class.getMethod("handleExtendTheLoanRequest", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler
-                    (ExtendTheLoanRequest.class, "grantingOfLoanSagaManager", method, applicationContext);
+                    (ExtendTheLoanRequest.class, grantingOfLoanSagaManagerName, method, applicationContext);
 
             eventPublisher.registerEventHandler(eventHandler);
 
@@ -151,7 +155,7 @@ public class GrantingOfLoanSagaManager implements
             Method method = SagaManager.class.getMethod("handleCheckedIpEvent", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler
-                    (IpCheckedResponse.class, "grantingOfLoanSagaManager", method, applicationContext);
+                    (IpCheckedResponse.class, grantingOfLoanSagaManagerName, method, applicationContext);
 
             eventPublisher.registerEventHandler(eventHandler);
 
@@ -165,7 +169,7 @@ public class GrantingOfLoanSagaManager implements
             Method method = SagaManager.class.getMethod("handleRiskAnalyzedEvent", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler
-                    (RiskAnalyzedResponse.class, "grantingOfLoanSagaManager", method, applicationContext);
+                    (RiskAnalyzedResponse.class, grantingOfLoanSagaManagerName, method, applicationContext);
 
             eventPublisher.registerEventHandler(eventHandler);
 
@@ -178,14 +182,14 @@ public class GrantingOfLoanSagaManager implements
     public void handleRequestWasSubmitted(Object event) {
 
         RequestWasSubmitted requestEvent = (RequestWasSubmitted)event;
-        GrantingOfLoanData sagaData = null;
+        GrantingOfLoanData sagaData;
         try{
             sagaData = loadSaga(requestEvent);
         }catch(Exception ex){
             sagaData = createAndFillNewSagaData(requestEvent.getRequestId(), requestEvent);
         }
 
-        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("grantingOfLoanSaga", sagaData);
+        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean(grantingOfLoanSagaName, sagaData);
 
         saga.completeLoanRequest();
     }
@@ -193,14 +197,14 @@ public class GrantingOfLoanSagaManager implements
     @Transactional
     public void handleExtendTheLoanRequest(Object event){
         ExtendTheLoanRequest requestEvent = (ExtendTheLoanRequest)event;
-        GrantingOfLoanData sagaData = null;
+        GrantingOfLoanData sagaData;
         try{
             sagaData = loadSaga(requestEvent);
         }catch(Exception ex){
             sagaData = createAndFillNewSagaData(requestEvent.getAggregateId(), requestEvent);
         }
 
-        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("grantingOfLoanSaga", sagaData);
+        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean(grantingOfLoanSagaName, sagaData);
 
         saga.completeExtendsLoan();
     }
@@ -210,7 +214,7 @@ public class GrantingOfLoanSagaManager implements
         IpCheckedResponse response = (IpCheckedResponse)event;
 
         GrantingOfLoanData sagaData = findByRequestId(response.getSagaDataId());
-        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("grantingOfLoanSaga", sagaData);
+        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean(grantingOfLoanSagaName, sagaData);
 
         saga.completeCheckIp();
     }
@@ -220,7 +224,7 @@ public class GrantingOfLoanSagaManager implements
         RiskAnalyzedResponse response = (RiskAnalyzedResponse)event;
 
         GrantingOfLoanData sagaData = findByRequestId(response.getSagaDataId());
-        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean("grantingOfLoanSaga", sagaData);
+        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean(grantingOfLoanSagaName, sagaData);
 
         saga.completeRiskAnalysis();
     }

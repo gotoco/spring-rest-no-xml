@@ -39,13 +39,13 @@ public class MoneyTest {
     @Test
     public void subtractTest(){
         //Given
-        Money money = new Money(new BigDecimal(10));
+        Money money = new Money(new BigDecimal(10), Currency.getInstance("EUR"));
 
         //When
         Money subtractResult = money.subtract(new Money(10));
 
         //Then
-        Assert.assertTrue(subtractResult.equals(new Money(0)));
+        Assert.assertTrue(subtractResult.equals(new Money(0, Currency.getInstance("EUR"))) );
     }
 
     @Test
@@ -65,5 +65,29 @@ public class MoneyTest {
         Assert.assertNull(subtractResult);
         }
 
+    }
+
+    @Test
+    public void shouldBeDifferent(){
+        //Given
+        Money money = new Money(new BigDecimal(3000));
+
+        //When
+        Money differentMoney = new Money(2000);
+
+        //Then
+        Assert.assertFalse(money.equals(differentMoney));
+    }
+
+    @Test
+    public void shouldBeEqual(){
+        //Given
+        Money money = new Money(new BigDecimal(3000));
+
+        //When
+        Money equalMoney = new Money(3000);
+
+        //Then
+        Assert.assertTrue(money.equals(equalMoney));
     }
 }

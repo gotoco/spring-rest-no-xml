@@ -136,7 +136,12 @@ public class Money implements Serializable {
         if (getClass() != obj.getClass())
             return false;
         Money other = (Money) obj;
-        return compatibleCurrency(other);
+        if (! compatibleCurrency(other))
+            return false;
+
+        int thisHashCode = this.hashCode();
+        int objHashCode = obj.hashCode();
+        return thisHashCode == objHashCode;
     }
 
 }
