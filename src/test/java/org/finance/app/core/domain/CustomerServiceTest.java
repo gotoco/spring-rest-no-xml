@@ -176,13 +176,14 @@ public class CustomerServiceTest {
     }
 
     private Loan prepareBasicLoan(){
+        Client client = new PersonalDataBuilder().withCorrectlyFilledData().build();
         Loan basedOnLoan = null;
         Money value = new Money(new BigDecimal(3000));
         Money interest = new Money(new BigDecimal(0));
         DateTime expirationDate  = new DateTime().plusDays(30);
         DateTime effectiveDate  = new DateTime();
 
-        return new Loan(basedOnLoan, value, interest, expirationDate, effectiveDate);
+        return new Loan(basedOnLoan, value, interest, expirationDate, effectiveDate, client);
     }
 
 }

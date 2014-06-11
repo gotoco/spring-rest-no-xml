@@ -54,12 +54,13 @@ public class Loan {
     @JoinColumn(name="client_id")
     private Client loanHolder;
 
-    public Loan(Loan basedOnLoan, Money value, Money interest, DateTime expirationDate, DateTime effectiveDate) {
+    public Loan(Loan basedOnLoan, Money value, Money interest, DateTime expirationDate, DateTime effectiveDate, Client loanHolder) {
         this.basedOnLoan = basedOnLoan;
         this.value = value;
         this.interest = interest;
         this.expirationDate = expirationDate.toDate();
         this.effectiveDate = effectiveDate.toDate();
+        this.loanHolder = loanHolder;
     }
 
     public Loan extendLoan(DateTime changeDate){

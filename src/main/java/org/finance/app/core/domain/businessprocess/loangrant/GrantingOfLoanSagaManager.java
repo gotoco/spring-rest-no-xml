@@ -6,16 +6,12 @@ import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequ
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
 import org.finance.app.core.domain.events.impl.saga.IpCheckedResponse;
 import org.finance.app.core.domain.events.impl.saga.RiskAnalyzedResponse;
-import org.finance.app.core.domain.saga.SagaInstance;
 import org.finance.app.core.domain.saga.SagaManager;
 import org.finance.app.core.ddd.annotation.LoadSaga;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.stereotype.Repository;
-import org.springframework.stereotype.Service;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -85,6 +81,7 @@ public class GrantingOfLoanSagaManager implements
         entityManager.persist(sagaData);
         return sagaData;
     }
+
     @Transactional
     public GrantingOfLoanData createAndFillNewSagaData(AggregateId id, RequestWasSubmitted requestEvent) {
         GrantingOfLoanData sagaData = new GrantingOfLoanData();
@@ -93,6 +90,7 @@ public class GrantingOfLoanSagaManager implements
         entityManager.persist(sagaData);
         return sagaData;
     }
+
     @Transactional
     public GrantingOfLoanData createAndFillNewSagaData(AggregateId id, ExtendTheLoanRequest requestEvent) {
         GrantingOfLoanData sagaData = new GrantingOfLoanData();

@@ -1,6 +1,9 @@
 package org.finance.app.core.domain.businessprocess.loangrant;
 
 import org.finance.app.core.domain.common.AggregateId;
+import org.finance.app.core.domain.events.impl.loanservice.LoanGrantedConfirmation;
+import org.finance.app.core.domain.events.impl.loanservice.LoanRejected;
+import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.Money;
 import org.finance.app.sharedcore.objects.Loan;
 import org.finance.app.core.domain.events.impl.saga.CheckIpRequest;
@@ -80,9 +83,27 @@ public class GrantingOfLoanSaga  extends SagaInstance<GrantingOfLoanData> {
 
     private void completeIfPossible() {
         if (sagaData.hasRisk() != null && sagaData.hasValidIp() != null ) {
-            //TODO move process forward, ex call service or publish event
-
             markAsCompleted();
+
+            if (sagaData.hasRisk() ==false && sagaData.hasValidIp() == true ){
+
+                LoanGrantedConfirmation eventLoanGranted ;
+                Client client = sagaData.getClient();
+                Money value = sagaData.getTotalCost();
+                DateTime expirationDate = new DateTime(sagaData.getNewExpirationDate());
+                DateTime effectiveDate  = new DateTime(sagaData.getDateOfApplication());
+
+                eventLoanGranted = new LoanGrantedConfirmation(sagaData.getRequestId(), client, value, expirationDate, effectiveDate);
+
+
+                eventPublisher.publish(eventLoanGranted);
+
+            } else {
+
+                LoanRejected eventLoanRejected = new LoanRejected(sagaData.getRequestId());
+
+                eventPublisher.publish(eventLoanRejected);
+            }
         }
     }
 }
