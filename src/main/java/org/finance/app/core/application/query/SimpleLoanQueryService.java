@@ -3,6 +3,7 @@ package org.finance.app.core.application.query;
 
 import org.finance.app.core.ddd.annotation.ApplicationService;
 import org.finance.app.ports.crudes.LoanReaderService;
+import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.Loan;
 import org.springframework.stereotype.Component;
 
@@ -18,12 +19,12 @@ public class SimpleLoanQueryService implements LoanReaderService {
     EntityManager entityManager;
 
     @Override
-    public Loan getLoanByLoanIdAndUserId(Long loanId, Long userId) {
+    public Loan getLoanByLoanIdAndUserId(Long loanId, Client client) {
         String queryBody = "from Loan l where l.loanId = :requestId AND l.loanHolder = :userId";
 
         Query selectSpecifiedLoan = entityManager.createQuery(queryBody)
                 .setParameter("requestId", loanId)
-                .setParameter("userId", userId);
+                .setParameter("userId", client);
 
         Loan entityToUpdate = (Loan) selectSpecifiedLoan.getSingleResult();
 

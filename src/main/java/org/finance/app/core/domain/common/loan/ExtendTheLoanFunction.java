@@ -5,6 +5,6 @@ import org.joda.time.DateTime;
 
 public interface ExtendTheLoanFunction {
 
-    public Loan extend(DateTime changeDate);
+    public Loan extend(Loan oldLoan, DateTime newExpirationDate);
 
 }

@@ -1,7 +1,9 @@
 package org.finance.app.core.domain;
 
 import org.finance.app.core.ddd.system.DomainEventPublisher;
+import org.finance.app.core.domain.common.loan.ExtendTheLoanFunction;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
+import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.impl.loanservice.LoanGrantedConfirmation;
 import org.finance.app.core.domain.events.impl.saga.IpCheckedResponse;
 import org.finance.app.core.domain.saga.SagaManager;
@@ -11,6 +13,7 @@ import org.finance.app.core.domain.common.Decision;
 import org.finance.app.core.domain.risk.Risk;
 import org.finance.app.core.ddd.annotation.AggregateRoot;
 import org.finance.app.sharedcore.objects.Money;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -33,6 +36,8 @@ public class LoanService {
 
     private EntityManager entityManager;
 
+    private ExtendTheLoanFunction extendTheLoanFunction;
+
     @PersistenceContext
     void setEntityManager(EntityManager entityManager)
     {
@@ -42,6 +47,12 @@ public class LoanService {
     @PostConstruct
     public void registerForHandlingEvents(){
         registerHandleGrantLoan();
+        registerHandleExtendLoan();
+    }
+
+    @Autowired
+    public void setExtendTheLoanFunction(ExtendTheLoanFunction function){
+        this.extendTheLoanFunction = function;
     }
 
     @Autowired
@@ -67,6 +78,21 @@ public class LoanService {
             ex.printStackTrace();
         }
     }
+
+    private void registerHandleExtendLoan() {
+        try {
+            Method method = LoanService.class.getMethod("handleExtendALoanRequest", new Class[]{Object.class});
+
+            SpringEventHandler eventHandler = new SpringEventHandler
+                    (ExtendTheLoanRequest.class, loanServiceName, method, applicationContext);
+
+            eventPublisher.registerEventHandler(eventHandler);
+
+        } catch(NoSuchMethodException ex) {
+            ex.printStackTrace();
+        }
+    }
+
     @Transactional
     public void decideToGrantLoan(Object event){
 
@@ -82,8 +108,14 @@ public class LoanService {
         entityManager.persist(grantedLoan);
     }
 
-    public void extendALoan(Loan loan){
+    public void handleExtendALoanRequest(Object event){
+        ExtendTheLoanRequest request = (ExtendTheLoanRequest)event;
 
+        Loan oldLoan = request.getBaseLoan();
+
+        Loan newLoan = extendTheLoanFunction.extend(oldLoan, request.getNewExpirationDate() );
+
+        entityManager.persist(newLoan);
     }
 
     private Money calculateInterestForNewBusiness(){

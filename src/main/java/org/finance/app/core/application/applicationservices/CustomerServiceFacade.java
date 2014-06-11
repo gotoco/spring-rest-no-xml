@@ -65,7 +65,8 @@ public class CustomerServiceFacade implements LoanServiceApi {
 
     public void extendTheLoan(Long loanId, Long clientId){
 
-        Loan loan = loanReaderService.getLoanByLoanIdAndUserId(loanId, clientId);
+        Client customer = clientFinder.findClientById(clientId);
+        Loan loan = loanReaderService.getLoanByLoanIdAndUserId(loanId, customer);
 
         customerService.extendTheLoan(loan);
     }

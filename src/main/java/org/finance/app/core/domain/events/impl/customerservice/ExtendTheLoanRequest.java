@@ -3,6 +3,7 @@ package org.finance.app.core.domain.events.impl.customerservice;
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.sharedcore.objects.Loan;
 import org.finance.app.core.ddd.annotation.Event;
+import org.joda.time.DateTime;
 
 import java.io.Serializable;
 
@@ -11,6 +12,7 @@ public class ExtendTheLoanRequest implements Serializable {
 
     private Loan baseLoan;
     private final AggregateId aggregateId;
+    private DateTime newExpirationDate;
 
     public ExtendTheLoanRequest(Loan loan, AggregateId aggregateId) {
         this.baseLoan = loan;
@@ -32,5 +34,13 @@ public class ExtendTheLoanRequest implements Serializable {
 
     public Loan getBaseLoan() {
         return baseLoan;
+    }
+
+    public void getNewExpirationDate(DateTime expirationDate){
+        this.newExpirationDate = expirationDate;
+    }
+
+    public DateTime getNewExpirationDate() {
+        return newExpirationDate;
     }
 }

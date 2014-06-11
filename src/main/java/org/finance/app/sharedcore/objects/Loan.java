@@ -63,6 +63,10 @@ public class Loan {
         this.loanHolder = loanHolder;
     }
 
+    public Loan(){
+
+    }
+
     public Loan extendLoan(DateTime changeDate){
 
         if (changeDate.isBefore(new DateTime(effectiveDate) ) || changeDate.isAfter(new DateTime(expirationDate) ) ) {

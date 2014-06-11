@@ -9,6 +9,7 @@ import org.finance.app.core.domain.events.impl.saga.RiskAnalyzedResponse;
 import org.finance.app.core.domain.saga.SagaManager;
 import org.finance.app.core.ddd.annotation.LoadSaga;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
+import org.finance.app.sharedcore.objects.Loan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -96,6 +97,8 @@ public class GrantingOfLoanSagaManager implements
         GrantingOfLoanData sagaData = new GrantingOfLoanData();
         sagaData.setRequestId(id);
         sagaData.fillDataFromRequest(requestEvent);
+        entityManager.merge(sagaData.getLoan());
+        sagaData.setLoan( entityManager.merge(sagaData.getLoan()) );
         entityManager.persist(sagaData);
         return sagaData;
     }

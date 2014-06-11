@@ -36,7 +36,7 @@
 
 <form action="/postForExtendLoan" method="POST">
     ClientId:
-    <input type="text" name="clientId" />
+    <input type="text" name="userId" />
     <br>
     LoanId:
     <input type="text" name="loanId" />
