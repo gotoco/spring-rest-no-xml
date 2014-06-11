@@ -33,7 +33,7 @@ public class LoanGrantRestWs {
         if (ipAddress == null) {
             ipAddress = request.getRemoteAddr();
         }
-
+        form.setApplyingIpAddress(ipAddress);
         DateTime applicationDate = new DateTime();
 
         loanServiceApi.applyForLoan(form, applicationDate);

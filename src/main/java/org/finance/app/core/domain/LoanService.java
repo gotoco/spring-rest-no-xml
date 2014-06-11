@@ -72,8 +72,6 @@ public class LoanService {
 
         LoanGrantedConfirmation loanConfirmation = (LoanGrantedConfirmation)event;
 
-
-
         Loan grantedLoan = new Loan(null,
                 loanConfirmation.getValue(),
                 calculateInterestForNewBusiness(),

@@ -85,7 +85,7 @@ public class GrantingOfLoanSaga  extends SagaInstance<GrantingOfLoanData> {
         if (sagaData.hasRisk() != null && sagaData.hasValidIp() != null ) {
             markAsCompleted();
 
-            if (sagaData.hasRisk() ==false && sagaData.hasValidIp() == true ){
+            if (sagaData.hasRisk() == false && sagaData.hasValidIp() == true ){
 
                 LoanGrantedConfirmation eventLoanGranted ;
                 Client client = sagaData.getClient();
