@@ -50,7 +50,7 @@ public class LoanGrantRestWs {
             @Context HttpServletRequest request,
             @FormParam("loanId") Long loanId,
             @FormParam("userId") Long userId,
-            @FormParam("date") Calendar date) {
+            @FormParam("date") String date) {
 
         String ipAddress = request.getHeader("X-FORWARDED-FOR");
         if (ipAddress == null) {
@@ -58,7 +58,6 @@ public class LoanGrantRestWs {
         }
 
         DateTime newExpirationDate = new DateTime(date);
-
         loanServiceApi.extendTheLoan(loanId, userId, newExpirationDate);
 
         return Response
