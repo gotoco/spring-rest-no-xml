@@ -52,7 +52,7 @@ public class WebConfig extends WebMvcConfigurerAdapter {
 
     @Bean(name="loanApplicationSaga")
     @Scope("prototype")
-    public LoanApplicationSaga grantingOfLoanSaga(LoanApplicationData sagaData) {
+    public LoanApplicationSaga loanApplicationSaga(LoanApplicationData sagaData) {
         return new LoanApplicationSaga(sagaData);
     }
 }

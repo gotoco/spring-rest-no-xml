@@ -1,6 +1,6 @@
 package org.finance.app.core.domain.risk;
 
-import org.finance.app.core.domain.events.impl.saga.DoRiskAnalysisRequest;
+import org.finance.app.core.domain.events.saga.DoRiskAnalysisRequest;
 
 /**
  * Created by maciek on 08.06.14.

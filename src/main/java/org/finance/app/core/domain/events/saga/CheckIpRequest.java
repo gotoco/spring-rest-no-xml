@@ -1,4 +1,4 @@
-package org.finance.app.core.domain.events.impl.saga;
+package org.finance.app.core.domain.events.saga;
 
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.ddd.annotation.Event;

@@ -1,7 +1,7 @@
 package org.finance.app.core.application.closure.risk;
 
 import org.finance.app.sharedcore.objects.Money;
-import org.finance.app.core.domain.events.impl.saga.DoRiskAnalysisRequest;
+import org.finance.app.core.domain.events.saga.DoRiskAnalysisRequest;
 import org.finance.app.core.domain.risk.Risk;
 import org.finance.app.core.domain.risk.RiskAnalysisFunction;
 import org.finance.app.core.ddd.annotation.Function;

@@ -1,7 +1,7 @@
 package org.finance.app.core.domain.businessprocess.loangrant.mocks;
 
 import org.finance.app.core.domain.events.engine.mocks.AbstractEventReceiver;
-import org.finance.app.core.domain.events.impl.saga.IpCheckedResponse;
+import org.finance.app.core.domain.events.saga.IpCheckedResponse;
 import org.springframework.stereotype.Component;
 
 /**

@@ -2,8 +2,8 @@ package org.finance.app.core.domain;
 
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.sharedcore.objects.Form;
-import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
-import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
+import org.finance.app.core.domain.events.customerservice.ExtendTheLoanRequest;
+import org.finance.app.core.domain.events.customerservice.RequestWasSubmitted;
 import org.finance.app.sharedcore.objects.Loan;
 import org.finance.app.core.ddd.annotation.DomainService;
 import org.finance.app.core.ddd.system.DomainEventPublisher;

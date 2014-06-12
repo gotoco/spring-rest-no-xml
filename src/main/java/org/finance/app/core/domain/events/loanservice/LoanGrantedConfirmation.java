@@ -1,4 +1,4 @@
-package org.finance.app.core.domain.events.impl.loanservice;
+package org.finance.app.core.domain.events.loanservice;
 
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.ddd.annotation.Event;

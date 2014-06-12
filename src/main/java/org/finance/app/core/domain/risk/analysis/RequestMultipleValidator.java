@@ -4,8 +4,8 @@ package org.finance.app.core.domain.risk.analysis;
 import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationData;
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
-import org.finance.app.core.domain.events.impl.saga.CheckIpRequest;
-import org.finance.app.core.domain.events.impl.saga.IpCheckedResponse;
+import org.finance.app.core.domain.events.saga.CheckIpRequest;
+import org.finance.app.core.domain.events.saga.IpCheckedResponse;
 import org.finance.app.core.ddd.annotation.DomainService;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
 import org.joda.time.DateTime;
@@ -73,15 +73,13 @@ public class RequestMultipleValidator {
         Integer similarEventsCount = eventsFromThisDayWithSameIp.getResultList().size();
         result = similarEventsCount < permittedNumberOfSubmissionsFromSingleNumber;
 
-        Query selectEntityToUpdate = entityManager.createQuery("from GrantingOfLoanData where requestId=:requestId")
+        Query selectEntityToUpdate = entityManager.createQuery("from LoanApplicationData where requestId=:requestId")
                                                   .setParameter("requestId", eventId);
         LoanApplicationData entityToUpdate = (LoanApplicationData) selectEntityToUpdate.getSingleResult();
 
-        if(result){
-            entityToUpdate.setValidIp(true);
-        } else {
-            entityToUpdate.setValidIp(false);
-        }
+        IpCheckedResponse response = new IpCheckedResponse(eventId, result);
+
+        entityToUpdate.whenIpValidIsChecked(response);
 
         entityManager.persist(entityToUpdate);
 

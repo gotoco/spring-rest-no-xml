@@ -6,9 +6,9 @@ import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationData
 import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationSaga;
 import org.finance.app.core.domain.businessprocess.loangrant.mocks.IpCheckedResponseHandler;
 import org.finance.app.core.domain.common.*;
-import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
-import org.finance.app.core.domain.events.impl.saga.CheckIpRequest;
-import org.finance.app.core.domain.events.impl.saga.IpCheckedResponse;
+import org.finance.app.core.domain.events.customerservice.RequestWasSubmitted;
+import org.finance.app.core.domain.events.saga.CheckIpRequest;
+import org.finance.app.core.domain.events.saga.IpCheckedResponse;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
 import org.finance.app.core.domain.saga.SagaManager;
 import org.finance.app.sharedcore.objects.Client;

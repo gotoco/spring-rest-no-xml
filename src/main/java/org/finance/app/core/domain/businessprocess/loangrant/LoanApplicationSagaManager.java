@@ -2,10 +2,10 @@ package org.finance.app.core.domain.businessprocess.loangrant;
 
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
-import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
-import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
-import org.finance.app.core.domain.events.impl.saga.IpCheckedResponse;
-import org.finance.app.core.domain.events.impl.saga.RiskAnalyzedResponse;
+import org.finance.app.core.domain.events.customerservice.ExtendTheLoanRequest;
+import org.finance.app.core.domain.events.customerservice.RequestWasSubmitted;
+import org.finance.app.core.domain.events.saga.IpCheckedResponse;
+import org.finance.app.core.domain.events.saga.RiskAnalyzedResponse;
 import org.finance.app.core.domain.saga.SagaManager;
 import org.finance.app.core.ddd.annotation.LoadSaga;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
@@ -24,7 +24,7 @@ import java.lang.reflect.Method;
 public class LoanApplicationSagaManager implements
         SagaManager<LoanApplicationSaga, LoanApplicationData> {
 
-    private static final String grantingOfLoanSagaName = "loanApplicationSaga";
+    private static final String loanApplicationSagaName = "loanApplicationSaga";
     private static final String grantingOfLoanSagaManagerName = "loanApplicationSagaManager";
 
     private DomainEventPublisher eventPublisher;
@@ -76,28 +76,25 @@ public class LoanApplicationSagaManager implements
 
     @Transactional
     public LoanApplicationData createNewSagaData(AggregateId id ) {
-        LoanApplicationData sagaData = new LoanApplicationData();
-        sagaData.setRequestId(id);
+        LoanApplicationData sagaData = new LoanApplicationData(id);
         entityManager.persist(sagaData);
         return sagaData;
     }
 
     @Transactional
     public LoanApplicationData createAndFillNewSagaData(AggregateId id, RequestWasSubmitted requestEvent) {
-        LoanApplicationData sagaData = new LoanApplicationData();
-        sagaData.setRequestId(id);
-        sagaData.fillDataFromForm(requestEvent.getRequest());
+        LoanApplicationData sagaData = new LoanApplicationData(id);
+        sagaData.whenFormIsApplied(requestEvent.getRequest());
         entityManager.persist(sagaData);
         return sagaData;
     }
 
     @Transactional
     public LoanApplicationData createAndFillNewSagaData(AggregateId id, ExtendTheLoanRequest requestEvent) {
-        LoanApplicationData sagaData = new LoanApplicationData();
-        sagaData.setRequestId(id);
+        LoanApplicationData sagaData = new LoanApplicationData(id);
         sagaData.fillDataFromRequest(requestEvent);
         entityManager.merge(sagaData.getLoan());
-        sagaData.setLoan( entityManager.merge(sagaData.getLoan()) );
+        sagaData.updateLoanInformation(entityManager.merge(sagaData.getLoan()));
         entityManager.persist(sagaData);
         return sagaData;
     }
@@ -189,7 +186,7 @@ public class LoanApplicationSagaManager implements
             sagaData = createAndFillNewSagaData(requestEvent.getRequestId(), requestEvent);
         }
 
-        LoanApplicationSaga saga = (LoanApplicationSaga)applicationContext.getBean(grantingOfLoanSagaName, sagaData);
+        LoanApplicationSaga saga = (LoanApplicationSaga)applicationContext.getBean(loanApplicationSagaName, sagaData);
 
         saga.completeLoanRequest();
     }
@@ -204,7 +201,7 @@ public class LoanApplicationSagaManager implements
             sagaData = createAndFillNewSagaData(requestEvent.getAggregateId(), requestEvent);
         }
 
-        LoanApplicationSaga saga = (LoanApplicationSaga)applicationContext.getBean(grantingOfLoanSagaName, sagaData);
+        LoanApplicationSaga saga = (LoanApplicationSaga)applicationContext.getBean(loanApplicationSagaName, sagaData);
 
         saga.completeExtendsLoan();
     }
@@ -214,7 +211,7 @@ public class LoanApplicationSagaManager implements
         IpCheckedResponse response = (IpCheckedResponse)event;
 
         LoanApplicationData sagaData = findByRequestId(response.getSagaDataId());
-        LoanApplicationSaga saga = (LoanApplicationSaga)applicationContext.getBean(grantingOfLoanSagaName, sagaData);
+        LoanApplicationSaga saga = (LoanApplicationSaga)applicationContext.getBean(loanApplicationSagaName, sagaData);
 
         saga.completeCheckIp();
     }
@@ -224,7 +221,7 @@ public class LoanApplicationSagaManager implements
         RiskAnalyzedResponse response = (RiskAnalyzedResponse)event;
 
         LoanApplicationData sagaData = findByRequestId(response.getSagaDataId());
-        LoanApplicationSaga saga = (LoanApplicationSaga)applicationContext.getBean(grantingOfLoanSagaName, sagaData);
+        LoanApplicationSaga saga = (LoanApplicationSaga)applicationContext.getBean(loanApplicationSagaName, sagaData);
 
         saga.completeRiskAnalysis();
     }

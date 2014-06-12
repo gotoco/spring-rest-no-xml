@@ -6,7 +6,7 @@ import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.saga.SagaManager;
 import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.Form;
-import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
+import org.finance.app.core.domain.events.customerservice.RequestWasSubmitted;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
 import org.finance.test.ConfigTest;
 import org.finance.test.builders.FormBuilder;

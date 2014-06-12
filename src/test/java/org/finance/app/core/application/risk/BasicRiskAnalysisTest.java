@@ -6,7 +6,7 @@ import org.finance.app.annotations.UnitTest;
 import org.finance.app.core.application.closure.risk.BasicRiskAnalysis;
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.sharedcore.objects.Money;
-import org.finance.app.core.domain.events.impl.saga.DoRiskAnalysisRequest;
+import org.finance.app.core.domain.events.saga.DoRiskAnalysisRequest;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;

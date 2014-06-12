@@ -3,8 +3,8 @@ package org.finance.app.core.domain.risk.analysis;
 import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationData;
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
-import org.finance.app.core.domain.events.impl.saga.DoRiskAnalysisRequest;
-import org.finance.app.core.domain.events.impl.saga.RiskAnalyzedResponse;
+import org.finance.app.core.domain.events.saga.DoRiskAnalysisRequest;
+import org.finance.app.core.domain.events.saga.RiskAnalyzedResponse;
 import org.finance.app.core.domain.risk.Risk;
 import org.finance.app.core.domain.risk.RiskAnalysisFunction;
 import org.finance.app.core.ddd.annotation.DomainService;
@@ -60,15 +60,14 @@ public class RiskAnalysisService {
                 .setParameter("requestId", eventId);
         LoanApplicationData entityToUpdate = (LoanApplicationData) selectEntityToUpdate.getSingleResult();
 
-        if(risk.isRiskExistence()){
-            entityToUpdate.setRisk(true);
-        } else {
-            entityToUpdate.setRisk(false);
-        }
 
-        entityManager.persist(entityToUpdate);
 
         RiskAnalyzedResponse response = new RiskAnalyzedResponse(eventId, risk);
+
+
+        entityToUpdate.whenRiskWasAnalyzed(response) ;
+
+        entityManager.persist(entityToUpdate);
 
         eventPublisher.publish(response);
     }

@@ -3,8 +3,8 @@ package org.finance.app.core.domain.saga;
 
 import org.finance.app.core.ddd.annotation.LoadSaga;
 import org.finance.app.core.domain.common.AggregateId;
-import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
-import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
+import org.finance.app.core.domain.events.customerservice.ExtendTheLoanRequest;
+import org.finance.app.core.domain.events.customerservice.RequestWasSubmitted;
 
 public interface SagaManager<T extends SagaInstance<D>, D> {
 

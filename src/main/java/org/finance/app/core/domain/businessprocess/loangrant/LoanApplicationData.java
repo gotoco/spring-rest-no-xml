@@ -1,11 +1,13 @@
 package org.finance.app.core.domain.businessprocess.loangrant;
 
 import org.finance.app.core.domain.common.AggregateId;
+import org.finance.app.core.domain.events.saga.IpCheckedResponse;
+import org.finance.app.core.domain.events.saga.RiskAnalyzedResponse;
 import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.Form;
 import org.finance.app.sharedcore.objects.Money;
 import org.finance.app.sharedcore.objects.Loan;
-import org.finance.app.core.domain.events.impl.customerservice.ExtendTheLoanRequest;
+import org.finance.app.core.domain.events.customerservice.ExtendTheLoanRequest;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
@@ -63,28 +65,8 @@ public class LoanApplicationData {
         return totalCost;
     }
 
-    public void setTotalCost(Money totalCost) {
-        this.totalCost = totalCost;
-    }
-
     public AggregateId getRequestId() {
         return requestId;
-    }
-
-    public void setRequestId(AggregateId requestId) {
-        this.requestId = requestId;
-    }
-
-    public void setIp(String ip) {
-        this.ip = ip;
-    }
-
-    public void setDateOfApplication(DateTime dateOfApplication) {
-        this.dateOfApplication = dateOfApplication.toDate();
-    }
-
-    public void setLoanId(Long loanId) {
-        this.loanId = loanId;
     }
 
     public void setNewExpirationDate(DateTime newDate){
@@ -93,10 +75,6 @@ public class LoanApplicationData {
 
     public Long getFixedId(){
         return this.id;
-    }
-
-    public void setLoan(Loan loan){
-        this.loan = loan;
     }
 
     public Loan getLoan() {
@@ -119,45 +97,50 @@ public class LoanApplicationData {
         return hasValidIp;
     }
 
-    public void setValidIp(Boolean hasValidIp) {
-        this.hasValidIp = hasValidIp;
-    }
-
     public Boolean hasRisk() {
         return hasRisk;
-    }
-
-    public void setRisk(Boolean hasRisk) {
-        this.hasRisk = hasRisk;
     }
 
     public Client getClient() {
         return client;
     }
 
-    public void setClient(Client client) {
-        this.client = client;
-    }
-
-    public void fillDataFromForm(Form form){
-        this.setIp(form.getApplyingIpAddress().getHostAddress());
-        this.setDateOfApplication(form.getSubmissionDate());
-        this.setLoan(null);
-        this.setLoanId(null);
-        this.setValidIp(null);
-        this.setRisk(null);
-        this.setTotalCost(form.getApplyingAmount());
-        this.setNewExpirationDate(form.getSubmissionDate().plusDays(form.getMaturityInDays()));
-        this.setClient(form.getPersonalData());
+    public void whenFormIsApplied(Form form){
+        this.ip = form.getApplyingIpAddress().getHostAddress();
+        this.dateOfApplication = form.getSubmissionDate().toDate();
+        this.loan = null;
+        this.loanId = null;
+        this.hasValidIp = null;
+        this.hasRisk = null;
+        this.totalCost = form.getApplyingAmount();
+        this.newExpirationDate = form.getSubmissionDate().plusDays(form.getMaturityInDays()).toDate();
+        this.client = form.getPersonalData();
     }
 
     public void fillDataFromRequest(ExtendTheLoanRequest requestEvent) {
-        this.setLoan(requestEvent.getBaseLoan());
-        this.setLoanId(requestEvent.getLoanId());
+        this.loan = requestEvent.getBaseLoan();
+        this.loanId = requestEvent.getLoanId();
     }
 
     public LoanApplicationData(){
 
+    }
+
+    public void whenIpValidIsChecked(IpCheckedResponse responseEvent){
+        this.hasValidIp = responseEvent.getValidIpAddress();
+    }
+
+    public LoanApplicationData(AggregateId aggregateId){
+        this.requestId = aggregateId;
+    }
+
+    public LoanApplicationData(AggregateId aggregateId, Loan loan){
+        this.requestId = aggregateId;
+        this.loan = loan;
+    }
+
+    public void updateLoanInformation(Loan loan){
+        this.loan = loan;
     }
 
     @Override
@@ -197,5 +180,13 @@ public class LoanApplicationData {
         result = 31 * result + (loanId != null ? loanId.hashCode() : 0);
         result = 31 * result + (client != null ? client.hashCode() : 0);
         return result;
+    }
+
+    public void whenRiskWasAnalyzed(RiskAnalyzedResponse response) {
+
+        if(response.isRiskExistence()){
+            entityToUpdate.setRisk(true);
+        } else {
+
     }
 }

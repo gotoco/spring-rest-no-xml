@@ -1,4 +1,4 @@
-package org.finance.app.core.domain.events.impl.customerservice;
+package org.finance.app.core.domain.events.customerservice;
 
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.sharedcore.objects.Form;
