@@ -8,7 +8,6 @@ import org.finance.app.core.ddd.annotation.Function;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 
-
 @Component
 public class BasicRiskAnalysis implements RiskAnalysisFunction {
 
@@ -29,6 +28,10 @@ public class BasicRiskAnalysis implements RiskAnalysisFunction {
 
         risk = isInRiskyHours && isLoanWithMaxValue;
 
-        return risk ? new Risk(risk, basicRejectCase) : new Risk(risk);
+        if(risk){
+            return new Risk(risk, basicRejectCase);
+        } else {
+            return new Risk(risk);
+        }
     }
 }

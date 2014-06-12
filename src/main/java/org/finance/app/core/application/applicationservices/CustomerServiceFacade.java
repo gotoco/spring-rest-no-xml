@@ -31,28 +31,12 @@ public class CustomerServiceFacade implements LoanServiceApi {
     private UserAuthorizationService userAuthorizationService;
 
     @Autowired
-    public void setClientFinder(ClientFinder clientFinder){
-        this.clientFinder = clientFinder;
-    }
-
-    @Autowired
-    public void setCustomerService(CustomerService customerService) {
+    public CustomerServiceFacade(CustomerService customerService, LoanReaderService loanReaderService, ApplicationFormTranslator applicationFormTranslator, ClientFinder clientFinder, UserAuthorizationService userAuthorizationService) {
         this.customerService = customerService;
-    }
-
-    @Autowired
-    public void setLoanReaderService(LoanReaderService loanReaderService) {
         this.loanReaderService = loanReaderService;
-    }
-
-    @Autowired
-    public void setUserAuthorizationService(UserAuthorizationService userAuthorizationService){
-        this.userAuthorizationService = userAuthorizationService;
-    }
-
-    @Autowired
-    public void setApplicationFormTranslator(ApplicationFormTranslator applicationFormTranslator){
         this.applicationFormTranslator = applicationFormTranslator;
+        this.clientFinder = clientFinder;
+        this.userAuthorizationService = userAuthorizationService;
     }
 
     public void applyForLoan(FormJSON jsonForm, DateTime submissionDate){

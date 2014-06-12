@@ -2,8 +2,8 @@ package org.finance.app.core.domain.risk.analysis;
 
 import junit.framework.Assert;
 import org.finance.app.annotations.IntegrationTest;
-import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanData;
-import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanSaga;
+import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationData;
+import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationSaga;
 import org.finance.app.core.domain.businessprocess.loangrant.mocks.IpCheckedResponseHandler;
 import org.finance.app.core.domain.common.*;
 import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitted;
@@ -49,7 +49,7 @@ public class RequestMultipleValidatorTest {
 
     private DomainEventPublisher eventPublisher;
 
-    private SagaManager<GrantingOfLoanSaga, GrantingOfLoanData> sagaManager;
+    private SagaManager<LoanApplicationSaga, LoanApplicationData> sagaManager;
 
     @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) {

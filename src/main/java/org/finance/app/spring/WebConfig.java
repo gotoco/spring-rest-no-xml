@@ -1,10 +1,7 @@
 package org.finance.app.spring;
 
-/**
- * Created by maciek on 01.06.14.
- */
-import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanData;
-import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanSaga;
+import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationData;
+import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationSaga;
 import org.springframework.context.annotation.*;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
@@ -53,9 +50,9 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         configurer.enable();
     }
 
-    @Bean(name="grantingOfLoanSaga")
+    @Bean(name="loanApplicationSaga")
     @Scope("prototype")
-    public GrantingOfLoanSaga grantingOfLoanSaga(GrantingOfLoanData sagaData) {
-        return new GrantingOfLoanSaga(sagaData);
+    public LoanApplicationSaga grantingOfLoanSaga(LoanApplicationData sagaData) {
+        return new LoanApplicationSaga(sagaData);
     }
 }

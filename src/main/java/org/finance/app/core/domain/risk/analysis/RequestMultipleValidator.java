@@ -1,7 +1,7 @@
 package org.finance.app.core.domain.risk.analysis;
 
 
-import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanData;
+import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationData;
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
 import org.finance.app.core.domain.events.impl.saga.CheckIpRequest;
@@ -64,8 +64,8 @@ public class RequestMultipleValidator {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     private synchronized Boolean validate(AggregateId eventId, String ipAddress, DateTime startDate){
-        String queryBase = "FROM GrantingOfLoanData g WHERE g.dateOfApplication > :startDate AND g.ip = :ipAddress AND g.hasValidIp IS NOT NULL";
-        Boolean result = null;
+        String queryBase = "FROM LoanApplicationData g WHERE g.dateOfApplication > :startDate AND g.ip = :ipAddress AND g.hasValidIp IS NOT NULL";
+        Boolean result;
 
         Query eventsFromThisDayWithSameIp = entityManager.createQuery(queryBase)
                     .setParameter("startDate", startDate.toDate(), TemporalType.DATE)
@@ -75,7 +75,7 @@ public class RequestMultipleValidator {
 
         Query selectEntityToUpdate = entityManager.createQuery("from GrantingOfLoanData where requestId=:requestId")
                                                   .setParameter("requestId", eventId);
-        GrantingOfLoanData entityToUpdate = (GrantingOfLoanData) selectEntityToUpdate.getSingleResult();
+        LoanApplicationData entityToUpdate = (LoanApplicationData) selectEntityToUpdate.getSingleResult();
 
         if(result){
             entityToUpdate.setValidIp(true);

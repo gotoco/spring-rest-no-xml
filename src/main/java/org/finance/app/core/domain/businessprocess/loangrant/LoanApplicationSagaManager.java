@@ -9,7 +9,6 @@ import org.finance.app.core.domain.events.impl.saga.RiskAnalyzedResponse;
 import org.finance.app.core.domain.saga.SagaManager;
 import org.finance.app.core.ddd.annotation.LoadSaga;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
-import org.finance.app.sharedcore.objects.Loan;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
@@ -21,12 +20,12 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.lang.reflect.Method;
 
-@Component("grantingOfLoanSagaManager")
-public class GrantingOfLoanSagaManager implements
-        SagaManager<GrantingOfLoanSaga, GrantingOfLoanData> {
+@Component("loanApplicationSagaManager")
+public class LoanApplicationSagaManager implements
+        SagaManager<LoanApplicationSaga, LoanApplicationData> {
 
-    private static final String grantingOfLoanSagaName = "grantingOfLoanSaga";
-    private static final String grantingOfLoanSagaManagerName = "grantingOfLoanSagaManager";
+    private static final String grantingOfLoanSagaName = "loanApplicationSaga";
+    private static final String grantingOfLoanSagaManagerName = "loanApplicationSagaManager";
 
     private DomainEventPublisher eventPublisher;
 
@@ -51,41 +50,41 @@ public class GrantingOfLoanSagaManager implements
     }
 
     @LoadSaga
-    public GrantingOfLoanData loadSaga(RequestWasSubmitted event) {
+    public LoanApplicationData loadSaga(RequestWasSubmitted event) {
         return findByRequestId(event.getRequestId());
     }
 
     @LoadSaga
-    public GrantingOfLoanData loadSaga(ExtendTheLoanRequest event) {
+    public LoanApplicationData loadSaga(ExtendTheLoanRequest event) {
         return findByLoanId(event.getLoanId());
     }
 
     @Override
     @Transactional
-    public void removeSaga(GrantingOfLoanSaga saga) {
-        GrantingOfLoanData sagaData = entityManager.merge(saga.getData());
+    public void removeSaga(LoanApplicationSaga saga) {
+        LoanApplicationData sagaData = entityManager.merge(saga.getData());
         entityManager.remove(sagaData);
     }
 
     @Override
     @Transactional
-    public GrantingOfLoanData createNewSagaData() {
-        GrantingOfLoanData sagaData = new GrantingOfLoanData();
+    public LoanApplicationData createNewSagaData() {
+        LoanApplicationData sagaData = new LoanApplicationData();
         entityManager.persist(sagaData);
         return sagaData;
     }
 
     @Transactional
-    public GrantingOfLoanData createNewSagaData(AggregateId id ) {
-        GrantingOfLoanData sagaData = new GrantingOfLoanData();
+    public LoanApplicationData createNewSagaData(AggregateId id ) {
+        LoanApplicationData sagaData = new LoanApplicationData();
         sagaData.setRequestId(id);
         entityManager.persist(sagaData);
         return sagaData;
     }
 
     @Transactional
-    public GrantingOfLoanData createAndFillNewSagaData(AggregateId id, RequestWasSubmitted requestEvent) {
-        GrantingOfLoanData sagaData = new GrantingOfLoanData();
+    public LoanApplicationData createAndFillNewSagaData(AggregateId id, RequestWasSubmitted requestEvent) {
+        LoanApplicationData sagaData = new LoanApplicationData();
         sagaData.setRequestId(id);
         sagaData.fillDataFromForm(requestEvent.getRequest());
         entityManager.persist(sagaData);
@@ -93,8 +92,8 @@ public class GrantingOfLoanSagaManager implements
     }
 
     @Transactional
-    public GrantingOfLoanData createAndFillNewSagaData(AggregateId id, ExtendTheLoanRequest requestEvent) {
-        GrantingOfLoanData sagaData = new GrantingOfLoanData();
+    public LoanApplicationData createAndFillNewSagaData(AggregateId id, ExtendTheLoanRequest requestEvent) {
+        LoanApplicationData sagaData = new LoanApplicationData();
         sagaData.setRequestId(id);
         sagaData.fillDataFromRequest(requestEvent);
         entityManager.merge(sagaData.getLoan());
@@ -103,16 +102,16 @@ public class GrantingOfLoanSagaManager implements
         return sagaData;
     }
 
-    private GrantingOfLoanData findByRequestId(AggregateId requestId) {
-        Query query = entityManager.createQuery("from GrantingOfLoanData where requestId=:requestId")
+    private LoanApplicationData findByRequestId(AggregateId requestId) {
+        Query query = entityManager.createQuery("from LoanApplicationData where requestId=:requestId")
                 .setParameter("requestId", requestId);
-        return (GrantingOfLoanData) query.getSingleResult();
+        return (LoanApplicationData) query.getSingleResult();
     }
 
-    private GrantingOfLoanData findByLoanId(Long loanId) {
-        Query query = entityManager.createQuery("from GrantingOfLoanData where loanId=:loanId")
+    private LoanApplicationData findByLoanId(Long loanId) {
+        Query query = entityManager.createQuery("from LoanApplicationData where loanId=:loanId")
                 .setParameter("loanId", loanId);
-        return (GrantingOfLoanData) query.getSingleResult();
+        return (LoanApplicationData) query.getSingleResult();
     }
 
     @PostConstruct
@@ -183,14 +182,14 @@ public class GrantingOfLoanSagaManager implements
     public void handleRequestWasSubmitted(Object event) {
 
         RequestWasSubmitted requestEvent = (RequestWasSubmitted)event;
-        GrantingOfLoanData sagaData;
+        LoanApplicationData sagaData;
         try{
             sagaData = loadSaga(requestEvent);
         }catch(Exception ex){
             sagaData = createAndFillNewSagaData(requestEvent.getRequestId(), requestEvent);
         }
 
-        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean(grantingOfLoanSagaName, sagaData);
+        LoanApplicationSaga saga = (LoanApplicationSaga)applicationContext.getBean(grantingOfLoanSagaName, sagaData);
 
         saga.completeLoanRequest();
     }
@@ -198,14 +197,14 @@ public class GrantingOfLoanSagaManager implements
     @Transactional
     public void handleExtendTheLoanRequest(Object event){
         ExtendTheLoanRequest requestEvent = (ExtendTheLoanRequest)event;
-        GrantingOfLoanData sagaData;
+        LoanApplicationData sagaData;
         try{
             sagaData = loadSaga(requestEvent);
         }catch(Exception ex){
             sagaData = createAndFillNewSagaData(requestEvent.getAggregateId(), requestEvent);
         }
 
-        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean(grantingOfLoanSagaName, sagaData);
+        LoanApplicationSaga saga = (LoanApplicationSaga)applicationContext.getBean(grantingOfLoanSagaName, sagaData);
 
         saga.completeExtendsLoan();
     }
@@ -214,8 +213,8 @@ public class GrantingOfLoanSagaManager implements
     public void handleCheckedIpEvent(Object event){
         IpCheckedResponse response = (IpCheckedResponse)event;
 
-        GrantingOfLoanData sagaData = findByRequestId(response.getSagaDataId());
-        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean(grantingOfLoanSagaName, sagaData);
+        LoanApplicationData sagaData = findByRequestId(response.getSagaDataId());
+        LoanApplicationSaga saga = (LoanApplicationSaga)applicationContext.getBean(grantingOfLoanSagaName, sagaData);
 
         saga.completeCheckIp();
     }
@@ -224,8 +223,8 @@ public class GrantingOfLoanSagaManager implements
     public void handleRiskAnalyzedEvent(Object event){
         RiskAnalyzedResponse response = (RiskAnalyzedResponse)event;
 
-        GrantingOfLoanData sagaData = findByRequestId(response.getSagaDataId());
-        GrantingOfLoanSaga saga = (GrantingOfLoanSaga)applicationContext.getBean(grantingOfLoanSagaName, sagaData);
+        LoanApplicationData sagaData = findByRequestId(response.getSagaDataId());
+        LoanApplicationSaga saga = (LoanApplicationSaga)applicationContext.getBean(grantingOfLoanSagaName, sagaData);
 
         saga.completeRiskAnalysis();
     }

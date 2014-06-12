@@ -28,7 +28,6 @@ import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
-import javax.persistence.PersistenceContextType;
 import java.lang.reflect.Method;
 
 import static org.junit.Assert.fail;
@@ -38,7 +37,7 @@ import static org.junit.Assert.fail;
 @WebAppConfiguration
 @ContextConfiguration(
         classes = ConfigTest.class)
-public class GrantingOfLoanSagaTest {
+public class LoanApplicationSagaTest {
 
     private EntityManager entityManager;
 
@@ -46,7 +45,7 @@ public class GrantingOfLoanSagaTest {
 
     private DomainEventPublisher eventPublisher;
 
-    private SagaManager<GrantingOfLoanSaga, GrantingOfLoanData> sagaManager;
+    private SagaManager<LoanApplicationSaga, LoanApplicationData> sagaManager;
 
     private final static String checkIpRequestHandlerName = "checkIpRequestHandler";
     private final static String doRiskAnalysisRequestHandlerName = "doRiskAnalysisRequestHandler";
@@ -67,7 +66,7 @@ public class GrantingOfLoanSagaTest {
     }
 
     @Autowired
-    public void setSagaManager(SagaManager<GrantingOfLoanSaga, GrantingOfLoanData> sagaManager) {
+    public void setSagaManager(SagaManager<LoanApplicationSaga, LoanApplicationData> sagaManager) {
         this.sagaManager = sagaManager;
     }
 

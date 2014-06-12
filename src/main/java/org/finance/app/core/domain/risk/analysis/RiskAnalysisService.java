@@ -1,6 +1,6 @@
 package org.finance.app.core.domain.risk.analysis;
 
-import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanData;
+import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationData;
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
 import org.finance.app.core.domain.events.impl.saga.DoRiskAnalysisRequest;
@@ -13,7 +13,6 @@ import org.finance.app.core.ddd.system.DomainEventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
-import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -57,9 +56,9 @@ public class RiskAnalysisService {
 
     @Transactional
     private void doAnalyze(AggregateId eventId, Risk risk){
-        Query selectEntityToUpdate = entityManager.createQuery("from GrantingOfLoanData where requestId=:requestId")
+        Query selectEntityToUpdate = entityManager.createQuery("from LoanApplicationData where requestId=:requestId")
                 .setParameter("requestId", eventId);
-        GrantingOfLoanData entityToUpdate = (GrantingOfLoanData) selectEntityToUpdate.getSingleResult();
+        LoanApplicationData entityToUpdate = (LoanApplicationData) selectEntityToUpdate.getSingleResult();
 
         if(risk.isRiskExistence()){
             entityToUpdate.setRisk(true);

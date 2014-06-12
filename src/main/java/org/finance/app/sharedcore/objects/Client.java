@@ -1,14 +1,13 @@
 package org.finance.app.sharedcore.objects;
 
-import org.finance.app.core.domain.businessprocess.loangrant.GrantingOfLoanData;
-import org.finance.app.core.ddd.annotation.ValueObject;
+import org.finance.app.core.ddd.annotation.AggregateRoot;
+import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationData;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
-@ValueObject
+@AggregateRoot
 @Entity
 public class Client {
 
@@ -27,7 +26,7 @@ public class Client {
     private String address;
 
     @OneToMany(cascade={CascadeType.ALL}, mappedBy="client")
-    private List<GrantingOfLoanData> loanScheduler = new ArrayList<GrantingOfLoanData>();
+    private List<LoanApplicationData> loanScheduler = new ArrayList<LoanApplicationData>();
 
     public String getLastName() {
         return lastName;
@@ -39,10 +38,6 @@ public class Client {
 
     public String getFirstName() {
         return firstName;
-    }
-
-    public void setFirstName(String firstName) {
-        this.firstName = firstName;
     }
 
     public String getAddress() {
@@ -61,11 +56,11 @@ public class Client {
         this.clientId = clientId;
     }
 
-    public List<GrantingOfLoanData> getLoanScheduler() {
+    public List<LoanApplicationData> getLoanScheduler() {
         return loanScheduler;
     }
 
-    public void setLoanScheduler(List<GrantingOfLoanData> loanScheduler) {
+    public void setLoanScheduler(List<LoanApplicationData> loanScheduler) {
         this.loanScheduler = loanScheduler;
     }
 

@@ -34,12 +34,14 @@ public class UserAuthorizationService {
                 .setParameter("clientLastName", clientLastName)
                 .setParameter("clientFirstName", clientFirstName)
                 .setParameter("clientAddress", clientAddress);
+
         Client existingClient;
+
         try {
             existingClient = (Client) selectSpecifiedLoan.getSingleResult();
             resultId = existingClient.getClientId();
 
-        } catch (NoResultException noResultException){
+        } catch (NoResultException noResultException) {
             Client client = new Client(clientFirstName, clientLastName, clientAddress);
             entityManager.persist(client);
             resultId = client.getClientId();

@@ -12,7 +12,7 @@ import javax.persistence.*;
 import java.util.Date;
 
 @Entity
-public class GrantingOfLoanData {
+public class LoanApplicationData {
 
     @Id
     @GeneratedValue
@@ -51,7 +51,7 @@ public class GrantingOfLoanData {
     @Column(name="loan_id")
     private Long loanId;
 
-    @ManyToOne //(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
+    @ManyToOne
     @JoinColumn(name="client_id", referencedColumnName = "client_id")
     private Client client;
 
@@ -156,16 +156,16 @@ public class GrantingOfLoanData {
         this.setLoanId(requestEvent.getLoanId());
     }
 
-    public GrantingOfLoanData(){
+    public LoanApplicationData(){
 
     }
 
     @Override
     public boolean equals(Object o) {
         if (this == o) return true;
-        if (!(o instanceof GrantingOfLoanData)) return false;
+        if (!(o instanceof LoanApplicationData)) return false;
 
-        GrantingOfLoanData that = (GrantingOfLoanData) o;
+        LoanApplicationData that = (LoanApplicationData) o;
 
         if (client != null ? !client.equals(that.client) : that.client != null) return false;
         if (!dateOfApplication.equals(that.dateOfApplication)) return false;

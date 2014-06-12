@@ -15,13 +15,13 @@ import org.finance.app.core.ddd.system.DomainEventPublisher;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
-public class GrantingOfLoanSaga  extends SagaInstance<GrantingOfLoanData> {
+public class LoanApplicationSaga extends SagaInstance<LoanApplicationData> {
 
-    private final GrantingOfLoanData sagaData;
+    private final LoanApplicationData sagaData;
 
     private DomainEventPublisher eventPublisher;
 
-    public GrantingOfLoanSaga(GrantingOfLoanData data){
+    public LoanApplicationSaga(LoanApplicationData data){
         this.sagaData = data;
     }
 
@@ -85,7 +85,7 @@ public class GrantingOfLoanSaga  extends SagaInstance<GrantingOfLoanData> {
         if (sagaData.hasRisk() != null && sagaData.hasValidIp() != null ) {
             markAsCompleted();
 
-            if (sagaData.hasRisk() == false && sagaData.hasValidIp() == true ){
+            if (!sagaData.hasRisk() && sagaData.hasValidIp()){
 
                 LoanGrantedConfirmation eventLoanGranted ;
                 Client client = sagaData.getClient();

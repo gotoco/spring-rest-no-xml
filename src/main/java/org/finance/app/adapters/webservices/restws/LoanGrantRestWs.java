@@ -3,22 +3,16 @@ package org.finance.app.adapters.webservices.restws;
 
 import org.finance.app.adapters.webservices.json.FormJSON;
 import org.finance.app.ports.services.LoanServiceApi;
-import org.finance.app.sharedcore.objects.Form;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.*;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.math.BigDecimal;
-import java.util.Calendar;
-import java.util.Date;
 
 @Controller
 @Produces({MediaType.APPLICATION_JSON + "; charset=UTF-8"})
@@ -66,7 +60,7 @@ public class LoanGrantRestWs {
     }
 
     @Autowired
-    public void setLoanServiceApi(LoanServiceApi loanServiceApi) {
+    public LoanGrantRestWs(LoanServiceApi loanServiceApi) {
         this.loanServiceApi = loanServiceApi;
     }
 }

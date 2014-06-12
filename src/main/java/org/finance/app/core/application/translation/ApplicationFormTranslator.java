@@ -14,7 +14,6 @@ import java.net.UnknownHostException;
 public class ApplicationFormTranslator {
 
     public Form createFormFromRequest(FormJSON jsonForm, Client client, DateTime submissionDate){
-
         return validateForm(jsonForm, client, submissionDate);
     }
 

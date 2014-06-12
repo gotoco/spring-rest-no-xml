@@ -2,9 +2,6 @@ package org.finance.app.core.domain.saga;
 
 import org.finance.app.core.ddd.annotation.Saga;
 
-/**
- * Created by maciek on 05.06.14.
- */
 @Saga
 public class SagaInstance<D> {
     protected D data;

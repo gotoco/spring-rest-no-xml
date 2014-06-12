@@ -32,7 +32,7 @@ import static org.junit.Assert.fail;
 @WebAppConfiguration
 @ContextConfiguration(
         classes = ConfigTest.class)
-public class GrantingOfLoanSagaManagerTest {
+public class LoanApplicationSagaManagerTest {
 
     @PersistenceContext
     EntityManager entityManager;
@@ -41,7 +41,7 @@ public class GrantingOfLoanSagaManagerTest {
 
     private DomainEventPublisher eventPublisher;
 
-    private SagaManager<GrantingOfLoanSaga, GrantingOfLoanData> sagaManager;
+    private SagaManager<LoanApplicationSaga, LoanApplicationData> sagaManager;
 
     @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) {
@@ -71,7 +71,7 @@ public class GrantingOfLoanSagaManagerTest {
 
         //When
         eventPublisher.publish(requestWasSubmitted);
-        GrantingOfLoanData saga = sagaManager.loadSaga(requestWasSubmitted);
+        LoanApplicationData saga = sagaManager.loadSaga(requestWasSubmitted);
 
         //Then
         Assert.assertNotNull(saga.getRequestId());
@@ -108,11 +108,11 @@ public class GrantingOfLoanSagaManagerTest {
 
         //When
         eventPublisher.publish(requestWasSubmitted);
-        GrantingOfLoanData grantingOfLoanData = sagaManager.loadSaga(requestWasSubmitted);
+        LoanApplicationData loanApplicationData = sagaManager.loadSaga(requestWasSubmitted);
 
         //Then
-        Assert.assertNotNull(grantingOfLoanData);
-        Assert.assertEquals(aggregateId, grantingOfLoanData.getRequestId());
+        Assert.assertNotNull(loanApplicationData);
+        Assert.assertEquals(aggregateId, loanApplicationData.getRequestId());
     }
 
     @Test
@@ -129,11 +129,11 @@ public class GrantingOfLoanSagaManagerTest {
 
         //When
         eventPublisher.publish(requestWasSubmitted);
-        GrantingOfLoanData grantingOfLoanData = sagaManager.loadSaga(requestWasSubmitted);
+        LoanApplicationData loanApplicationData = sagaManager.loadSaga(requestWasSubmitted);
 
         //Then
-        Assert.assertNotNull(grantingOfLoanData);
-        Assert.assertEquals(aggregateId, grantingOfLoanData.getRequestId());
+        Assert.assertNotNull(loanApplicationData);
+        Assert.assertEquals(aggregateId, loanApplicationData.getRequestId());
     }
 
     @Test
@@ -142,7 +142,7 @@ public class GrantingOfLoanSagaManagerTest {
         //Given
         AggregateId aggregateId = AggregateId.generate();
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(new FormBuilder().withEmptyForm().build(), aggregateId);
-        GrantingOfLoanData sagaData = null;
+        LoanApplicationData sagaData = null;
 
         //When
         try {
