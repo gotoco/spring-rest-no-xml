@@ -7,6 +7,7 @@ import org.finance.app.core.domain.events.impl.customerservice.RequestWasSubmitt
 import org.finance.app.sharedcore.objects.Loan;
 import org.finance.app.core.ddd.annotation.DomainService;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
+import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
@@ -37,8 +38,8 @@ public class CustomerService {
         return null;
     }
 
-    public void extendTheLoan(Loan loan){
-        eventPublisher.publish(new ExtendTheLoanRequest(loan, AggregateId.generate()) );
+    public void extendTheLoan(Loan loan, DateTime newExpirationDate){
+        eventPublisher.publish(new ExtendTheLoanRequest(loan, AggregateId.generate(), newExpirationDate) );
     }
 
     private Boolean validateForm(Form form) {

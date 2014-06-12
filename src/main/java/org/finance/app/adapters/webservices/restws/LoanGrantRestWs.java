@@ -17,6 +17,8 @@ import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
 import java.math.BigDecimal;
+import java.util.Calendar;
+import java.util.Date;
 
 @Controller
 @Produces({MediaType.APPLICATION_JSON + "; charset=UTF-8"})
@@ -48,15 +50,16 @@ public class LoanGrantRestWs {
             @Context HttpServletRequest request,
             @FormParam("loanId") Long loanId,
             @FormParam("userId") Long userId,
-            @FormParam("newExpirationDate") DateTime newExpirationDate) {
+            @FormParam("date") Calendar date) {
 
         String ipAddress = request.getHeader("X-FORWARDED-FOR");
         if (ipAddress == null) {
             ipAddress = request.getRemoteAddr();
         }
 
-        loanServiceApi.extendTheLoan(loanId, userId);
+        DateTime newExpirationDate = new DateTime(date);
 
+        loanServiceApi.extendTheLoan(loanId, userId, newExpirationDate);
 
         return Response
                 .status(200)

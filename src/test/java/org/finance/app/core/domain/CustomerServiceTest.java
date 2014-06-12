@@ -112,11 +112,11 @@ public class CustomerServiceTest {
 
         //given
         Loan basedLoan = prepareBasicLoan();
-        ExtendTheLoanRequest event = new ExtendTheLoanRequest(basedLoan, AggregateId.generate());
+        ExtendTheLoanRequest event = new ExtendTheLoanRequest(basedLoan, AggregateId.generate(), new DateTime().plusMonths(3));
         BaseEventReceiveNotifier extendedLoamRequestReceiveNotifier = registerAndGetSubmittedRequestNotifier(event);
 
         //when
-        requestForExtendLoan(basedLoan);
+        requestForExtendLoan(basedLoan, new DateTime().plusMonths(3));
 
         //then
         assertTrue(extendedLoamRequestReceiveNotifier.isRightEventOccurred());
@@ -171,8 +171,8 @@ public class CustomerServiceTest {
         customerService.applyForaLoan(submittedForm);
     }
 
-    private void requestForExtendLoan(Loan loan){
-        customerService.extendTheLoan(loan);
+    private void requestForExtendLoan(Loan loan, DateTime newExpirationDate){
+        customerService.extendTheLoan(loan, newExpirationDate);
     }
 
     private Loan prepareBasicLoan(){

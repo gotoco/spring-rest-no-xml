@@ -8,5 +8,5 @@ public interface LoanServiceApi {
 
     public void applyForLoan(FormJSON jsonForm, DateTime submissionDate);
 
-    public void extendTheLoan(Long loanId, Long clientId);
+    public void extendTheLoan(Long loanId, Long clientId, DateTime newExpirationDate);
 }

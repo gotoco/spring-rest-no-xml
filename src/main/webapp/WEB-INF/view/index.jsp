@@ -42,7 +42,7 @@
     <input type="text" name="loanId" />
     <br>
     New Expiration date
-    <input type="date" name="newExpirationDate">
+    <input type="date" name="date">
     <br>
     <input type="submit" value="submit" />
 </form>

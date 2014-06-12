@@ -63,12 +63,11 @@ public class CustomerServiceFacade implements LoanServiceApi {
         customerService.applyForaLoan(domainForm);
     }
 
-    public void extendTheLoan(Long loanId, Long clientId){
-
+    public void extendTheLoan(Long loanId, Long clientId, DateTime newExpirationDate){
         Client customer = clientFinder.findClientById(clientId);
         Loan loan = loanReaderService.getLoanByLoanIdAndUserId(loanId, customer);
 
-        customerService.extendTheLoan(loan);
+        customerService.extendTheLoan(loan, newExpirationDate);
     }
 
 }

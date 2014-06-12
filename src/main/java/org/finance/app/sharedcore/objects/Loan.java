@@ -75,7 +75,7 @@ public class Loan {
 
         this.expirationDate = changeDate.toDate();
 
-        return extendTheLoanFunction.extend(changeDate);
+        return extendTheLoanFunction.extend(this, changeDate);
     }
 
     @Autowired

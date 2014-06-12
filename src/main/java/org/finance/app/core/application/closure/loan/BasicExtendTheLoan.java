@@ -3,9 +3,17 @@ package org.finance.app.core.application.closure.loan;
 import org.finance.app.core.domain.common.loan.ExtendTheLoanFunction;
 import org.finance.app.sharedcore.objects.Loan;
 import org.finance.app.core.ddd.annotation.Function;
+import org.finance.app.sharedcore.objects.Money;
 import org.joda.time.DateTime;
+import org.springframework.stereotype.Component;
 
+import java.math.BigDecimal;
+
+@Component
 public class BasicExtendTheLoan implements ExtendTheLoanFunction{
+
+    private final static BigDecimal extendFactor = new BigDecimal(1.5);
+    private final static BigDecimal interestRate = new BigDecimal(0.2);
 
     @Function
     @Override
@@ -14,12 +22,24 @@ public class BasicExtendTheLoan implements ExtendTheLoanFunction{
         loan.setBasedOnLoan(oldLoan);
         loan.setExpirationDate(newExpirationDate.toDate());
         loan.setEffectiveDate(new DateTime().toDate());
-/*        loan.setInterest();
-        loan.setValue();
-        loan.setLoanHolder();*/
-
-
+        loan.setInterest(calculateInterests(oldLoan));
+        loan.setValue(oldLoan.getValue());
+        loan.setLoanHolder(oldLoan.getLoanHolder());
 
         return loan;
+    }
+
+
+    private Money calculateInterests(Loan loan){
+        Money calculatedInterests;
+        Money actualInterests = loan.getInterest();
+
+        if(actualInterests == null || actualInterests.equals(new Money(0))){
+            calculatedInterests = loan.getValue().multiplyBy(interestRate);
+        }
+        else {
+            calculatedInterests = actualInterests.multiplyBy(extendFactor);
+        }
+        return calculatedInterests;
     }
 }

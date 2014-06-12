@@ -34,15 +34,10 @@ public class LoanService {
 
     private DomainEventPublisher eventPublisher;
 
-    private EntityManager entityManager;
-
     private ExtendTheLoanFunction extendTheLoanFunction;
 
     @PersistenceContext
-    void setEntityManager(EntityManager entityManager)
-    {
-        this.entityManager = entityManager;
-    }
+    private EntityManager entityManager;
 
     @PostConstruct
     public void registerForHandlingEvents(){
@@ -51,18 +46,12 @@ public class LoanService {
     }
 
     @Autowired
-    public void setExtendTheLoanFunction(ExtendTheLoanFunction function){
-        this.extendTheLoanFunction = function;
-    }
-
-    @Autowired
-    public void setApplicationContext(ApplicationContext applicationContext){
+    public LoanService(ApplicationContext applicationContext,
+                       DomainEventPublisher eventPublisher,
+                       ExtendTheLoanFunction extendTheLoanFunction) {
         this.applicationContext = applicationContext;
-    }
-
-    @Autowired
-    public void setEventPublisher(DomainEventPublisher eventPublisher){
         this.eventPublisher = eventPublisher;
+        this.extendTheLoanFunction = extendTheLoanFunction;
     }
 
     private void registerHandleGrantLoan() {
@@ -108,12 +97,11 @@ public class LoanService {
         entityManager.persist(grantedLoan);
     }
 
+    @Transactional
     public void handleExtendALoanRequest(Object event){
         ExtendTheLoanRequest request = (ExtendTheLoanRequest)event;
-
         Loan oldLoan = request.getBaseLoan();
-
-        Loan newLoan = extendTheLoanFunction.extend(oldLoan, request.getNewExpirationDate() );
+        Loan newLoan = extendTheLoanFunction.extend(oldLoan, request.getNewExpirationDate());
 
         entityManager.persist(newLoan);
     }

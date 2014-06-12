@@ -92,10 +92,7 @@ public class GrantingOfLoanSaga  extends SagaInstance<GrantingOfLoanData> {
                 Money value = sagaData.getTotalCost();
                 DateTime expirationDate = new DateTime(sagaData.getNewExpirationDate());
                 DateTime effectiveDate  = new DateTime(sagaData.getDateOfApplication());
-
                 eventLoanGranted = new LoanGrantedConfirmation(sagaData.getRequestId(), client, value, expirationDate, effectiveDate);
-
-
                 eventPublisher.publish(eventLoanGranted);
 
             } else {

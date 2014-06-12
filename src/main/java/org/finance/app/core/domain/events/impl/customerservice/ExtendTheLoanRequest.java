@@ -14,9 +14,10 @@ public class ExtendTheLoanRequest implements Serializable {
     private final AggregateId aggregateId;
     private DateTime newExpirationDate;
 
-    public ExtendTheLoanRequest(Loan loan, AggregateId aggregateId) {
+    public ExtendTheLoanRequest(Loan loan, AggregateId aggregateId, DateTime expirationDate) {
         this.baseLoan = loan;
         this.aggregateId = aggregateId;
+        this.newExpirationDate = expirationDate;
     }
 
     public ExtendTheLoanRequest(Loan loan) {
