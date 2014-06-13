@@ -183,10 +183,9 @@ public class LoanApplicationData {
     }
 
     public void whenRiskWasAnalyzed(RiskAnalyzedResponse response) {
-
-        if(response.isRiskExistence()){
-            entityToUpdate.setRisk(true);
-        } else {
+        if(response.hasRisk()){
+           //TODO: add to saga data
+        }
 
     }
 }

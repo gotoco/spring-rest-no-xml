@@ -3,16 +3,18 @@ package org.finance.app.core.domain.businessprocess.loangrant;
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.events.loanservice.LoanGrantedConfirmation;
 import org.finance.app.core.domain.events.loanservice.LoanRejected;
-import org.finance.app.sharedcore.objects.Client;
-import org.finance.app.sharedcore.objects.Money;
-import org.finance.app.sharedcore.objects.Loan;
 import org.finance.app.core.domain.events.saga.CheckIpRequest;
 import org.finance.app.core.domain.events.saga.DoExtendLoanRequest;
 import org.finance.app.core.domain.events.saga.DoRiskAnalysisRequest;
 import org.finance.app.core.domain.saga.SagaInstance;
 import org.finance.app.core.ddd.annotation.SagaAction;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
+import org.finance.app.sharedcore.objects.Client;
+import org.finance.app.sharedcore.objects.Money;
+import org.finance.app.sharedcore.objects.Loan;
+
 import org.joda.time.DateTime;
+
 import org.springframework.beans.factory.annotation.Autowired;
 
 public class LoanApplicationSaga extends SagaInstance<LoanApplicationData> {

@@ -8,30 +8,31 @@ import org.finance.app.core.ddd.annotation.Function;
 import org.joda.time.DateTime;
 import org.springframework.stereotype.Component;
 
+import java.util.ArrayList;
+import java.util.List;
+
 @Component
 public class BasicRiskAnalysis implements RiskAnalysisFunction {
 
     private static final Integer beginOfRiskyHours = 0;
     private static final Integer endOfRiskyHours = 6;
     private static final Money maxValueOfLoan = new Money(3000);
-    private static final String basicRejectCase = "External conditions of the loan are worrying";
+    private static final String basicRejectCase = "Application was submitted in risky night hours with max possible value";
 
     @Function
     @Override
-    public Risk analyze(DoRiskAnalysisRequest request) {
-        Boolean risk;
+    public List<Risk> analyze(DoRiskAnalysisRequest request) {
+        List<Risk> risks = new ArrayList<>();
         DateTime requestTime = request.getApplicationTime();
         DateTime riskyHoursStart = new DateTime().withTimeAtStartOfDay().plusHours(beginOfRiskyHours);
         DateTime riskyHoursEnd = new DateTime().withTimeAtStartOfDay().plusHours(endOfRiskyHours);
         Boolean isInRiskyHours = requestTime.isAfter(riskyHoursStart) && requestTime.isBefore(riskyHoursEnd);
         Boolean isLoanWithMaxValue = request.getLoanValue().equals(maxValueOfLoan) || request.getLoanValue().greaterThan(maxValueOfLoan);
 
-        risk = isInRiskyHours && isLoanWithMaxValue;
-
-        if(risk){
-            return new Risk(risk, basicRejectCase);
-        } else {
-            return new Risk(risk);
+        if(isInRiskyHours && isLoanWithMaxValue){
+            risks.add(new Risk(basicRejectCase));
         }
+
+       return risks;
     }
 }

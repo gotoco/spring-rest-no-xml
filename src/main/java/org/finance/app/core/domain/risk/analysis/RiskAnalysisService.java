@@ -20,6 +20,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.lang.reflect.Method;
+import java.util.List;
 
 @DomainService
 @Component("riskAnalysisService")
@@ -55,15 +56,12 @@ public class RiskAnalysisService {
     }
 
     @Transactional
-    private void doAnalyze(AggregateId eventId, Risk risk){
+    private void doAnalyze(AggregateId eventId, List<Risk> risks){
         Query selectEntityToUpdate = entityManager.createQuery("from LoanApplicationData where requestId=:requestId")
                 .setParameter("requestId", eventId);
         LoanApplicationData entityToUpdate = (LoanApplicationData) selectEntityToUpdate.getSingleResult();
 
-
-
-        RiskAnalyzedResponse response = new RiskAnalyzedResponse(eventId, risk);
-
+        RiskAnalyzedResponse response = new RiskAnalyzedResponse(eventId, risks);
 
         entityToUpdate.whenRiskWasAnalyzed(response) ;
 
@@ -74,8 +72,7 @@ public class RiskAnalysisService {
 
 
     public void analyzeRisk(DoRiskAnalysisRequest request){
-
-        Risk risk = riskAnalysisFunction.analyze(request);
+        List<Risk> risk = riskAnalysisFunction.analyze(request);
         AggregateId eventId = request.getSagaDataId();
 
         doAnalyze(eventId, risk);

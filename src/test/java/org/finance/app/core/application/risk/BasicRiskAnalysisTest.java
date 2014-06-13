@@ -24,7 +24,7 @@ public class BasicRiskAnalysisTest {
         DoRiskAnalysisRequest request = new DoRiskAnalysisRequest(sagaDataId, applicationTime, value, applicationTime);
 
         //When
-        Boolean isRejected= testedFunction.analyze(request).isRiskExistence();
+        Boolean isRejected = !testedFunction.analyze(request).isEmpty();
 
         //Then
         Assert.assertTrue(isRejected);
@@ -40,7 +40,7 @@ public class BasicRiskAnalysisTest {
         DoRiskAnalysisRequest request = new DoRiskAnalysisRequest(sagaDataId, applicationTime, value, applicationTime);
 
         //When
-        Boolean isAccepted = !testedFunction.analyze(request).isRiskExistence();
+        Boolean isAccepted = testedFunction.analyze(request).isEmpty();
 
         //Then
         Assert.assertTrue(isAccepted);
