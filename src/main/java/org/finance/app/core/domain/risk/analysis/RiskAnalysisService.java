@@ -32,7 +32,7 @@ public class RiskAnalysisService {
 
     RiskAnalysisFunction riskAnalysisFunction;
 
-    private final List<Risk> allRisks;
+    private List<Risk> allRisks;
 
     @PersistenceContext
     EntityManager entityManager;
@@ -41,8 +41,6 @@ public class RiskAnalysisService {
     public RiskAnalysisService(DomainEventPublisher eventPublisher, ApplicationContext applicationContext) {
         this.eventPublisher = eventPublisher;
         this.applicationContext = applicationContext;
-
-        allRisks = getAllRisksFromRepository();
     }
 
     @PostConstruct
@@ -57,6 +55,8 @@ public class RiskAnalysisService {
         } catch(NoSuchMethodException ex) {
             ex.printStackTrace();
         }
+
+        allRisks = getAllRisksFromRepository();
     }
 
     @Transactional

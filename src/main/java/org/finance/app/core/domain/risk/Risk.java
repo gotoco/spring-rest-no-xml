@@ -14,7 +14,7 @@ public class Risk implements Comparable{
     @Column(name="risk_id")
     private Long riskId;
 
-    private final String cause;
+    private String cause;
 
     public Risk(String cause){
         this.cause = cause;
@@ -32,5 +32,9 @@ public class Risk implements Comparable{
     public int compareTo(Object o) {
         Risk risk = (Risk)o;
         return this.cause.compareToIgnoreCase(risk.getCause());
+    }
+
+    public Risk() {
+
     }
 }
