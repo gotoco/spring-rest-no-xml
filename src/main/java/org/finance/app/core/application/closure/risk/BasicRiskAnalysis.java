@@ -10,6 +10,7 @@ import org.springframework.stereotype.Component;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
 @Component
 public class BasicRiskAnalysis implements RiskAnalysisFunction {
@@ -21,7 +22,7 @@ public class BasicRiskAnalysis implements RiskAnalysisFunction {
 
     @Function
     @Override
-    public List<Risk> analyze(DoRiskAnalysisRequest request) {
+    public List<Risk> analyze(DoRiskAnalysisRequest request, List<Risk> allRisks) {
         List<Risk> risks = new ArrayList<>();
         DateTime requestTime = request.getApplicationTime();
         DateTime riskyHoursStart = new DateTime().withTimeAtStartOfDay().plusHours(beginOfRiskyHours);
@@ -30,7 +31,12 @@ public class BasicRiskAnalysis implements RiskAnalysisFunction {
         Boolean isLoanWithMaxValue = request.getLoanValue().equals(maxValueOfLoan) || request.getLoanValue().greaterThan(maxValueOfLoan);
 
         if(isInRiskyHours && isLoanWithMaxValue){
-            risks.add(new Risk(basicRejectCase));
+
+            for(Risk risk : allRisks){
+                if(risk.getCause().compareToIgnoreCase(basicRejectCase) == 0){
+                    risks.add(risk);
+                }
+            }
         }
 
        return risks;

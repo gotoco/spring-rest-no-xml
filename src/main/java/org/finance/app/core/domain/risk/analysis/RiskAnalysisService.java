@@ -20,7 +20,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import java.lang.reflect.Method;
-import java.util.List;
+import java.util.*;
 
 @DomainService
 @Component("riskAnalysisService")
@@ -32,6 +32,8 @@ public class RiskAnalysisService {
 
     RiskAnalysisFunction riskAnalysisFunction;
 
+    private final List<Risk> allRisks;
+
     @PersistenceContext
     EntityManager entityManager;
 
@@ -39,6 +41,8 @@ public class RiskAnalysisService {
     public RiskAnalysisService(DomainEventPublisher eventPublisher, ApplicationContext applicationContext) {
         this.eventPublisher = eventPublisher;
         this.applicationContext = applicationContext;
+
+        allRisks = getAllRisksFromRepository();
     }
 
     @PostConstruct
@@ -72,10 +76,9 @@ public class RiskAnalysisService {
 
 
     public void analyzeRisk(DoRiskAnalysisRequest request){
-        List<Risk> risk = riskAnalysisFunction.analyze(request);
-        AggregateId eventId = request.getSagaDataId();
+        List<Risk> risks = riskAnalysisFunction.analyze(request, allRisks);
 
-        doAnalyze(eventId, risk);
+        doAnalyze(request.getSagaDataId(), risks);
     }
 
     @Autowired
@@ -86,5 +89,25 @@ public class RiskAnalysisService {
     @Autowired
     public void setRiskAnalysisFunction(RiskAnalysisFunction riskAnalysisFunction) {
         this.riskAnalysisFunction = riskAnalysisFunction;
+    }
+
+    @Transactional
+    public List<Risk> getAllRisksFromRepository() {
+        try {
+            List allRisks = entityManager.createQuery("from Risk").getResultList();
+
+            return new ArrayList<Risk>(allRisks);
+        }catch(Exception ex){
+            List allRisks = new ArrayList<Risk>();
+            allRisks.add(new Risk("Cause"));
+
+            return allRisks ;
+        }
+
+
+    }
+
+    public List<Risk> getAllRisks(){
+        return this.allRisks;
     }
 }

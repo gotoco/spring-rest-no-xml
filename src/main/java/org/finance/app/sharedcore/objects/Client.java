@@ -28,6 +28,9 @@ public class Client {
     @OneToMany(cascade={CascadeType.ALL}, mappedBy="client")
     private List<LoanApplicationData> loanScheduler = new ArrayList<LoanApplicationData>();
 
+    @OneToMany(cascade={CascadeType.ALL}, mappedBy="contractHolder")
+    private List<LoanContract> loanContracts = new ArrayList<LoanContract>();
+
     public String getLastName() {
         return lastName;
     }
@@ -79,6 +82,18 @@ public class Client {
 
     public Client(){
 
+    }
+
+    public List<LoanContract> getLoanContracts() {
+        return loanContracts;
+    }
+
+    public void setLoanContracts(List<LoanContract> loanContracts) {
+        this.loanContracts = loanContracts;
+    }
+
+    public void setFirstName(String firstName) {
+        this.firstName = firstName;
     }
 
     @Override

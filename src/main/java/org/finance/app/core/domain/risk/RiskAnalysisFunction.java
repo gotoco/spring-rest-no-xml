@@ -6,6 +6,6 @@ import java.util.List;
 
 public interface RiskAnalysisFunction {
 
-    public List<Risk> analyze(DoRiskAnalysisRequest request);
+    public List<Risk> analyze(DoRiskAnalysisRequest request, List<Risk> allRisks);
 
 }

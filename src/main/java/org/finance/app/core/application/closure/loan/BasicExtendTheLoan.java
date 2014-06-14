@@ -9,7 +9,7 @@ import org.springframework.stereotype.Component;
 
 import java.math.BigDecimal;
 
-@Component
+@Component("basicExtendTheLoan")
 public class BasicExtendTheLoan implements ExtendTheLoanFunction{
 
     private final static BigDecimal extendFactor = new BigDecimal(1.5);
@@ -19,7 +19,7 @@ public class BasicExtendTheLoan implements ExtendTheLoanFunction{
     @Override
     public Loan extend (Loan oldLoan, DateTime newExpirationDate){
         Loan loan = new Loan();
-        loan.setBasedOnLoan(oldLoan);
+        loan.setBasedOnLoan(oldLoan.getBasedOnLoanId());
         loan.setExpirationDate(newExpirationDate.toDate());
         loan.setEffectiveDate(new DateTime().toDate());
         loan.setInterest(calculateInterests(oldLoan));

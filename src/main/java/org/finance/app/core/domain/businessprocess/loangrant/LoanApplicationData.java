@@ -3,6 +3,7 @@ package org.finance.app.core.domain.businessprocess.loangrant;
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.events.saga.IpCheckedResponse;
 import org.finance.app.core.domain.events.saga.RiskAnalyzedResponse;
+import org.finance.app.core.domain.risk.Risk;
 import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.Form;
 import org.finance.app.sharedcore.objects.Money;
@@ -11,7 +12,9 @@ import org.finance.app.core.domain.events.customerservice.ExtendTheLoanRequest;
 import org.joda.time.DateTime;
 
 import javax.persistence.*;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 @Entity
 public class LoanApplicationData {
@@ -56,6 +59,13 @@ public class LoanApplicationData {
     @ManyToOne
     @JoinColumn(name="client_id", referencedColumnName = "client_id")
     private Client client;
+
+
+    @OneToMany(cascade = CascadeType.ALL)
+    @JoinTable(name = "application_risk",
+            joinColumns = { @JoinColumn(name = "id") },
+            inverseJoinColumns = { @JoinColumn(name = "risk_id") })
+    private List<Risk> risks = new ArrayList<Risk>();
 
     public Date getNewExpirationDate(){
         return this.newExpirationDate;
@@ -184,8 +194,11 @@ public class LoanApplicationData {
 
     public void whenRiskWasAnalyzed(RiskAnalyzedResponse response) {
         if(response.hasRisk()){
-           //TODO: add to saga data
+            for(Risk risk : response.getRisks()){
+                if(!this.risks.contains(risk)){
+                    risks.add(risk);
+                }
+            }
         }
-
     }
 }

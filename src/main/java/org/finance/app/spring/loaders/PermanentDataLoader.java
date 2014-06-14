@@ -15,8 +15,9 @@ import java.util.List;
 public class PermanentDataLoader {
 
     private static final String basicRejectCase = "Application was submitted in risky night hours with max possible value";
+    private static final String testRejectCase = "blablabalsa";
 
-    private List<Risk> risks = ImmutableList.of(new Risk(basicRejectCase)).asList();
+    private List<Risk> risks = ImmutableList.of(new Risk(basicRejectCase), new Risk(testRejectCase)).asList();
 
     private PermanentDataLoader dataLoader;
 
@@ -30,9 +31,11 @@ public class PermanentDataLoader {
         final List<Risk> existingRisks = query.getResultList();
 
 
-        risks.stream()
-             .filter(risk -> !existingRisks.contains(risk) )
-             .forEach( risk -> entityManager.persist(risk) );
+        for(Risk risk : risks){
+            if(!existingRisks.contains(risk)){
+                entityManager.persist(risk);
+            }
+        }
 
     }
 }

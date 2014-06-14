@@ -5,8 +5,10 @@ import org.finance.app.core.domain.common.loan.ExtendTheLoanFunction;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
 import org.finance.app.core.domain.events.customerservice.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.loanservice.LoanGrantedConfirmation;
+import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.Loan;
 import org.finance.app.core.ddd.annotation.AggregateRoot;
+import org.finance.app.sharedcore.objects.LoanContract;
 import org.finance.app.sharedcore.objects.Money;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
@@ -81,14 +83,18 @@ public class LoanService {
 
         LoanGrantedConfirmation loanConfirmation = (LoanGrantedConfirmation)event;
 
+        Client client = loanConfirmation.getClient();
         Loan grantedLoan = new Loan(null,
                 loanConfirmation.getValue(),
                 calculateInterestForNewBusiness(),
                 loanConfirmation.getExpirationDate(),
                 loanConfirmation.getEffectiveDate(),
-                loanConfirmation.getClient());
+                client);
+
+        LoanContract contract = new LoanContract(grantedLoan, client);
 
         entityManager.persist(grantedLoan);
+        entityManager.persist(contract);
     }
 
     @Transactional

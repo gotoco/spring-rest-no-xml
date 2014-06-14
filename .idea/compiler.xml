@@ -25,8 +25,8 @@
         <module name="spring-mvc-no-xml" />
       </profile>
     </annotationProcessing>
-    <bytecodeTargetLevel>
-      <module name="spring-mvc-no-xml" target="1.7" />
+    <bytecodeTargetLevel target="1.8">
+      <module name="spring-mvc-no-xml" target="1.8" />
     </bytecodeTargetLevel>
   </component>
 </project>

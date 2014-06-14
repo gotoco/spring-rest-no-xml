@@ -1,5 +1,6 @@
 package org.finance.app.sharedcore.objects;
 
+import org.finance.app.core.ddd.annotation.AggregateRoot;
 import org.finance.app.core.domain.common.loan.ExtendTheLoanFunction;
 import org.finance.app.core.ddd.annotation.ValueObject;
 import org.joda.time.DateTime;
@@ -9,12 +10,9 @@ import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
-@ValueObject
+@AggregateRoot
 @Entity
 public class Loan {
-
-    @Transient
-    private Loan basedOnLoan;
 
     @Transient
     private ExtendTheLoanFunction extendTheLoanFunction;
@@ -54,8 +52,14 @@ public class Loan {
     @JoinColumn(name="client_id")
     private Client loanHolder;
 
-    public Loan(Loan basedOnLoan, Money value, Money interest, DateTime expirationDate, DateTime effectiveDate, Client loanHolder) {
-        this.basedOnLoan = basedOnLoan;
+    @ManyToOne
+    @JoinColumn(name="contract_id", referencedColumnName = "contract_id")
+    private LoanContract loanContract;
+
+    private Long basedOnLoanId;
+
+    public Loan(Long basedOnLoan, Money value, Money interest, DateTime expirationDate, DateTime effectiveDate, Client loanHolder) {
+        this.basedOnLoanId = basedOnLoan;
         this.value = value;
         this.interest = interest;
         this.expirationDate = expirationDate.toDate();
@@ -111,16 +115,12 @@ public class Loan {
         return extendTheLoanFunction;
     }
 
-    public void setLoan_id(Long loanId) {
-        this.loanId = loanId;
+    public Long getBasedOnLoanId() {
+        return basedOnLoanId;
     }
 
-    public Loan getBasedOnLoan() {
-        return basedOnLoan;
-    }
-
-    public void setBasedOnLoan(Loan basedOnLoan) {
-        this.basedOnLoan = basedOnLoan;
+    public void setBasedOnLoan(Long basedOnLoan) {
+        this.basedOnLoanId = basedOnLoan;
     }
 
     public Money getValue() {
@@ -161,5 +161,21 @@ public class Loan {
 
     public void setLoanHolder(Client loanHolder) {
         this.loanHolder = loanHolder;
+    }
+
+    public void setBasedOnLoanId(Long basedOnLoanId) {
+        this.basedOnLoanId = basedOnLoanId;
+    }
+
+    public void setLoanId(Long loanId) {
+        this.loanId = loanId;
+    }
+
+    public LoanContract getContract() {
+        return loanContract;
+    }
+
+    public void setContract(LoanContract contract) {
+        this.loanContract = contract;
     }
 }

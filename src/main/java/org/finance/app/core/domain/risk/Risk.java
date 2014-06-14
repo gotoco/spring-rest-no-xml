@@ -2,14 +2,12 @@ package org.finance.app.core.domain.risk;
 
 import org.finance.app.core.ddd.annotation.ValueObject;
 
-import javax.persistence.Column;
-import javax.persistence.Entity;
-import javax.persistence.GeneratedValue;
-import javax.persistence.Id;
+import javax.persistence.*;
 
 @ValueObject
 @Entity
-public class Risk {
+@Table(name = "Risks")
+public class Risk implements Comparable{
 
     @Id
     @GeneratedValue
@@ -28,5 +26,11 @@ public class Risk {
 
     public Long getRiskId() {
         return riskId;
+    }
+
+    @Override
+    public int compareTo(Object o) {
+        Risk risk = (Risk)o;
+        return this.cause.compareToIgnoreCase(risk.getCause());
     }
 }
