@@ -1,8 +1,6 @@
-package org.finance.app.adapters.webservices.restws;
+package org.finance.app.adapters.webservices.restful.root.loan;
 
-
-import org.finance.app.adapters.webservices.json.FormJSON;
-import org.finance.app.ports.services.LoanServiceApi;
+import org.finance.app.bports.services.LoanServiceApi;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,7 +19,8 @@ public class LoanGrantRestWs {
 
     LoanServiceApi loanServiceApi;
 
-    @POST
+    //DEPRICATED SERVICE
+/*    @POST
     @RequestMapping("/applyForLoan")
     public Response applyForLoan( @Context HttpServletRequest request, FormJSON form) {
 
@@ -36,7 +35,7 @@ public class LoanGrantRestWs {
 
         return Response.status(200)
                        .entity("Application for a loan was approved from ip address : "  + ipAddress).build();
-    }
+    }*/
 
     @POST
     @RequestMapping("/postForExtendLoan")
@@ -60,7 +59,7 @@ public class LoanGrantRestWs {
     }
 
     @Autowired
-    public LoanGrantRestWs(LoanServiceApi loanServiceApi) {
-        this.loanServiceApi = loanServiceApi;
+    public LoanGrantRestWs(LoanServiceApi loanService) {
+        this.loanServiceApi = loanService;
     }
 }

@@ -5,12 +5,13 @@ import org.finance.app.core.application.query.ClientFinder;
 import org.finance.app.core.application.query.UserAuthorizationService;
 import org.finance.app.core.application.translation.ApplicationFormTranslator;
 import org.finance.app.core.domain.CustomerService;
-import org.finance.app.ports.crudes.LoanReaderService;
+import org.finance.app.bports.crudes.ClientReaderService;
+import org.finance.app.bports.crudes.LoanReaderService;
 import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.Form;
 import org.finance.app.sharedcore.objects.Loan;
 import org.finance.app.core.ddd.annotation.ApplicationService;
-import org.finance.app.ports.services.LoanServiceApi;
+import org.finance.app.bports.services.LoanServiceApi;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -26,7 +27,7 @@ public class CustomerServiceFacade implements LoanServiceApi {
 
     private ApplicationFormTranslator applicationFormTranslator;
 
-    private ClientFinder clientFinder;
+    private ClientReaderService clientFinder;
 
     private UserAuthorizationService userAuthorizationService;
 
