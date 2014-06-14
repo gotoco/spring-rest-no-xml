@@ -16,10 +16,10 @@ public class LoanContract {
     @Column(name="contract_id")
     private Long contractId;
 
-    @OneToMany(cascade={CascadeType.ALL}, mappedBy="loanContract")
+    @OneToMany(cascade=CascadeType.ALL, mappedBy="loanContract")
     private List<Loan> loanPeriods = new ArrayList<Loan>();
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="client_id")
     private Client contractHolder;
 
@@ -58,5 +58,10 @@ public class LoanContract {
     public LoanContract(Loan loan, Client client){
         this.contractHolder = client;
         this.loanPeriods.add(loan);
+    }
+
+    public LoanContract(List<Loan> loans, Client client){
+        this.contractHolder = client;
+        this.loanPeriods = loans;
     }
 }

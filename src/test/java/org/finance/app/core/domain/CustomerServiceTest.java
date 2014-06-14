@@ -191,7 +191,6 @@ public class CustomerServiceTest {
         DateTime effectiveDate  = new DateTime();
 
         Loan loan = new Loan(null, value, interest, expirationDate, effectiveDate, client);
-        entityManager.persist(client);
         entityManager.persist(loan);
         return loan;
     }

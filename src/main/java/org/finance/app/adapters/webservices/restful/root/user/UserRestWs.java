@@ -59,7 +59,7 @@ public class UserRestWs {
             @Context HttpServletRequest request,
             @PathVariable final long id ) {
 
-        List<LoanContract> allContracts = contractScheduler.getAllContractsOfUser(id);
+        List<LoanContract> allContracts = contractScheduler.getAllContractsOfUser(null);
 
         if(allContracts.isEmpty()){
             return Response

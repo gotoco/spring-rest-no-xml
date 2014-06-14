@@ -1,17 +1,20 @@
 package org.finance.app.application.userstories;
 
+import org.finance.app.bports.crudes.ContractSchedulerPort;
 import org.junit.Test;
+import org.springframework.beans.factory.annotation.Autowired;
 
-/**
- * Created by maciek on 09.06.14.
- */
+import javax.persistence.EntityManager;
+import javax.persistence.PersistenceContext;
+
 public class SubmissionForLoanTest {
+
+
 
     @Test
     public void newValidRequestLoanGranted(){
 
-      /*  Form validForm = new FormBuilder().withCorrectlyFilledForm(new Client()).build();
-*/
+
 
     }
 }

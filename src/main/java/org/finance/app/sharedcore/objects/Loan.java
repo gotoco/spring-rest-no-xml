@@ -22,10 +22,6 @@ public class Loan {
     @Column(name="loan_id")
     private Long loanId;
 
-    public Long getLoanId() {
-        return loanId;
-    }
-
     @AttributeOverrides({
             @AttributeOverride(name = "denomination",
                     column = @Column(name = "valuedenomination")),
@@ -48,11 +44,11 @@ public class Loan {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date effectiveDate;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="client_id")
     private Client loanHolder;
 
-    @ManyToOne
+    @ManyToOne(cascade=CascadeType.ALL)
     @JoinColumn(name="contract_id", referencedColumnName = "contract_id")
     private LoanContract loanContract;
 
@@ -69,6 +65,10 @@ public class Loan {
 
     public Loan(){
 
+    }
+
+    public Long getLoanId() {
+        return loanId;
     }
 
     public Loan extendLoan(DateTime changeDate){

@@ -26,15 +26,18 @@ public class PersonalDataBuilder {
     }
 
     public PersonalDataBuilder withCorrectlyFilledData(){
-        return new PersonalDataBuilder(10000L, "Jan", "Kowalski", "Lesnej polanki 1", new DateTime().minusYears(30));
+        return new PersonalDataBuilder("Jan", "Kowalski", "Lesnej polanki 1", new DateTime().minusYears(30));
+    }
+
+    public PersonalDataBuilder withDefaultData(){
+        return new PersonalDataBuilder("Maciej", "Grochowski", "Marymoncka 1500", new DateTime().minusYears(30));
     }
 
     public Client build(){
         return new Client(clientId, firstName, lastName, address);
     }
 
-    public PersonalDataBuilder(Long clientId, String firstName, String lastName, String address, DateTime dateOfBirth) {
-        //this.clientId = clientId;
+    public PersonalDataBuilder(String firstName, String lastName, String address, DateTime dateOfBirth) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.address = address;
