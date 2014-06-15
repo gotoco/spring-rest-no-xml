@@ -15,7 +15,7 @@
 <%--    <link href="<c:url value = '/resources/assets/css/stylesheet2.css' />"  rel="stylesheet" type="text/css">
     <link href="<c:url value = '/resources/assets/css/fonts/fonts.css' />" rel="stylesheet">--%>
     <script type="text/javascript" src="<c:url value = '/resources/assets/js/lib/require.js' />"></script>
-    <script type="text/javascript" src="<c:url value = '/resources/assets/js/lib/jquery-1.11.1.min.js' />"></script>
+    <script type="text/javascript" src="<c:url value = '/resources/assets/js/lib/jquery.js' />"></script>
     <script type="text/javascript" src="<c:url value = '/resources/assets/bootstrap/js/bootstrap.min.js' />"></script>
     <link href="<c:url value = '/resources/assets/bootstrap/css/bootstrap.min.css' />" rel="stylesheet">
 

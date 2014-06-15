@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: maciek
-  Date: 12.06.14
-  Time: 21:39
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -14,11 +7,11 @@
         Szybka Pożyczka przez Internet - Vivus.pl
     </title>
 
-    <script type="text/javascript" src="/resources/assets/js/lib/require.js"></script>
-    <script type="text/javascript" src="/resources/assets/js/lib/jquery.js"></script>
-    <script type="text/javascript" src="/resources/assets/bootstrap/js/bootstrap.min.js"></script>
-    <link href="/resources/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/assets/css/style.css" />
+
+    <script data-main="/resources/assets/js/config" src="/resources/assets/js/lib/require.js"></script>
+
+
 </head>
 <body>
 <div id="wrapper">
@@ -36,72 +29,83 @@
         <nav>
             <ul id="top-menu">
                 <a href="index.html">
-                    <li>
+                    <li class="nav-current-page">
                         <img src="/resources/assets/img/home.png" />
                     </li>
                 </a>
-                <a href="konto.html">
-                    <li>
-                        Konto
+                <a href="applyforloan.html">
+                    <li class="apply-for-loan">
+                        Weź Pożyczkę
+                    </li>
+                </a>
+                <a href="accountservices.html">
+                    <li class="account-services">
+                        Operacje na koncie
                     </li>
                 </a>
             </ul>
         </nav>
     </header>
-    <div id="instrukcja">
-        <p class="instrukcja-number">1</p>
-        <p>Wybierz kwotę i okres pożyczki</p>
-        <p class="instrukcja-number instrukcja-number-active">2</p>
-        <p>Zarejestruj się</p>
-        <p class="instrukcja-number">3</p>
-        <p>Potwierdź swoje dane</p>
-        <p class="instrukcja-number">4</p>
-        <p>Otrzymaj pieniądze!</p>
-    </div>
     <div id="container-white">
         <div id="register-form">
 
             <h1>
-                Wypełnij formularz rejestracyjny
+                Dane do wniosku1:
             </h1>
+            <div id="output"></div>
 
+            <form action="/postForExtendLoan" method="POST">
+                ClientId:
+                <input type="text" name="userId" id="form-user-id" />
+                <br>
+                LoanId:
+                <input type="text" name="loanId" id="form-loan-id"/>
+                <br>
+                New Expiration date
+                <input type="date" name="date" id="form-expiration-date">
+                <br>
+                Loan amount:
+                <input type="number" name="applyingAmount" id="loan-value"/>
+                <br>
+                <input type="submit" value="submit" id="form-submit"/>
+
+            </form>
+            <h1>
+                Dane do wniosku:
+            </h1>
             <p>
-
+                <label class="register-label">Kwota Pożyczki</label>
+                <input type="text" id="loanvalue" placeholder="Kwota Pożyczki" required class="register-data" />
+                <br />
+                <label class="register-label">Na ile dni?</label>
+                <input type="text" id="days" placeholder="Ilość dni" required class="register-data" />
+                <br />
                 <label class="register-label">Imię</label>
-                <input type="text" name="imie" placeholder="Imię" required class="register-data" />
+                <input type="text" id="firstname" placeholder="Imię" required class="register-data" />
                 <br />
                 <label class="register-label">Nazwisko</label>
-                <input type="text" name="nazwisko" placeholder="Nazwisko" required class="register-data" />
+                <input type="text" id="lastname" placeholder="Nazwisko" required class="register-data" />
                 <br />
                 <label class="register-label">PESEL</label>
-                <input type="text" name="pesel" placeholder="Pesel" required class="register-data" />
+                <input type="text" id="pesel" placeholder="Pesel" required class="register-data" />
                 <br />
                 <label class="register-label">Seria i nr dowodu osobistego</label>
-                <input type="text" name="dowod" placeholder="Seria i nr dowodu osobistego" required class="register-data" />
+                <input type="text" id="idcard" placeholder="Seria i nr dowodu osobistego" required class="register-data" />
                 <br />
                 <label class="register-label">Telefon komórkowy</label>
-                <input type="text" name="tel" placeholder="Telefon Komórkowy" required class="register-data" />
+                <input type="text" id="phonenumber" placeholder="Telefon Komórkowy" required class="register-data" />
                 <br />
                 <label class="register-label">Adres E-mail</label>
-                <input type="text" name="email" placeholder="Adres E-mail" required class="register-data" />
-                <br />
-                <label class="register-label">Hasło</label>
-                <input type="text" name="haslo" placeholder="Hasło" required class="register-data" />
-                <br />
-                <label class="register-label">Wprowadź hasło ponownie</label>
-                <input type="text" name="haslo2" placeholder="Hasło" required class="register-data" />
+                <input type="text" id="email" placeholder="Adres E-mail" required class="register-data" />
                 <br />
                 <label class="register-label">Adres korespondencyjny</label>
-                <input type="text" name="adres" placeholder="Adres korespondencyjny" required class="register-data" />
-                <br />
-                <label class="register-label">Ulica nr domu/nr mieszkania</label>
-                <input type="text" name="ulica" placeholder="Ulica nr domu/nr mieszkania" required class="register-data" />
+                <input type="text" id="address" placeholder="Adres korespondencyjny" required class="register-data" />
                 <br />
                 <label class="register-label">Kod pocztowy</label>
-                <input type="text" name="kod" placeholder="Kod pocztowy" required class="register-data" />
+                <input type="text" id="postalcode" placeholder="Kod pocztowy" required class="register-data" />
                 <br />
                 <label class="register-label">Miejscowość</label>
-                <input type="text" name="miejscowosc" placeholder="Miejscowość" required class="register-data" />
+                <input type="text" name="city" placeholder="Miejscowość" required class="register-data" />
 
             <p class="zgody">
             <h1>
@@ -124,39 +128,16 @@
                 Wyrażam zgodę na przesyłanie przez VIVUS FINANCE i INTERSALE SERVICES LIMITED informacji handlowych z wykorzystaniem środków komunikacji elektronicznej. Wyrażam zgodę na przetwarzanie moich danych osobowych przez VIVUS FINANCE oraz przez podmioty należące do grupy kapitałowej, w której skład wchodzi VIVUS FINANCE w celu marketingu produktów tych podmiotów oraz podmiotów trzecich (współpracujących z VIVUS FINANCE i INTERSALE SERVICES LIMITED)
             </p>
 
-            <div id="register-button">Zarejestruj się <strong>→</strong></div>
+            <div id="register-button">Złóż wniosek</div>
 
             </p>
 
             </p>
 
         </div>
-        <div id="sliders-mini">
-            <p class="slider-text-mini">
-                Ile pieniędzy chcesz pożyczyć?
-                <span class="slider-text-em-mini">100-3500 zł</span>
-            </p>
-            <input type="range"  min="100" max="3500" value="1500"  step="50"  onchange="showValue1(this.value)" name="range1" class="slider-bars mini" />
-            <span id="range1">1500</span>
-            <script type="text/javascript">
-                function showValue1(newValue1)
-                {
-                    document.getElementById("range1").innerHTML=newValue1;
-                }
-            </script>
-            <p class="slider-text-mini">
-                Na ile dni?
-                <span class="slider-text-em-mini">1-30 dni</span>
-            </p>
-            <input type="range"  min="1" max="30" value="30"  step="1"  onchange="showValue2(this.value)" name="range2" class="slider-bars mini" />
-            <span id="range2">30</span>
-            <script type="text/javascript">
-                function showValue2(newValue2)
-                {
-                    document.getElementById("range2").innerHTML=newValue2;
-                }
-            </script>
-        </div>
+
+
+
         <div id="slider-details-mini">
             <h4>Termin spłaty [value]</h4>
             Pożyczka:	<span class="slider-values">[value]</span>
@@ -180,11 +161,6 @@
                     Formularz informacyjny
                 </a>
             </center>
-            <a href="#">
-                <p class="sliders-button">
-                    Weź pożyczkę
-                </p>
-            </a>
         </div>
     </div>
 </div>
@@ -208,3 +184,4 @@
 </footer>
 </body>
 </html>
+

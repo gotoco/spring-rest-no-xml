@@ -1,8 +1,10 @@
 package org.finance.app.adapters.webservices.restful.root.user;
 
 import org.finance.app.adapters.webservices.json.FormJSON;
+import org.finance.app.bports.crudes.ClientReaderService;
 import org.finance.app.bports.crudes.ContractSchedulerPort;
 import org.finance.app.bports.services.LoanServiceApi;
+import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.LoanContract;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -29,10 +31,13 @@ public class UserRestWs {
 
     private ContractSchedulerPort contractScheduler;
 
+    private ClientReaderService clientFinder;
+
     @Autowired
-    public UserRestWs(LoanServiceApi service, ContractSchedulerPort contractScheduler){
+    public UserRestWs(LoanServiceApi service, ContractSchedulerPort contractScheduler, ClientReaderService clientReaderService){
         this.loanService = service;
         this.contractScheduler = contractScheduler;
+        this.clientFinder = clientReaderService;
     }
 
     @POST
@@ -59,7 +64,9 @@ public class UserRestWs {
             @Context HttpServletRequest request,
             @PathVariable final long id ) {
 
-        List<LoanContract> allContracts = contractScheduler.getAllContractsOfUser(null);
+        Client client = clientFinder.findClientById(id);
+
+        List<LoanContract> allContracts = contractScheduler.getAllContractsOfUser(client);
 
         if(allContracts.isEmpty()){
             return Response

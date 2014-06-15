@@ -20,4 +20,10 @@ public class HomePageController {
 
         return "account";
     }
+
+    @RequestMapping(value = "/applyforloan", method = RequestMethod.GET)
+    public String applyForLoan(Model model) {
+
+        return "applyforloan";
+    }
 }

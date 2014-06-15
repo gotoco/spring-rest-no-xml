@@ -2,10 +2,12 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
-    <script type="text/javascript" src="<c:url value = '/resources/assets/js/lib/require.js' />"></script>
+
     <script type="text/javascript" src="<c:url value = '/resources/assets/js/lib/jquery-1.11.1.min.js' />"></script>
     <script type="text/javascript" src="<c:url value = '/resources/assets/bootstrap/js/bootstrap.min.js' />"></script>
     <link href="<c:url value = '/resources/assets/bootstrap/css/bootstrap.min.css' />" rel="stylesheet">
+
+    <script data-main="/resources/assets/js/lib/main" src="/resources/assets/js/lib/require.js"></script>
 
     <title></title>
 </head>
@@ -24,7 +26,7 @@
     <input type="text" name="address" />
     <br>
     Loan amount:
-    <input type="number" name="applyingAmount" />
+    <input type="number" name="applyingAmount" id="loanvalue"/>
     <br>
     Na ile dni?:
     <input type="number" name="maturityInDays" />

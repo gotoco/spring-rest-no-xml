@@ -1,15 +1,8 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: maciek
-  Date: 10.06.14
-  Time: 18:35
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
     <script type="text/javascript" src="/resources/assets/js/lib/require.js"></script>
-    <script type="text/javascript" src="/resources/assets/js/lib/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/resources/assets/js/lib/jquery.js"></script>
     <script type="text/javascript" src="/resources/assets/bootstrap/js/bootstrap.min.js"></script>
     <link href="/resources/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
     <link href="/resources/assets/css/style.css"  rel="stylesheet" type="text/css" />
@@ -34,9 +27,14 @@
                         <img src="/resources/assets/img/home.png" />
                     </li>
                 </a>
-                <a href="konto.html">
-                    <li>
-                        Konto
+                <a href="applyforloan.html">
+                    <li class="apply-for-loan">
+                        Weź Pożyczkę
+                    </li>
+                </a>
+                <a href="accountservices.html">
+                    <li class="account-services">
+                        Operacje na koncie
                     </li>
                 </a>
             </ul>

@@ -1,10 +1,3 @@
-<%--
-  Created by IntelliJ IDEA.
-  User: maciek
-  Date: 12.06.14
-  Time: 21:37
-  To change this template use File | Settings | File Templates.
---%>
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
 <html>
 <head>
@@ -14,15 +7,15 @@
         Szybka Pożyczka przez Internet - Vivus.pl
     </title>
     <script type="text/javascript" src="/resources/assets/js/lib/require.js"></script>
-    <script type="text/javascript" src="/resources/assets/js/lib/jquery-1.11.1.min.js"></script>
+    <script type="text/javascript" src="/resources/assets/js/lib/jquery.js"></script>
     <script type="text/javascript" src="/resources/assets/bootstrap/js/bootstrap.min.js"></script>
     <link href="/resources/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
-    <link rel="stylesheet" type="text/css" href="style.css" />
+    <link rel="stylesheet" type="text/css" href="/resources/assets/css/style.css" />
 </head>
 <body>
 <div id="wrapper">
     <header>
-        <img src="logo.png" class="logo-img" />
+        <img src="/resources/assets/img/logo.png" class="logo-img" />
         <div id="login">
             <input type="text" name="email" placeholder="adres email" required class="login-field" />
             <input type="text" name="password" placeholder="hasło" required class="login-field" />
@@ -35,13 +28,18 @@
         <nav>
             <ul id="top-menu">
                 <a href="index.html">
-                    <li>
-                        <img src="home.png" />
+                    <li class="nav-current-page">
+                        <img src="/resources/assets/img/home.png" />
                     </li>
                 </a>
                 <a href="konto.html">
-                    <li class="nav-current-page">
-                        Konto
+                    <li class="apply-for-loan">
+                        Weź Pożyczkę
+                    </li>
+                </a>
+                <a href="konto.html">
+                    <li class="account-services">
+                        Operacje na koncie
                     </li>
                 </a>
             </ul>
