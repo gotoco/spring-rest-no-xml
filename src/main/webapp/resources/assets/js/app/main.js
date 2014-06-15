@@ -1,24 +1,33 @@
-define(['jquery','./message'], function($, message) {
+define(['jquery',
+    './message',
+    './LoanApplicationContext',
+    './app',
+    './controller'
+], function($, message, loanContext, app, controller) {
 
     $(function() {
-        $('#output').html(message + ' ');
+        $('#register-button').onclick;
     });
 
-    $(function() { //shorthand document.ready function
-        $('#form-submit').on('submit', function(e) { //use on if jQuery 1.7+
-            e.preventDefault();  //prevent form from submitting
-            var data = $("#login_form :input").serializeArray();
-            console.log(data); //use the console for debugging, F12 in Chrome, not alerts
+    $(document).ready(function () {
+        $('#register-button').click(function () {
+            loanContext.submitForm() ;
         });
     });
 
+    $(function() {
+        alert(controller.sayHello)
+    });
+
+/*    $(function() { //shorthand document.ready function
+        $('#apply-form').on('submit', function(e) { //use on if jQuery 1.7+
+            e.preventDefault();  //prevent form from submitting
+            var data = $('#loan-value').val();
+            $('#output').html("APPLAYED FOR: " + data);
+            console.log(data); //use the console for debugging, F12 in Chrome, not alerts
+            return false;
+        });
+    });*/
+
 });
 
-/*
-apply-button
-
-$('#login_form').submit(function() {
-    var data = $("#login_form :input").serializeArray();
-
-    alert('Handler for .submit() called.');
-});*/

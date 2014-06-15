@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html>
+<html ng-app>
 <head>
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -9,7 +9,7 @@
 
     <link rel="stylesheet" type="text/css" href="/resources/assets/css/style.css" />
 
-    <script data-main="/resources/assets/js/config" src="/resources/assets/js/lib/require.js"></script>
+<%--    <script data-main="/resources/assets/js/config" src="/resources/assets/js/lib/require.js"></script>--%>
 
 
 </head>
@@ -50,62 +50,27 @@
         <div id="register-form">
 
             <h1>
-                Dane do wniosku1:
-            </h1>
-            <div id="output"></div>
-
-            <form action="/postForExtendLoan" method="POST">
-                ClientId:
-                <input type="text" name="userId" id="form-user-id" />
-                <br>
-                LoanId:
-                <input type="text" name="loanId" id="form-loan-id"/>
-                <br>
-                New Expiration date
-                <input type="date" name="date" id="form-expiration-date">
-                <br>
-                Loan amount:
-                <input type="number" name="applyingAmount" id="loan-value"/>
-                <br>
-                <input type="submit" value="submit" id="form-submit"/>
-
-            </form>
-            <h1>
                 Dane do wniosku:
             </h1>
             <p>
                 <label class="register-label">Kwota Pożyczki</label>
-                <input type="text" id="loanvalue" placeholder="Kwota Pożyczki" required class="register-data" />
+                <input type="text" id="submission-loanvalue" placeholder="Kwota Pożyczki" required class="register-data" />
                 <br />
                 <label class="register-label">Na ile dni?</label>
-                <input type="text" id="days" placeholder="Ilość dni" required class="register-data" />
+                <input type="text" id="submission-days" placeholder="Ilość dni" required class="register-data" />
                 <br />
                 <label class="register-label">Imię</label>
-                <input type="text" id="firstname" placeholder="Imię" required class="register-data" />
+                <input type="text" id="submission-firstname" placeholder="Imię" required class="register-data" />
                 <br />
                 <label class="register-label">Nazwisko</label>
-                <input type="text" id="lastname" placeholder="Nazwisko" required class="register-data" />
+                <input type="text" id="submission-lastname" placeholder="Nazwisko" required class="register-data" />
                 <br />
                 <label class="register-label">PESEL</label>
-                <input type="text" id="pesel" placeholder="Pesel" required class="register-data" />
-                <br />
-                <label class="register-label">Seria i nr dowodu osobistego</label>
-                <input type="text" id="idcard" placeholder="Seria i nr dowodu osobistego" required class="register-data" />
-                <br />
-                <label class="register-label">Telefon komórkowy</label>
-                <input type="text" id="phonenumber" placeholder="Telefon Komórkowy" required class="register-data" />
-                <br />
-                <label class="register-label">Adres E-mail</label>
-                <input type="text" id="email" placeholder="Adres E-mail" required class="register-data" />
+                <input type="text" id="submission-pesel" placeholder="Pesel" required class="register-data" />
                 <br />
                 <label class="register-label">Adres korespondencyjny</label>
-                <input type="text" id="address" placeholder="Adres korespondencyjny" required class="register-data" />
+                <input type="text" id="submission-address" placeholder="Adres korespondencyjny" required class="register-data" />
                 <br />
-                <label class="register-label">Kod pocztowy</label>
-                <input type="text" id="postalcode" placeholder="Kod pocztowy" required class="register-data" />
-                <br />
-                <label class="register-label">Miejscowość</label>
-                <input type="text" name="city" placeholder="Miejscowość" required class="register-data" />
 
             <p class="zgody">
             <h1>
@@ -128,7 +93,7 @@
                 Wyrażam zgodę na przesyłanie przez VIVUS FINANCE i INTERSALE SERVICES LIMITED informacji handlowych z wykorzystaniem środków komunikacji elektronicznej. Wyrażam zgodę na przetwarzanie moich danych osobowych przez VIVUS FINANCE oraz przez podmioty należące do grupy kapitałowej, w której skład wchodzi VIVUS FINANCE w celu marketingu produktów tych podmiotów oraz podmiotów trzecich (współpracujących z VIVUS FINANCE i INTERSALE SERVICES LIMITED)
             </p>
 
-            <div id="register-button">Złóż wniosek</div>
+            <div id="register-button" onmouseover="" style="cursor: pointer;">Złóż wniosek</div>
 
             </p>
 
@@ -182,6 +147,9 @@
             Szybka pożyczka przez Internet - Vivus.pl</p>
     </div>
 </footer>
+
+<script src="/resources/assets/js/lib/angular.js"></script>
+
 </body>
 </html>
 
