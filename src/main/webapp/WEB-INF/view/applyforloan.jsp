@@ -1,5 +1,5 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
-<html ng-app>
+<html ng-app='FinanceApp'>
 <head>
     <meta name="viewport" content="width=device-width, user-scalable=no" />
     <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
@@ -9,11 +9,17 @@
 
     <link rel="stylesheet" type="text/css" href="/resources/assets/css/style.css" />
 
+    <script src="/resources/assets/js/lib/angular.js" type="text/javascript"></script>
+    <script src="/resources/assets/js/lib/angular-resource.js" type="text/javascript"></script>
+    <script src="/resources/assets/js/angular/app.js" type="text/javascript"></script>
+    <script src="/resources/assets/js/angular/maincontroller.js" type="text/javascript"></script>
+
+
 <%--    <script data-main="/resources/assets/js/config" src="/resources/assets/js/lib/require.js"></script>--%>
 
 
 </head>
-<body>
+<body >
 <div id="wrapper">
     <header>
         <img src="/resources/assets/img/logo.png" class="logo-img" />
@@ -46,18 +52,18 @@
             </ul>
         </nav>
     </header>
-    <div id="container-white">
-        <div id="register-form">
+    <div id="container-white" >
+        <div id="register-form" ng-app='FinanceApp' ng-controller='MainController'>
 
             <h1>
-                Dane do wniosku:
+                Dane do wniosku: {{1+1}} {{understand}}
             </h1>
             <p>
                 <label class="register-label">Kwota Pożyczki</label>
-                <input type="text" id="submission-loanvalue" placeholder="Kwota Pożyczki" required class="register-data" />
+                <input type="text" id="submission-loanvalue" placeholder="Kwota Pożyczki" required class="register-data" ng-model='inputLoanValue'/>
                 <br />
                 <label class="register-label">Na ile dni?</label>
-                <input type="text" id="submission-days" placeholder="Ilość dni" required class="register-data" />
+                <input type="text" id="submission-days" placeholder="Ilość dni" required class="register-data"  ng-model='inputDays'/>
                 <br />
                 <label class="register-label">Imię</label>
                 <input type="text" id="submission-firstname" placeholder="Imię" required class="register-data" />
@@ -101,29 +107,27 @@
 
         </div>
 
-
-
         <div id="slider-details-mini">
             <h4>Termin spłaty [value]</h4>
-            Pożyczka:	<span class="slider-values">[value]</span>
+            Pożyczka:	<span class="slider-values">{{inputLoanValue}}</span>
             <br />
-            Prowizja:	<span class="slider-values">[value]</span>
+            Prowizja:	<span class="slider-values">{{interestValue}}</span>
             <br />
-            Razem:	<span class="slider-values">[value]</span>
+            Razem:	<span class="slider-values">{{inputLoanValue + interestValue}}</span>
             <br />
             RRSO:	<span class="slider-values">[value]</span>
 
             <h4>Przedłużenie terminu spłaty:</h4>
 
-            7 dni: 	<span class="slider-values">[value]</span>
+            7 dni: 	<span class="slider-values">{{inputLoanValue + interest7DaysValue}}</span>
             <br />
-            14 dni:	<span class="slider-values">[value]</span>
+            14 dni:	<span class="slider-values">{{inputLoanValue + interest14DaysValue}}</span>
             <br />
-            30 dni:	<span class="slider-values">[value]</span>
+            30 dni:	<span class="slider-values">{{inputLoanValue + interest30DaysValue}}</span>
             <br /><br />
             <center>
                 <a href="#">
-                    Formularz informacyjny
+                    Formularz informacyjny*
                 </a>
             </center>
         </div>
@@ -148,7 +152,6 @@
     </div>
 </footer>
 
-<script src="/resources/assets/js/lib/angular.js"></script>
 
 </body>
 </html>

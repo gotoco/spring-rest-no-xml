@@ -1,7 +1,7 @@
 define(['jquery',
     './message',
     './LoanApplicationContext',
-    './app',
+    './../angular/app',
     './controller'
 ], function($, message, loanContext, app, controller) {
 

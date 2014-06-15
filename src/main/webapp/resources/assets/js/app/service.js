@@ -1,4 +1,4 @@
-require(["app"], function(app) {
+require(["../angular/app"], function(app) {
 
     app.service('customersService', function () {
         this.getCustomers = function () {
