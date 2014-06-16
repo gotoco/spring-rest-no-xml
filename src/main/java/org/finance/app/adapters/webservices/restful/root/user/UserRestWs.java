@@ -1,5 +1,6 @@
 package org.finance.app.adapters.webservices.restful.root.user;
 
+import com.google.gson.Gson;
 import org.finance.app.adapters.webservices.json.FormJSON;
 import org.finance.app.bports.crudes.ClientReaderService;
 import org.finance.app.bports.crudes.ContractSchedulerPort;
@@ -8,6 +9,9 @@ import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.LoanContract;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.hateoas.Link;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -21,6 +25,8 @@ import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
+import java.util.ArrayList;
+import java.util.Collection;
 import java.util.List;
 
 @Controller
@@ -83,23 +89,27 @@ public class UserRestWs {
 
     @GET
     @RequestMapping("/user/{id}")
-    public Response getUser(
+    public ResponseEntity getUser(
             @Context HttpServletRequest request,
             @PathVariable final long id ) {
 
+        Collection<Link> links = new ArrayList<Link>();
         Client client = null;
 
         try{
             client = clientFinder.findClientById(id);
         } catch(NoResultException exception) {
-            return Response
-                    .status(404)
-                    .entity("No Contracts found for userId : " + id).build();
+
+            return new ResponseEntity<String>(HttpStatus.BAD_REQUEST);
+
+//            return Response
+//                    .status(404)
+//                    .entity("No Contracts found for userId : " + id).build();
         }
-System.out.println("#### " + client.getFirstName());
-        return Response
-                .status(200)
-                .entity(client).build();
+        Gson gson = new Gson();
+        String json = gson.toJson(client, Client.class);
+
+        return new ResponseEntity<String>(json, HttpStatus.OK);
     }
 
 }

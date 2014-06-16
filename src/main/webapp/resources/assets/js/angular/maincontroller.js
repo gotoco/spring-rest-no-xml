@@ -23,12 +23,12 @@ phonecatApp.controller('PhoneListCtrl', function ($scope) {
     ];
 });*/
 
-var phonecatApp = angular.module('phonecatApp', ['ngResource']);
 
 //app.controller('MainCtrl', function($scope, $resource) {
 //    var dataService = $resource('http://run.plnkr.co/5NYWROuqUDQOGcKq/test.json');
 //    $scope.data = dataService.get();
 //});
+var phonecatApp = angular.module('phonecatApp', ['ngResource']);
 
 phonecatApp.controller('MainCtrl', function($scope, $resource) {
     var dataService = $resource('http://localhost:8080/user/:userId', {userId:'@id'});

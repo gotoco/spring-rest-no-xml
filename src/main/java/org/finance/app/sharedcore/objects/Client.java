@@ -4,11 +4,13 @@ import org.finance.app.core.ddd.annotation.AggregateRoot;
 import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationData;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 @AggregateRoot
 @Entity
+@XmlRootElement
 public class Client {
 
     @Id
@@ -25,10 +27,10 @@ public class Client {
     @Column(name="address")
     private String address;
 
-    @OneToMany(cascade={CascadeType.ALL}, mappedBy="client")
+    @OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER,  mappedBy="client")
     private List<LoanApplicationData> loanScheduler = new ArrayList<LoanApplicationData>();
 
-    @OneToMany(cascade={CascadeType.ALL}, mappedBy="contractHolder")
+    @OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, mappedBy="contractHolder")
     private List<LoanContract> loanContracts = new ArrayList<LoanContract>();
 
     public String getLastName() {
