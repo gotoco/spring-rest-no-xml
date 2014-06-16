@@ -11,7 +11,7 @@
 
 </head>
 
-<body ng-controller="PhoneListCtrl">
+<%--<body ng-controller="PhoneListCtrl">
 
 <ul>
     <li ng-repeat="phone in phones">
@@ -20,6 +20,12 @@
     </li>
 </ul>
 
-</body>
+</body>--%>
 
+<body ng-controller="MainCtrl">
+
+User name: {{user.firstName}}
+
+
+</body>
 </html>

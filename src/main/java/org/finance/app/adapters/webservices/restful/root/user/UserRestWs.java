@@ -12,6 +12,7 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
@@ -60,7 +61,7 @@ public class UserRestWs {
 
     @GET
     @RequestMapping("/user/{id}/loanHistory")
-    public Response postForExtendLoan(
+    public Response getHistoryOfUser(
             @Context HttpServletRequest request,
             @PathVariable final long id ) {
 
@@ -77,6 +78,28 @@ public class UserRestWs {
         return Response
                 .status(200)
                 .entity(allContracts).build();
+    }
+
+
+    @GET
+    @RequestMapping("/user/{id}")
+    public Response getUser(
+            @Context HttpServletRequest request,
+            @PathVariable final long id ) {
+
+        Client client = null;
+
+        try{
+            client = clientFinder.findClientById(id);
+        } catch(NoResultException exception) {
+            return Response
+                    .status(404)
+                    .entity("No Contracts found for userId : " + id).build();
+        }
+System.out.println("#### " + client.getFirstName());
+        return Response
+                .status(200)
+                .entity(client).build();
     }
 
 }
