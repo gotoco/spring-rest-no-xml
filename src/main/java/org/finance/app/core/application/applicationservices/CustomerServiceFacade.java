@@ -41,7 +41,7 @@ public class CustomerServiceFacade implements LoanServiceApi {
     }
 
     public void applyForLoan(FormJSON jsonForm, DateTime submissionDate){
-        Long clientId = userAuthorizationService.getOrCreateClient(jsonForm);
+        Long clientId = userAuthorizationService.getOrCreateClient(jsonForm); //TODO: zwracaj klienta!!
         Client customer = clientFinder.findClientById(clientId);
         Form domainForm = applicationFormTranslator.createFormFromRequest(jsonForm, customer, submissionDate);
 

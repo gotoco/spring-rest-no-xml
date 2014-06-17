@@ -84,9 +84,8 @@ public class LoanApplicationSaga extends SagaInstance<LoanApplicationData> {
     }
 
     private void completeIfPossible() {
-        if (sagaData.hasRisk() && sagaData.hasValidIp() ) {
+        if (sagaData.hasRisk() != null && sagaData.hasValidIp() ) {
             markAsCompleted();
-
             if (!sagaData.hasRisk() && sagaData.hasValidIp()){
 
                 LoanGrantedConfirmation eventLoanGranted ;

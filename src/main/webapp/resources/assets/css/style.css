@@ -61,6 +61,39 @@ header {
 	box-shadow:         0px 1px 3px 0px #777;
 }
 
+.client-login {
+    float: left;
+    margin: -0.15em 0 0 .5em;
+    border-radius: 5px;
+    padding: 6px;
+    color: #fff;
+    font-size: .9em;
+
+    background: #84b540;
+    background: -moz-linear-gradient(top,  #84b540 0%, #7da83c 100%);
+    background: -webkit-gradient(linear, left top, left bottom, color-stop(0%,#84b540), color-stop(100%,#7da83c));
+    background: -webkit-linear-gradient(top,  #84b540 0%,#7da83c 100%);
+    background: -o-linear-gradient(top,  #84b540 0%,#7da83c 100%);
+    background: -ms-linear-gradient(top,  #84b540 0%,#7da83c 100%);
+    background: linear-gradient(to bottom,  #84b540 0%,#7da83c 100%);
+    filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#84b540', endColorstr='#7da83c',GradientType=0 );
+    -moz-box-shadow:    0px 1px 3px 0px #777;
+    -webkit-box-shadow: 0px 1px 3px 0px #777;
+    box-shadow:         0px 1px 3px 0px #777;
+}
+
+.bs-example {
+    margin-left: 0;
+    margin-right: 0;
+    margin-top: 0;
+    background-color: #fff;
+    border-width: 1px;
+    border-color: #ddd;
+    border-radius: 4px 4px 0 0;
+    box-shadow: none;
+}
+
+
 nav {
 	background: #444;
 	font-size: 1.2em;

@@ -5,6 +5,7 @@ import org.finance.app.bports.services.LoanServiceApi;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -42,6 +43,7 @@ public class LoanGrantRestWs {
     @RequestMapping("/loan/{id}/postForExtendLoan")
     public Response postForExtendLoan(
             @Context HttpServletRequest request,
+            @PathVariable final long id,
             @FormParam("loanId") Long loanId,
             @FormParam("userId") Long userId,
             @FormParam("date") String date) {
