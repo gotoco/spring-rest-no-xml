@@ -1,3 +1,3 @@
-   var app = angular.module('FinanceApp', [] );
+   var app = angular.module('4finance', [] );
 
 
