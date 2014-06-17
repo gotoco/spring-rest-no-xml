@@ -1,19 +1,32 @@
 <%@ page contentType="text/html;charset=UTF-8" language="java" %>
+<!doctype html>
 <html>
 <head>
-    <meta name="viewport" content="width=device-width, user-scalable=no" />
-    <meta http-equiv="content-type" content="text/html; charset=UTF-8" />
-    <title>
-        Szybka Pożyczka przez Internet - Vivus.pl
-    </title>
-    <script type="text/javascript" src="/resources/assets/js/lib/require.js"></script>
-    <script type="text/javascript" src="/resources/assets/js/lib/jquery.js"></script>
-    <script type="text/javascript" src="/resources/assets/bootstrap/js/bootstrap.min.js"></script>
-    <link href="/resources/assets/bootstrap/css/bootstrap.min.css" rel="stylesheet">
+    <title>Angular Forms</title>
+
+    <!-- LOAD BOOTSTRAP CSS -->
+    <link rel="stylesheet" href="//netdna.bootstrapcdn.com/bootstrap/3.0.2/css/bootstrap.min.css">
     <link rel="stylesheet" type="text/css" href="/resources/assets/css/style.css" />
+
+    <!-- LOAD JQUERY -->
+    <script src="//ajax.googleapis.com/ajax/libs/jquery/2.0.3/jquery.min.js"></script>
+    <!-- LOAD ANGULAR -->
+    <script src="/resources/assets/js/lib/angular.js" type="text/javascript"></script>
+    <script src="/resources/assets/js/lib/angular-resource.js" type="text/javascript"></script>
+
+    <script src="/resources/assets/js/angular/controllers.js" type="text/javascript"></script>
+    <!-- PROCESS FORM WITH AJAX (NEW) -->
+    <script>
+
+
+
+    </script>
 </head>
-<body>
-<div id="wrapper">
+<!-- apply the module and controller to our body so angular is applied to that -->
+<body ng-app="4finance" ng-controller="formController">
+
+<div id="wrapper" class="container">
+
     <header>
         <img src="/resources/assets/img/logo.png" class="logo-img" />
         <div id="login">
@@ -32,12 +45,12 @@
                         <img src="/resources/assets/img/home.png" />
                     </li>
                 </a>
-                <a href="konto.html">
+                <a href="applyforloan.html">
                     <li class="apply-for-loan">
                         Weź Pożyczkę
                     </li>
                 </a>
-                <a href="konto.html">
+                <a href="accountservices.html">
                     <li class="account-services">
                         Operacje na koncie
                     </li>
@@ -45,50 +58,32 @@
             </ul>
         </nav>
     </header>
-    <div id="container-white">
-        <div id="register-form">
+
+    <div id="container-white" >
+        <form ng-submit="processForm()">
 
             <h1>
-                Edytuj dane:
+                Dane do wniosku
             </h1>
-
             <p>
-
+                <label class="register-label">Kwota Pożyczki</label>
+                <input type="text" id="submission-loanvalue" placeholder="Kwota Pożyczki" required class="register-data" ng-model="formData.applyingAmount" />
+                <br />
+                <label class="register-label">Na ile dni?</label>
+                <input type="text" id="submission-days" placeholder="Ilość dni" required class="register-data"  ng-model='formData.maturityInDays'/>
+                <br />
                 <label class="register-label">Imię</label>
-                <input type="text" name="imie" placeholder="Imię" required class="register-data" />
+                <input type="text" id="submission-firstname" placeholder="Imię" required class="register-data" ng-model='formData.firstName'/>
                 <br />
                 <label class="register-label">Nazwisko</label>
-                <input type="text" name="nazwisko" placeholder="Nazwisko" required class="register-data" />
+                <input type="text" id="submission-lastname" placeholder="Nazwisko" required class="register-data" ng-model='formData.lastName'/>
                 <br />
                 <label class="register-label">PESEL</label>
-                <input type="text" name="pesel" placeholder="Pesel" required class="register-data" />
-                <br />
-                <label class="register-label">Seria i nr dowodu osobistego</label>
-                <input type="text" name="dowod" placeholder="Seria i nr dowodu osobistego" required class="register-data" />
-                <br />
-                <label class="register-label">Telefon komórkowy</label>
-                <input type="text" name="tel" placeholder="Telefon Komórkowy" required class="register-data" />
-                <br />
-                <label class="register-label">Adres E-mail</label>
-                <input type="text" name="email" placeholder="Adres E-mail" required class="register-data" />
-                <br />
-                <label class="register-label">Hasło</label>
-                <input type="text" name="haslo" placeholder="Hasło" required class="register-data" />
-                <br />
-                <label class="register-label">Wprowadź hasło ponownie</label>
-                <input type="text" name="haslo2" placeholder="Hasło" required class="register-data" />
+                <input type="text" id="submission-pesel" placeholder="Pesel" required class="register-data" ng-model='formData.Pesel'/>
                 <br />
                 <label class="register-label">Adres korespondencyjny</label>
-                <input type="text" name="adres" placeholder="Adres korespondencyjny" required class="register-data" />
+                <input type="text" id="submission-address" placeholder="Adres korespondencyjny" required class="register-data"  ng-model='formData.address'/>
                 <br />
-                <label class="register-label">Ulica nr domu/nr mieszkania</label>
-                <input type="text" name="ulica" placeholder="Ulica nr domu/nr mieszkania" required class="register-data" />
-                <br />
-                <label class="register-label">Kod pocztowy</label>
-                <input type="text" name="kod" placeholder="Kod pocztowy" required class="register-data" />
-                <br />
-                <label class="register-label">Miejscowość</label>
-                <input type="text" name="miejscowosc" placeholder="Miejscowość" required class="register-data" />
 
             <p class="zgody">
             <h1>
@@ -111,60 +106,41 @@
                 Wyrażam zgodę na przesyłanie przez VIVUS FINANCE i INTERSALE SERVICES LIMITED informacji handlowych z wykorzystaniem środków komunikacji elektronicznej. Wyrażam zgodę na przetwarzanie moich danych osobowych przez VIVUS FINANCE oraz przez podmioty należące do grupy kapitałowej, w której skład wchodzi VIVUS FINANCE w celu marketingu produktów tych podmiotów oraz podmiotów trzecich (współpracujących z VIVUS FINANCE i INTERSALE SERVICES LIMITED)
             </p>
 
-            <div id="register-button">Aktualizuj dane</div>
+
+            <!-- SUBMIT BUTTON -->
+            <button type="submit" class="btn btn-success btn-lg btn-block">
+                <span class="glyphicon glyphicon-flash"></span> Złóż wniosek!
+            </button>
 
             </p>
 
             </p>
 
-        </div>
-        <div id="sliders-mini">
-            <p class="slider-text-mini">
-                Ile pieniędzy chcesz pożyczyć?
-                <span class="slider-text-em-mini">100-3500 zł</span>
-            </p>
-            <input type="range"  min="100" max="3500" value="1500"  step="50"  onchange="showValue1(this.value)" name="range1" class="slider-bars mini" />
-            <span id="range1">1500</span>
-            <script type="text/javascript">
-                function showValue1(newValue1)
-                {
-                    document.getElementById("range1").innerHTML=newValue1;
-                }
-            </script>
-            <p class="slider-text-mini">
-                Na ile dni?
-                <span class="slider-text-em-mini">1-30 dni</span>
-            </p>
-            <input type="range"  min="1" max="30" value="30"  step="1"  onchange="showValue2(this.value)" name="range2" class="slider-bars mini" />
-            <span id="range2">30</span>
-            <script type="text/javascript">
-                function showValue2(newValue2)
-                {
-                    document.getElementById("range2").innerHTML=newValue2;
-                }
-            </script>
-        </div>
+
+        </form>
+
+
         <div id="slider-details-mini">
             <h4>Termin spłaty [value]</h4>
-            Pożyczka:	<span class="slider-values">[value]</span>
+            Pożyczka:	<span class="slider-values">{{inputLoanValue}}</span>
             <br />
-            Prowizja:	<span class="slider-values">[value]</span>
+            Prowizja:	<span class="slider-values">{{interestValue}}</span>
             <br />
-            Razem:	<span class="slider-values">[value]</span>
+            Razem:	<span class="slider-values">{{inputLoanValue + interestValue}}</span>
             <br />
             RRSO:	<span class="slider-values">[value]</span>
 
             <h4>Przedłużenie terminu spłaty:</h4>
 
-            7 dni: 	<span class="slider-values">[value]</span>
+            7 dni: 	<span class="slider-values">{{inputLoanValue + interest7DaysValue}}</span>
             <br />
-            14 dni:	<span class="slider-values">[value]</span>
+            14 dni:	<span class="slider-values">{{inputLoanValue + interest14DaysValue}}</span>
             <br />
-            30 dni:	<span class="slider-values">[value]</span>
+            30 dni:	<span class="slider-values">{{inputLoanValue + interest30DaysValue}}</span>
             <br /><br />
             <center>
                 <a href="#">
-                    Formularz informacyjny
+                    Formularz informacyjny*
                 </a>
             </center>
         </div>
@@ -188,5 +164,8 @@
             Szybka pożyczka przez Internet - Vivus.pl</p>
     </div>
 </footer>
+
+
+
 </body>
 </html>
