@@ -24,7 +24,7 @@ public class FormJSONBuilder {
     private String address;
 
     public FormJSON build(){
-        return new FormJSON(firstName, lastName, applyingAmount);
+        return new FormJSON(firstName, lastName, applyingAmount, address);
     }
 
     public FormJSONBuilder withCorrectlyFilledData(){
@@ -34,6 +34,24 @@ public class FormJSONBuilder {
         this.applyingIpAddress  = "127.0.0.1";
         this.maturityInDays = 30;
         this.submissionDate = new DateTime().withTimeAtStartOfDay().plusHours(8);
+
+        return this;
+    }
+
+    public FormJSONBuilder withSpecifiedData(String firstName,
+                                             String lastName,
+                                             BigDecimal applyingAmount,
+                                             String applyingIpAddress,
+                                             Integer maturityInDays,
+                                             DateTime submissionDate,
+                                             String address){
+        this.firstName = firstName;
+        this.lastName  = lastName;
+        this.applyingAmount = applyingAmount;
+        this.applyingIpAddress  = applyingIpAddress;
+        this.maturityInDays = maturityInDays;
+        this.submissionDate = submissionDate;
+        this.address = address;
 
         return this;
     }

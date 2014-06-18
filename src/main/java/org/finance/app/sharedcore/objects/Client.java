@@ -4,7 +4,6 @@ import org.finance.app.core.ddd.annotation.AggregateRoot;
 import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationData;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 

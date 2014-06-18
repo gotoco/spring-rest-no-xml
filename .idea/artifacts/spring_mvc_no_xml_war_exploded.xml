@@ -49,6 +49,7 @@
           <element id="library" level="project" name="Maven: com.sun.jersey:jersey-client:1.12" />
           <element id="library" level="project" name="Maven: com.sun.jersey:jersey-core:1.12" />
           <element id="library" level="project" name="Maven: com.sun.jersey:jersey-server:1.18.1" />
+          <element id="library" level="project" name="Maven: com.h2database:h2:1.4.178" />
           <element id="library" level="project" name="Maven: com.google.code.gson:gson:2.2.4" />
           <element id="library" level="project" name="Maven: org.seleniumhq.selenium:selenium-api:2.40.0" />
           <element id="library" level="project" name="Maven: org.json:json:20080701" />

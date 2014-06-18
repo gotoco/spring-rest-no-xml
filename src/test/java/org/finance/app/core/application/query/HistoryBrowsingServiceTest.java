@@ -5,8 +5,8 @@ import org.finance.app.annotations.IntegrationTest;
 import org.finance.app.bports.crudes.ContractSchedulerPort;
 import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.LoanContract;
-import org.finance.test.ConfigTest;
 import org.finance.test.builders.contracts.LoanContractBuilder;
+import org.finance.test.ConfigTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -20,8 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
 
 import static org.junit.Assert.*;

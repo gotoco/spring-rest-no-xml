@@ -28,10 +28,11 @@ public class FormJSON {
 
     private String address;
 
-    public FormJSON(String firstName, String lastName, BigDecimal applyingAmount) {
+    public FormJSON(String firstName, String lastName, BigDecimal applyingAmount, String clientAddress) {
         this.firstName = firstName;
         this.lastName = lastName;
         this.applyingAmount = applyingAmount;
+        this.address = clientAddress;
     }
 
     public FormJSON() {
