@@ -191,7 +191,30 @@
             <scope>compile</scope>
         </dependency>
 
-	</dependencies>
+        <!-- Acceptance tests -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-api</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-firefox-driver</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+
+
+    </dependencies>
 
 	<build>
 		<finalName>spring-mvc-no-xml</finalName>
@@ -261,6 +284,7 @@
 		<rest-assured.version>2.3.1</rest-assured.version>
 
 		<!-- Maven plugins -->
+        <selenium.version>2.40.0</selenium.version>
 		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
 		<maven-war-plugin.version>2.4</maven-war-plugin.version>
 		<maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>

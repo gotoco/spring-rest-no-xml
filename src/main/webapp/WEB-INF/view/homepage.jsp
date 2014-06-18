@@ -22,7 +22,7 @@
         </div>
         <nav>
             <ul id="top-menu">
-                <a href="index.html">
+                <a href="homepage.html">
                     <li class="nav-current-page">
                         <img src="/resources/assets/img/home.png" />
                     </li>

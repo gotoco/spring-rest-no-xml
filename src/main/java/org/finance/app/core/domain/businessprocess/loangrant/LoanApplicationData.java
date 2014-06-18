@@ -29,7 +29,7 @@ public class LoanApplicationData {
     @Column(name="has_valid_ip")
     private Boolean hasValidIp;
 
-    @Column(name="has_risk")
+    @Column(name="has_risk") //Deprecated!
     private Boolean hasRisk;
 
     @Column(name="date_of_application")
@@ -194,11 +194,14 @@ public class LoanApplicationData {
 
     public void whenRiskWasAnalyzed(RiskAnalyzedResponse response) {
         if(response.hasRisk()){
+            this.hasRisk = true;
             for(Risk risk : response.getRisks()){
                 if(!this.risks.contains(risk)){
                     risks.add(risk);
                 }
             }
+        } else {
+            this.hasRisk = false;
         }
     }
 }
