@@ -32,7 +32,11 @@ public class CustomerServiceFacade implements LoanServiceApi {
     private UserAuthorizationService userAuthorizationService;
 
     @Autowired
-    public CustomerServiceFacade(CustomerService customerService, LoanReaderService loanReaderService, ApplicationFormTranslator applicationFormTranslator, ClientFinder clientFinder, UserAuthorizationService userAuthorizationService) {
+    public CustomerServiceFacade(CustomerService customerService,
+                                 LoanReaderService loanReaderService,
+                                 ApplicationFormTranslator applicationFormTranslator,
+                                 ClientFinder clientFinder,
+                                 UserAuthorizationService userAuthorizationService) {
         this.customerService = customerService;
         this.loanReaderService = loanReaderService;
         this.applicationFormTranslator = applicationFormTranslator;
@@ -41,8 +45,7 @@ public class CustomerServiceFacade implements LoanServiceApi {
     }
 
     public void applyForLoan(FormJSON jsonForm, DateTime submissionDate){
-        Long clientId = userAuthorizationService.getOrCreateClient(jsonForm); //TODO: zwracaj klienta!!
-        Client customer = clientFinder.findClientById(clientId);
+        Client customer = clientFinder.findClientById(userAuthorizationService.getOrCreateClient(jsonForm));
         Form domainForm = applicationFormTranslator.createFormFromRequest(jsonForm, customer, submissionDate);
 
         customerService.applyForaLoan(domainForm);
