@@ -30,7 +30,7 @@ public class PersonalDataBuilder {
     }
 
     public PersonalDataBuilder withDefaultData(){
-        return new PersonalDataBuilder("Maciej", "Grochowski", "Marymoncka 1500", new DateTime().minusYears(30));
+        return new PersonalDataBuilder("Michal", "Grochowski", "Marymoncka 1500", new DateTime().minusYears(30));
     }
 
     public Client build(){

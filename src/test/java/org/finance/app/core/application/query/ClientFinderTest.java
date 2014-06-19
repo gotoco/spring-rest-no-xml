@@ -1,12 +1,13 @@
 package org.finance.app.core.application.query;
 
+import com.gargoylesoftware.htmlunit.javascript.host.css.CSSStyleSheet;
 import junit.framework.Assert;
 import org.finance.app.annotations.IntegrationTest;
 import org.finance.app.bports.crudes.ClientReaderService;
 import org.finance.app.bports.crudes.ContractSchedulerPort;
 import org.finance.app.sharedcore.objects.Client;
-import org.finance.test.ConfigTest;
 import org.finance.test.builders.PersonalDataBuilder;
+import org.finance.test.ConfigTest;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -20,6 +21,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import static junit.framework.TestCase.assertNull;
 
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -65,7 +69,7 @@ public class ClientFinderTest {
         } catch (NoResultException noResultException){
 
         //Then
-        Assert.assertNull(clientFromDB);
+        assertNull(clientFromDB);
         }
 
     }
