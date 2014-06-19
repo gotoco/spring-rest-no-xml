@@ -45,26 +45,14 @@ public class LoanApplicationSagaTest {
     @PersistenceContext
     private EntityManager entityManager;
 
+    @Autowired
     private ApplicationContext applicationContext;
 
+    @Autowired
     private DomainEventPublisher eventPublisher;
 
+    @Autowired
     private LoanSagaManager<LoanApplicationSaga, LoanApplicationData> loanSagaManager;
-
-    @Autowired
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
-
-    @Autowired
-    public void setEventPublisher(DomainEventPublisher eventPublisher) {
-        this.eventPublisher = eventPublisher;
-    }
-
-    @Autowired
-    public void setLoanSagaManager(LoanSagaManager<LoanApplicationSaga, LoanApplicationData> loanSagaManager) {
-        this.loanSagaManager = loanSagaManager;
-    }
 
     @Test
     @Transactional

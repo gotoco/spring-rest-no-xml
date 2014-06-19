@@ -40,12 +40,8 @@ public class LoanApplicationSagaManager implements
     }
 
     @Autowired
-    public void setEventPublisher(DomainEventPublisher eventPublisher){
+    public LoanApplicationSagaManager(DomainEventPublisher eventPublisher, ApplicationContext applicationContext) {
         this.eventPublisher = eventPublisher;
-    }
-
-    @Autowired
-    public void setApplicationContext(ApplicationContext applicationContext){
         this.applicationContext = applicationContext;
     }
 

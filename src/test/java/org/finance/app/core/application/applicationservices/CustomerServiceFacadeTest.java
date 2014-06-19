@@ -34,6 +34,7 @@ public class CustomerServiceFacadeTest extends UserBaseTest {
     @Transactional
     @Rollback(true)
     public void whenCorrectSubmissionNewLoanIsCreated(){
+
         //Given
         Client newClient = createSaveAndGetNewClient();
         FormJSON form = getApplicationFormWithCorrectUser(newClient);

@@ -2,8 +2,10 @@ package org.finance.app.core.domain.risk.analysis;
 
 import junit.framework.Assert;
 import org.finance.app.annotations.IntegrationTest;
+import org.finance.app.core.application.parent.UserBaseTest;
 import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationData;
 import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationSaga;
+import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationSagaManager;
 import org.finance.app.core.domain.businessprocess.loangrant.mocks.IpCheckedResponseHandler;
 import org.finance.app.core.domain.common.*;
 import org.finance.app.core.domain.events.customerservice.RequestWasSubmitted;
@@ -18,11 +20,13 @@ import org.finance.test.ConfigTest;
 import org.finance.test.builders.FormBuilder;
 import org.finance.test.builders.PersonalDataBuilder;
 import org.joda.time.DateTime;
+import org.junit.BeforeClass;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -38,34 +42,21 @@ import java.net.UnknownHostException;
 @WebAppConfiguration
 @ContextConfiguration(
         classes = ConfigTest.class)
-public class RequestMultipleValidatorTest {
+public class RequestMultipleValidatorTest extends UserBaseTest {
 
     private static final String ipCheckedResponseHandlerName = "ipCheckedResponseHandler";
 
     @PersistenceContext
     EntityManager entityManager;
 
+    @Autowired
     private ApplicationContext applicationContext;
 
+    @Autowired
     private DomainEventPublisher eventPublisher;
 
-    private LoanSagaManager<LoanApplicationSaga, LoanApplicationData> loanSagaManager;
-
     @Autowired
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
-
-    @Autowired
-    public void setEventPublisher(DomainEventPublisher eventPublisher) {
-        this.eventPublisher = eventPublisher;
-    }
-
-    @Autowired
-    public void setLoanSagaManager(LoanSagaManager loanSagaManager) {
-        this.loanSagaManager = loanSagaManager;
-    }
-
+    private LoanApplicationSagaManager loanApplicationSagaManager;
 
     @Test
     @Transactional
@@ -97,17 +88,29 @@ public class RequestMultipleValidatorTest {
 
     @Test
     @Transactional
+    @Rollback(true)
     public void whenCheckIpEventTriggeredRejectMultipleIp() {
 
         //Given
         AggregateId eventId = AggregateId.generate();
         prepareRequestsWithSameIp();
-        Client client = new PersonalDataBuilder().withCorrectlyFilledData().build();
-        entityManager.persist(client);
+        Client client = createAndSaveClientRecordToDb();
         Form form = new FormBuilder().withCorrectlyFilledForm(client).build();
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, eventId);
-        loanSagaManager.handleRequestWasSubmitted(requestWasSubmitted);
+        loanApplicationSagaManager.handleRequestWasSubmitted(requestWasSubmitted);
         CheckIpRequest checkIpRequest = new CheckIpRequest(eventId, "127.0.0.1", new DateTime());
+        registerCheckedIpEventHandler();
+
+        //When
+        eventPublisher.publish(checkIpRequest);
+
+        //Then
+        IpCheckedResponseHandler responseHandler = (IpCheckedResponseHandler)applicationContext.getBean(ipCheckedResponseHandlerName);
+        Assert.assertFalse(responseHandler.isValidIpAddress());
+    }
+
+    public void registerCheckedIpEventHandler(){
+
         try {
             eventPublisher.registerEventHandlerByAttributes (IpCheckedResponse.class,
                                                              IpCheckedResponseHandler.class,
@@ -120,12 +123,6 @@ public class RequestMultipleValidatorTest {
             Assert.fail();
         }
 
-        //When
-        eventPublisher.publish(checkIpRequest);
-
-        //Then
-        IpCheckedResponseHandler responseHandler = (IpCheckedResponseHandler)applicationContext.getBean(ipCheckedResponseHandlerName);
-     //   Assert.assertFalse(responseHandler.isValidIpAddress());
     }
 
     @Transactional
@@ -147,7 +144,7 @@ public class RequestMultipleValidatorTest {
             DateTime submissionDate = new DateTime();
             Form form = new Form(personalData, applyingAmount, applyingIpAddress, maturityInDays, submissionDate);
             requestWasSubmitted = new RequestWasSubmitted(form, AggregateId.generate());
-            loanSagaManager.handleRequestWasSubmitted(requestWasSubmitted);
+            loanApplicationSagaManager.createAndFillNewSagaData(AggregateId.generate(), requestWasSubmitted);
         }
     }
 

@@ -48,4 +48,13 @@ public class UserBaseTest {
                 client.getAddress())
                 .build();
     }
+
+    @Transactional
+    protected Client createAndSaveClientRecordToDb(){
+        Client client = new PersonalDataBuilder().withDefaultData().build();
+
+        entityManager.persist(client);
+
+        return client;
+    }
 }

@@ -4,6 +4,8 @@ import junit.framework.Assert;
 import org.finance.app.annotations.IntegrationTest;
 import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.events.customerservice.ExtendTheLoanRequest;
+import org.finance.app.core.domain.events.saga.DoRiskAnalysisRequest;
+import org.finance.app.core.domain.events.saga.RiskAnalyzedResponse;
 import org.finance.app.core.domain.saga.LoanSagaManager;
 import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.Form;
@@ -13,6 +15,7 @@ import org.finance.app.sharedcore.objects.Loan;
 import org.finance.test.ConfigTest;
 import org.finance.test.builders.FormBuilder;
 import org.finance.test.builders.PersonalDataBuilder;
+import org.finance.test.builders.events.DoRiskAnalysisRequestBuilder;
 import org.finance.test.builders.events.ExtendTheLoanRequestBuilder;
 import org.finance.test.builders.loan.LoanBuilder;
 import org.junit.Test;
@@ -29,6 +32,9 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+
+import java.util.ArrayList;
 
 import static org.junit.Assert.fail;
 
@@ -147,27 +153,6 @@ public class LoanApplicationSagaManagerTest {
         catch(NoResultException exception){
             Assert.assertNull(sagaData);
         }
-    }
-
-    @Test
-    public void shouldHandleRiskAnalyzedEvent(){
-
-        //Given
-
-        //When
-
-        //Then
-
-    }
-
-    @Test
-    public void shouldHandleIpCheckedResponseEvent(){
-
-        //Given
-
-        //When
-
-        //Then
     }
 
     @Transactional

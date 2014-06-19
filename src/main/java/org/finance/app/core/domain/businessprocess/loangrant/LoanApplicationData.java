@@ -204,4 +204,8 @@ public class LoanApplicationData {
             this.hasRisk = false;
         }
     }
+
+    public List<Risk> showRisks(){
+        return this.risks;
+    }
 }

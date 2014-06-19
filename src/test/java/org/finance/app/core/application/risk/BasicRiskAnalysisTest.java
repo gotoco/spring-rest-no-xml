@@ -8,6 +8,7 @@ import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.risk.Risk;
 import org.finance.app.sharedcore.objects.Money;
 import org.finance.app.core.domain.events.saga.DoRiskAnalysisRequest;
+import org.finance.test.builders.events.DoRiskAnalysisRequestBuilder;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -24,14 +25,11 @@ public class BasicRiskAnalysisTest {
     public void simpleShouldRejectLoan(){
         //Given
         BasicRiskAnalysis testedFunction = new BasicRiskAnalysis();
-        AggregateId sagaDataId = AggregateId.generate();
-        DateTime applicationTime = new DateTime().withTimeAtStartOfDay().plusHours(1);
-        Money value = new Money(3000);
-        DoRiskAnalysisRequest request = new DoRiskAnalysisRequest(sagaDataId, applicationTime, value, applicationTime);
+        DoRiskAnalysisRequest riskAnalysisRequest = new DoRiskAnalysisRequestBuilder().withRiskedData().build();
         List risks = prepareRisksToAnalyze();
 
         //When
-        Boolean isRejected = !testedFunction.analyze(request, risks).isEmpty();
+        Boolean isRejected = !testedFunction.analyze(riskAnalysisRequest, risks).isEmpty();
 
         //Then
         Assert.assertTrue(isRejected);
@@ -41,23 +39,14 @@ public class BasicRiskAnalysisTest {
     public void simpleShouldAcceptLoan(){
         //Given
         BasicRiskAnalysis testedFunction = new BasicRiskAnalysis();
-        AggregateId sagaDataId = AggregateId.generate();
-        DateTime applicationTime = new DateTime().withTimeAtStartOfDay().plusHours(9);
-        Money value = new Money(2000);
-        DoRiskAnalysisRequest request = new DoRiskAnalysisRequest(sagaDataId, applicationTime, value, applicationTime);
+        DoRiskAnalysisRequest riskAnalysisRequest = new DoRiskAnalysisRequestBuilder().withNoRiskedData().build();
         List risks = prepareRisksToAnalyze();
 
         //When
-        Boolean isAccepted = testedFunction.analyze(request, risks).isEmpty();
+        Boolean isAccepted = testedFunction.analyze(riskAnalysisRequest, risks).isEmpty();
 
         //Then
         Assert.assertTrue(isAccepted);
-    }
-
-
-    @Test
-    public void randomAcceptTest(){
-
     }
 
     private List<Risk> prepareRisksToAnalyze(){
