@@ -10,7 +10,7 @@ import org.springframework.stereotype.Component;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
 
-@Component("ApplicationFormTranslator")
+@Component("applicationFormTranslator")
 public class ApplicationFormTranslator {
 
     public Form createFormFromRequest(FormJSON jsonForm, Client client, DateTime submissionDate){

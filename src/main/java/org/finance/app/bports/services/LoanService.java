@@ -4,7 +4,7 @@ package org.finance.app.bports.services;
 import org.finance.app.adapters.webservices.json.FormJSON;
 import org.joda.time.DateTime;
 
-public interface LoanServiceApi {
+public interface LoanService {
 
     public void applyForLoan(FormJSON jsonForm, DateTime submissionDate);
 

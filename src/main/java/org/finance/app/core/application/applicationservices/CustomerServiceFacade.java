@@ -11,15 +11,15 @@ import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.Form;
 import org.finance.app.sharedcore.objects.Loan;
 import org.finance.app.core.ddd.annotation.ApplicationService;
-import org.finance.app.bports.services.LoanServiceApi;
+import org.finance.app.bports.services.LoanService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 
-@Component("CustomerServiceFacade")
+@Component("customerServiceFacade")
 @ApplicationService
-public class CustomerServiceFacade implements LoanServiceApi {
+public class CustomerServiceFacade implements LoanService {
 
     private CustomerService customerService;
 

@@ -1,7 +1,7 @@
 package org.finance.app.adapters.webservices.restful.root.loan;
 
 import org.finance.app.adapters.webservices.json.FormJSON;
-import org.finance.app.bports.services.LoanServiceApi;
+import org.finance.app.bports.services.LoanService;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,7 +19,7 @@ import javax.ws.rs.core.Response;
 @Consumes({MediaType.APPLICATION_JSON + "; charset=UTF-8"})
 public class LoanGrantRestWs {
 
-    LoanServiceApi loanService;
+    LoanService loanService;
 
     @POST
     @RequestMapping("/loan/applyForLoan")
@@ -62,7 +62,7 @@ public class LoanGrantRestWs {
     }
 
     @Autowired
-    public LoanGrantRestWs(LoanServiceApi loanService) {
+    public LoanGrantRestWs(LoanService loanService) {
         this.loanService = loanService;
     }
 }

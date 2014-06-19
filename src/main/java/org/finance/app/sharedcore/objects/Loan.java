@@ -10,7 +10,6 @@ import java.util.Date;
 
 @AggregateRoot
 @Entity
-@XmlRootElement
 public class Loan {
 
     @Transient

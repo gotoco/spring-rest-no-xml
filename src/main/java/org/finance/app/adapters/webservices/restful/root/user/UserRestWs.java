@@ -1,17 +1,12 @@
 package org.finance.app.adapters.webservices.restful.root.user;
 
 import com.google.gson.Gson;
-import org.finance.app.adapters.webservices.json.ClientResources;
-import org.finance.app.adapters.webservices.json.FormJSON;
 import org.finance.app.bports.crudes.ClientReaderService;
 import org.finance.app.bports.crudes.ContractSchedulerPort;
-import org.finance.app.bports.services.LoanServiceApi;
+import org.finance.app.bports.services.LoanService;
 import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.LoanContract;
-import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.hateoas.Link;
-import org.springframework.hateoas.Resource;
 import org.springframework.http.HttpStatus;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
@@ -22,16 +17,12 @@ import javax.persistence.NoResultException;
 import javax.servlet.http.HttpServletRequest;
 import javax.ws.rs.Consumes;
 import javax.ws.rs.GET;
-import javax.ws.rs.POST;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
 import javax.ws.rs.core.Response;
-import java.util.ArrayList;
-import java.util.Collection;
 import java.util.List;
 
-import static org.springframework.hateoas.core.DummyInvocationUtils.methodOn;
 import static org.springframework.hateoas.jaxrs.JaxRsLinkBuilder.linkTo;
 
 @Controller
@@ -39,14 +30,14 @@ import static org.springframework.hateoas.jaxrs.JaxRsLinkBuilder.linkTo;
 @Consumes({MediaType.APPLICATION_JSON + "; charset=UTF-8"})
 public class UserRestWs {
 
-    private LoanServiceApi loanService;
+    private LoanService loanService;
 
     private ContractSchedulerPort contractScheduler;
 
     private ClientReaderService clientFinder;
 
     @Autowired
-    public UserRestWs(LoanServiceApi service, ContractSchedulerPort contractScheduler, ClientReaderService clientReaderService){
+    public UserRestWs(LoanService service, ContractSchedulerPort contractScheduler, ClientReaderService clientReaderService){
         this.loanService = service;
         this.contractScheduler = contractScheduler;
         this.clientFinder = clientReaderService;

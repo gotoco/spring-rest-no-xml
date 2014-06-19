@@ -42,7 +42,7 @@ public class UserBaseTest {
         return new FormJSONBuilder().withSpecifiedData(client.getFirstName(),
                 client.getLastName(),
                 new BigDecimal(1000),
-                "1.1.1.1.1",
+                "127.0.0.1",
                 30,
                 new DateTime(),
                 client.getAddress())

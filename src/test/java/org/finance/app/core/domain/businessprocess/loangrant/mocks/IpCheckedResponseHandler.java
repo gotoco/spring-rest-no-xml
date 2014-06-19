@@ -4,9 +4,6 @@ import org.finance.app.core.domain.events.engine.mocks.AbstractEventReceiver;
 import org.finance.app.core.domain.events.saga.IpCheckedResponse;
 import org.springframework.stereotype.Component;
 
-/**
- * Created by maciek on 09.06.14.
- */
 @Component("ipCheckedResponseHandler")
 public class IpCheckedResponseHandler extends AbstractEventReceiver {
 

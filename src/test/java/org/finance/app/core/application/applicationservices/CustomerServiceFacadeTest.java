@@ -3,11 +3,9 @@ package org.finance.app.core.application.applicationservices;
 import junit.framework.Assert;
 import org.finance.app.adapters.webservices.json.FormJSON;
 import org.finance.app.annotations.IntegrationTest;
-import org.finance.app.bports.services.LoanServiceApi;
+import org.finance.app.bports.services.LoanService;
 import org.finance.app.core.application.parent.UserBaseTest;
 import org.finance.app.sharedcore.objects.Client;
-import org.finance.app.sharedcore.objects.Loan;
-import org.finance.test.builders.external.FormJSONBuilder;
 import org.finance.test.ConfigTest;
 import org.joda.time.DateTime;
 import org.junit.Test;
@@ -30,7 +28,7 @@ import javax.persistence.Query;
 public class CustomerServiceFacadeTest extends UserBaseTest {
 
     @Autowired
-    LoanServiceApi customerServiceFacade;
+    LoanService customerServiceFacade;
 
     @Test
     @Transactional

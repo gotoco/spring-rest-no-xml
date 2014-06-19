@@ -1,6 +1,7 @@
 package org.finance.test.builders.external;
 
 import org.finance.app.adapters.webservices.json.FormJSON;
+import org.finance.app.sharedcore.objects.Client;
 import org.joda.time.DateTime;
 
 import java.math.BigDecimal;
@@ -26,6 +27,8 @@ public class FormJSONBuilder {
     public FormJSON build(){
         FormJSON form = new FormJSON(firstName, lastName, applyingAmount, address);
         form.setMaturityInDays(maturityInDays);
+        form.setSubmissionDate(submissionDate);
+        form.setApplyingIpAddress(applyingIpAddress);
 
         return form;
     }
@@ -55,6 +58,20 @@ public class FormJSONBuilder {
         this.maturityInDays = maturityInDays;
         this.submissionDate = submissionDate;
         this.address = address;
+
+        return this;
+    }
+
+    public FormJSONBuilder withClient(Client client){
+        this.firstName = client.getFirstName();
+        this.lastName  = client.getLastName();
+        this.address = client.getAddress();
+
+        return this;
+    }
+
+    public FormJSONBuilder withSubmissionDate(DateTime submissionDate){
+        this.submissionDate = submissionDate;
 
         return this;
     }
