@@ -5,7 +5,7 @@ import org.finance.app.annotations.IntegrationTest;
 import org.finance.app.core.domain.businessprocess.loangrant.mocks.CheckIpRequestHandler;
 import org.finance.app.core.domain.businessprocess.loangrant.mocks.DoRiskAnalysisRequestHandler;
 import org.finance.app.core.domain.common.AggregateId;
-import org.finance.app.core.domain.saga.SagaManager;
+import org.finance.app.core.domain.saga.LoanSagaManager;
 import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.Form;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
@@ -49,7 +49,7 @@ public class LoanApplicationSagaTest {
 
     private DomainEventPublisher eventPublisher;
 
-    private SagaManager<LoanApplicationSaga, LoanApplicationData> sagaManager;
+    private LoanSagaManager<LoanApplicationSaga, LoanApplicationData> loanSagaManager;
 
     @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) {
@@ -62,8 +62,8 @@ public class LoanApplicationSagaTest {
     }
 
     @Autowired
-    public void setSagaManager(SagaManager<LoanApplicationSaga, LoanApplicationData> sagaManager) {
-        this.sagaManager = sagaManager;
+    public void setLoanSagaManager(LoanSagaManager<LoanApplicationSaga, LoanApplicationData> loanSagaManager) {
+        this.loanSagaManager = loanSagaManager;
     }
 
     @Test

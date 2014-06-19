@@ -6,7 +6,7 @@ import org.finance.app.core.domain.events.customerservice.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.customerservice.RequestWasSubmitted;
 import org.finance.app.core.domain.events.saga.IpCheckedResponse;
 import org.finance.app.core.domain.events.saga.RiskAnalyzedResponse;
-import org.finance.app.core.domain.saga.SagaManager;
+import org.finance.app.core.domain.saga.LoanSagaManager;
 import org.finance.app.core.ddd.annotation.LoadSaga;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -22,7 +22,7 @@ import java.lang.reflect.Method;
 
 @Component("loanApplicationSagaManager")
 public class LoanApplicationSagaManager implements
-        SagaManager<LoanApplicationSaga, LoanApplicationData> {
+        LoanSagaManager<LoanApplicationSaga, LoanApplicationData> {
 
     private static final String loanApplicationSagaName = "loanApplicationSaga";
     private static final String grantingOfLoanSagaManagerName = "loanApplicationSagaManager";
@@ -121,7 +121,7 @@ public class LoanApplicationSagaManager implements
 
     private void registerSubmittedRequestHandler(){
         try {
-            Method method = SagaManager.class.getMethod("handleRequestWasSubmitted", new Class[]{Object.class});
+            Method method = LoanSagaManager.class.getMethod("handleRequestWasSubmitted", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler
                     (RequestWasSubmitted.class, grantingOfLoanSagaManagerName, method, applicationContext);
@@ -135,7 +135,7 @@ public class LoanApplicationSagaManager implements
 
     private void registerExtendLoanRequestHandler(){
         try {
-            Method method = SagaManager.class.getMethod("handleExtendTheLoanRequest", new Class[]{Object.class});
+            Method method = LoanSagaManager.class.getMethod("handleExtendTheLoanRequest", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler
                     (ExtendTheLoanRequest.class, grantingOfLoanSagaManagerName, method, applicationContext);
@@ -149,7 +149,7 @@ public class LoanApplicationSagaManager implements
 
     private void registerForCheckedIpEvent(){
         try {
-            Method method = SagaManager.class.getMethod("handleCheckedIpEvent", new Class[]{Object.class});
+            Method method = LoanSagaManager.class.getMethod("handleCheckedIpEvent", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler
                     (IpCheckedResponse.class, grantingOfLoanSagaManagerName, method, applicationContext);
@@ -163,7 +163,7 @@ public class LoanApplicationSagaManager implements
 
     private void registerForRiskAnalyzedEvent(){
         try {
-            Method method = SagaManager.class.getMethod("handleRiskAnalyzedEvent", new Class[]{Object.class});
+            Method method = LoanSagaManager.class.getMethod("handleRiskAnalyzedEvent", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler
                     (RiskAnalyzedResponse.class, grantingOfLoanSagaManagerName, method, applicationContext);

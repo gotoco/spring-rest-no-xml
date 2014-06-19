@@ -10,7 +10,7 @@ import org.finance.app.core.domain.events.customerservice.RequestWasSubmitted;
 import org.finance.app.core.domain.events.saga.CheckIpRequest;
 import org.finance.app.core.domain.events.saga.IpCheckedResponse;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
-import org.finance.app.core.domain.saga.SagaManager;
+import org.finance.app.core.domain.saga.LoanSagaManager;
 import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.Form;
 import org.finance.app.sharedcore.objects.Money;
@@ -49,7 +49,7 @@ public class RequestMultipleValidatorTest {
 
     private DomainEventPublisher eventPublisher;
 
-    private SagaManager<LoanApplicationSaga, LoanApplicationData> sagaManager;
+    private LoanSagaManager<LoanApplicationSaga, LoanApplicationData> loanSagaManager;
 
     @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) {
@@ -62,8 +62,8 @@ public class RequestMultipleValidatorTest {
     }
 
     @Autowired
-    public void setSagaManager(SagaManager sagaManager) {
-        this.sagaManager = sagaManager;
+    public void setLoanSagaManager(LoanSagaManager loanSagaManager) {
+        this.loanSagaManager = loanSagaManager;
     }
 
 
@@ -93,6 +93,8 @@ public class RequestMultipleValidatorTest {
             //should allow This request via IP
     }
 
+    //TODO: REFACTOR!
+
     @Test
     @Transactional
     public void whenCheckIpEventTriggeredRejectMultipleIp() {
@@ -104,7 +106,7 @@ public class RequestMultipleValidatorTest {
         entityManager.persist(client);
         Form form = new FormBuilder().withCorrectlyFilledForm(client).build();
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, eventId);
-        sagaManager.handleRequestWasSubmitted(requestWasSubmitted);
+        loanSagaManager.handleRequestWasSubmitted(requestWasSubmitted);
         CheckIpRequest checkIpRequest = new CheckIpRequest(eventId, "127.0.0.1", new DateTime());
         try {
             eventPublisher.registerEventHandlerByAttributes (IpCheckedResponse.class,
@@ -145,7 +147,7 @@ public class RequestMultipleValidatorTest {
             DateTime submissionDate = new DateTime();
             Form form = new Form(personalData, applyingAmount, applyingIpAddress, maturityInDays, submissionDate);
             requestWasSubmitted = new RequestWasSubmitted(form, AggregateId.generate());
-            sagaManager.handleRequestWasSubmitted(requestWasSubmitted);
+            loanSagaManager.handleRequestWasSubmitted(requestWasSubmitted);
         }
     }
 

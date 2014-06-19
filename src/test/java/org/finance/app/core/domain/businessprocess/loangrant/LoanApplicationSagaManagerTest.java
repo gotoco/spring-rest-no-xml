@@ -3,19 +3,24 @@ package org.finance.app.core.domain.businessprocess.loangrant;
 import junit.framework.Assert;
 import org.finance.app.annotations.IntegrationTest;
 import org.finance.app.core.domain.common.AggregateId;
-import org.finance.app.core.domain.saga.SagaManager;
+import org.finance.app.core.domain.events.customerservice.ExtendTheLoanRequest;
+import org.finance.app.core.domain.saga.LoanSagaManager;
 import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.Form;
 import org.finance.app.core.domain.events.customerservice.RequestWasSubmitted;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
+import org.finance.app.sharedcore.objects.Loan;
 import org.finance.test.ConfigTest;
 import org.finance.test.builders.FormBuilder;
 import org.finance.test.builders.PersonalDataBuilder;
+import org.finance.test.builders.events.ExtendTheLoanRequestBuilder;
+import org.finance.test.builders.loan.LoanBuilder;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -37,41 +42,29 @@ public class LoanApplicationSagaManagerTest {
     @PersistenceContext
     EntityManager entityManager;
 
+    @Autowired
     private ApplicationContext applicationContext;
 
+    @Autowired
     private DomainEventPublisher eventPublisher;
 
-    private SagaManager<LoanApplicationSaga, LoanApplicationData> sagaManager;
-
     @Autowired
-    public void setApplicationContext(ApplicationContext applicationContext) {
-        this.applicationContext = applicationContext;
-    }
-
-    @Autowired
-    public void setEventPublisher(DomainEventPublisher eventPublisher) {
-        this.eventPublisher = eventPublisher;
-    }
-
-    @Autowired
-    public void setSagaManager(SagaManager sagaManager) {
-        this.sagaManager = sagaManager;
-    }
+    private LoanSagaManager<LoanApplicationSaga, LoanApplicationData> loanSagaManager;
 
     @Test
     @Transactional
+    @Rollback(true)
     public void newRequestSubmittedNewSagaCreated(){
 
         //Given
-        Client client = new PersonalDataBuilder().withCorrectlyFilledData().build();
-        entityManager.persist(client);
+        Client client = createAndSaveNewClient();
         Form form = new FormBuilder().withCorrectlyFilledForm(client).build();
         AggregateId aggregateId = AggregateId.generate();
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, aggregateId);
 
         //When
         eventPublisher.publish(requestWasSubmitted);
-        LoanApplicationData saga = sagaManager.loadSaga(requestWasSubmitted);
+        LoanApplicationData saga = loanSagaManager.loadSaga(requestWasSubmitted);
 
         //Then
         Assert.assertNotNull(saga.getRequestId());
@@ -82,33 +75,34 @@ public class LoanApplicationSagaManagerTest {
     @Test
     @Transactional
     public void loanExistExtendLoanRequestExistingSagaLoaded(){
-        //TODO: finish
+
         //Given
-            //Create and save loan
-            //create request - extendLoanRequest
+        Loan loanToExtend = createAndSaveLoan();
+        ExtendTheLoanRequest extendTheLoanRequest = new ExtendTheLoanRequestBuilder().withLoanFor7Days(loanToExtend).build();
 
         //When
-            //Handle request
+        eventPublisher.publish(extendTheLoanRequest);
+        LoanApplicationData saga = loanSagaManager.loadSaga(extendTheLoanRequest);
 
         //Then
-            //Existing saga loaded
+        Assert.assertNotNull(saga.getRequestId());
+        Assert.assertEquals(saga.getRequestId(), extendTheLoanRequest.getAggregateId());
     }
 
     @Test
     @Transactional
+    @Rollback(true)
     public void requestWasSubmittedHandled(){
 
         //Given
-        Client client = new PersonalDataBuilder().withCorrectlyFilledData().build();
-        entityManager.persist(client);
+        Client client = createAndSaveNewClient();
         Form form = new FormBuilder().withCorrectlyFilledForm(client).build();
-        AggregateId aggregateId = AggregateId.generate();
-        sagaManager.createNewSagaData(aggregateId);
+        AggregateId aggregateId = createNewSagaDataAndGetId();
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, aggregateId);
 
         //When
         eventPublisher.publish(requestWasSubmitted);
-        LoanApplicationData loanApplicationData = sagaManager.loadSaga(requestWasSubmitted);
+        LoanApplicationData loanApplicationData = loanSagaManager.loadSaga(requestWasSubmitted);
 
         //Then
         Assert.assertNotNull(loanApplicationData);
@@ -117,19 +111,18 @@ public class LoanApplicationSagaManagerTest {
 
     @Test
     @Transactional
+    @Rollback(true)
     public void extendTheLoanRequestHandled(){
 
         //Given
-        Client client = new PersonalDataBuilder().withCorrectlyFilledData().build();
-        entityManager.persist(client);
+        Client client = createAndSaveNewClient();
         Form form = new FormBuilder().withCorrectlyFilledForm(client).build();
-        AggregateId aggregateId = AggregateId.generate();
-        sagaManager.createNewSagaData(aggregateId);
+        AggregateId aggregateId = createNewSagaDataAndGetId();
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, aggregateId);
 
         //When
         eventPublisher.publish(requestWasSubmitted);
-        LoanApplicationData loanApplicationData = sagaManager.loadSaga(requestWasSubmitted);
+        LoanApplicationData loanApplicationData = loanSagaManager.loadSaga(requestWasSubmitted);
 
         //Then
         Assert.assertNotNull(loanApplicationData);
@@ -146,8 +139,8 @@ public class LoanApplicationSagaManagerTest {
 
         //When
         try {
-            sagaData = sagaManager.loadSaga(requestWasSubmitted);
-            fail("random saga should not existed");
+            sagaData = loanSagaManager.loadSaga(requestWasSubmitted);
+            fail("Random saga should not existed");
         }
 
         //Then
@@ -159,10 +152,42 @@ public class LoanApplicationSagaManagerTest {
     @Test
     public void shouldHandleRiskAnalyzedEvent(){
 
+        //Given
+
+        //When
+
+        //Then
+
     }
 
     @Test
     public void shouldHandleIpCheckedResponseEvent(){
 
+        //Given
+
+        //When
+
+        //Then
+    }
+
+    @Transactional
+    public Client createAndSaveNewClient(){
+        Client client = new PersonalDataBuilder().withCorrectlyFilledData().build();
+        entityManager.persist(client);
+        return client;
+    }
+
+    @Transactional
+    public Loan createAndSaveLoan(){
+        Loan loan = new LoanBuilder().withDefaultData().build();
+        entityManager.persist(loan);
+        return loan;
+    }
+
+    public AggregateId createNewSagaDataAndGetId(){
+        AggregateId aggregateId = AggregateId.generate();
+        loanSagaManager.createNewSagaData(aggregateId);
+
+        return aggregateId;
     }
 }

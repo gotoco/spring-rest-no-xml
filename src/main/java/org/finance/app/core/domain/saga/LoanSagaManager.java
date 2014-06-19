@@ -6,7 +6,7 @@ import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.events.customerservice.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.customerservice.RequestWasSubmitted;
 
-public interface SagaManager<T extends SagaInstance<D>, D> {
+public interface LoanSagaManager<T extends SagaInstance<D>, D> {
 
     void removeSaga(T saga);
 
