@@ -19,7 +19,7 @@ public class BasicExtendTheLoan implements ExtendTheLoanFunction{
     @Override
     public Loan extend (Loan oldLoan, DateTime newExpirationDate){
         Loan loan = new Loan();
-        loan.setBasedOnLoan(oldLoan.getBasedOnLoanId());
+        loan.setBasedOnLoan(oldLoan.getLoanId());
         loan.setExpirationDate(newExpirationDate.toDate());
         loan.setEffectiveDate(new DateTime().toDate());
         loan.setInterest(calculateInterests(oldLoan));

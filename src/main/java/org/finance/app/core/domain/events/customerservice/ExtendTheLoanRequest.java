@@ -37,10 +37,6 @@ public class ExtendTheLoanRequest implements Serializable {
         return baseLoan;
     }
 
-    public void getNewExpirationDate(DateTime expirationDate){
-        this.newExpirationDate = expirationDate;
-    }
-
     public DateTime getNewExpirationDate() {
         return newExpirationDate;
     }

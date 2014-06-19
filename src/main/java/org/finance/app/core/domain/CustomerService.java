@@ -33,11 +33,6 @@ public class CustomerService {
         }
     }
 
-    public Loan browseLoanHistory(){
-
-        return null;
-    }
-
     public void extendTheLoan(Loan loan, DateTime newExpirationDate){
         eventPublisher.publish(new ExtendTheLoanRequest(loan, AggregateId.generate(), newExpirationDate) );
     }

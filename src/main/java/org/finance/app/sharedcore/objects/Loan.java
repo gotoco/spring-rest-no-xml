@@ -2,12 +2,10 @@ package org.finance.app.sharedcore.objects;
 
 import org.finance.app.core.ddd.annotation.AggregateRoot;
 import org.finance.app.core.domain.common.loan.ExtendTheLoanFunction;
-import org.finance.app.core.ddd.annotation.ValueObject;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 
 import javax.persistence.*;
-import javax.xml.bind.annotation.XmlRootElement;
 import java.util.Date;
 
 @AggregateRoot

@@ -24,7 +24,7 @@ import java.lang.reflect.Method;
 @Component("loanService")
 public class LoanService {
 
-    private static final String loanServiceName = "loanService";
+    private static final String thisName = "loanService";
 
     private ApplicationContext applicationContext;
 
@@ -55,7 +55,7 @@ public class LoanService {
             Method method = LoanService.class.getMethod("decideToGrantLoan", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler
-                    (LoanGrantedConfirmation.class, loanServiceName, method, applicationContext);
+                    (LoanGrantedConfirmation.class, thisName, method, applicationContext);
 
             eventPublisher.registerEventHandler(eventHandler);
 
@@ -69,7 +69,7 @@ public class LoanService {
             Method method = LoanService.class.getMethod("handleExtendALoanRequest", new Class[]{Object.class});
 
             SpringEventHandler eventHandler = new SpringEventHandler
-                    (ExtendTheLoanRequest.class, loanServiceName, method, applicationContext);
+                    (ExtendTheLoanRequest.class, thisName, method, applicationContext);
 
             eventPublisher.registerEventHandler(eventHandler);
 
