@@ -24,7 +24,10 @@ public class FormJSONBuilder {
     private String address;
 
     public FormJSON build(){
-        return new FormJSON(firstName, lastName, applyingAmount, address);
+        FormJSON form = new FormJSON(firstName, lastName, applyingAmount, address);
+        form.setMaturityInDays(maturityInDays);
+
+        return form;
     }
 
     public FormJSONBuilder withCorrectlyFilledData(){

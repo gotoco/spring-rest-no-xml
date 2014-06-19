@@ -39,6 +39,10 @@ import static org.junit.Assert.fail;
         classes = ConfigTest.class)
 public class LoanApplicationSagaTest {
 
+    private final static String checkIpRequestHandlerName = "checkIpRequestHandler";
+    private final static String doRiskAnalysisRequestHandlerName = "doRiskAnalysisRequestHandler";
+
+    @PersistenceContext
     private EntityManager entityManager;
 
     private ApplicationContext applicationContext;
@@ -46,14 +50,6 @@ public class LoanApplicationSagaTest {
     private DomainEventPublisher eventPublisher;
 
     private SagaManager<LoanApplicationSaga, LoanApplicationData> sagaManager;
-
-    private final static String checkIpRequestHandlerName = "checkIpRequestHandler";
-    private final static String doRiskAnalysisRequestHandlerName = "doRiskAnalysisRequestHandler";
-
-    @PersistenceContext
-    public void setEntityManager(EntityManager entityManager) {
-        this.entityManager = entityManager;
-    }
 
     @Autowired
     public void setApplicationContext(ApplicationContext applicationContext) {

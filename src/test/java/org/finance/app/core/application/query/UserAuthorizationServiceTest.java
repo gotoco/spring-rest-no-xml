@@ -3,6 +3,7 @@ package org.finance.app.core.application.query;
 import junit.framework.Assert;
 import org.finance.app.adapters.webservices.json.FormJSON;
 import org.finance.app.annotations.IntegrationTest;
+import org.finance.app.core.application.parent.UserBaseTest;
 import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.spring.WebAppNew;
 import org.finance.app.spring.WebConfig;
@@ -37,7 +38,7 @@ import java.util.List;
 @ContextConfiguration(
         classes = {ConfigTest.class, WebAppNew.class, WebConfig.class, WebInit.class })
 @Transactional
-public class UserAuthorizationServiceTest {
+public class UserAuthorizationServiceTest extends UserBaseTest{
 
     @Autowired
     private UserAuthorizationService userAuthorizationService;
@@ -67,36 +68,6 @@ public class UserAuthorizationServiceTest {
         //When
 
         //Then*/
-    }
-
-
-    private FormJSON createFormForUser(Client client){
-        return new FormJSONBuilder().withSpecifiedData(client.getFirstName(),
-                                                       client.getLastName(),
-                                                       new BigDecimal(1000),
-                                                       "1.1.1.1.1",
-                                                       30,
-                                                       new DateTime(),
-                                                       client.getAddress())
-                                                    .build();
-    }
-
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
-    private Client createSaveAndGetNewClient(){
-        Client client = new PersonalDataBuilder().withDefaultData().build();
-        entityManager.persist(client);
-        return client;
-    }
-
-
-    @Transactional
-    private void checkIfClientExistInDb(Client client){
-        Query selectClient = entityManager.createQuery("from Client c where c.firstName=:firstName AND c.lastName=:lastName AND c.address=:address")
-                .setParameter("firstName", client.getFirstName())
-                .setParameter("lastName", client.getLastName())
-                .setParameter("address", client.getAddress());
-        List resultList = selectClient.getResultList();
-        Assert.assertTrue(resultList.isEmpty());
     }
 
 }
