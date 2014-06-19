@@ -1,8 +1,10 @@
 package org.finance.app.spring;
 
+
 import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationData;
 import org.finance.app.core.domain.businessprocess.loangrant.LoanApplicationSaga;
 import org.springframework.context.annotation.*;
+import org.springframework.hateoas.MediaTypes;
 import org.springframework.web.servlet.ViewResolver;
 import org.springframework.web.servlet.config.annotation.*;
 import org.springframework.web.servlet.view.InternalResourceViewResolver;
@@ -26,6 +28,11 @@ public class WebConfig extends WebMvcConfigurerAdapter {
         super.addViewControllers(registry);
 
         registry.addViewController("/index.html");
+    }
+
+    @Override
+    public void configureContentNegotiation(ContentNegotiationConfigurer c) {
+        c.defaultContentType(MediaTypes.HAL_JSON);
     }
 
     @Bean

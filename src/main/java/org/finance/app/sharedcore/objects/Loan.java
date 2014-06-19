@@ -12,6 +12,7 @@ import java.util.Date;
 
 @AggregateRoot
 @Entity
+@XmlRootElement
 public class Loan {
 
     @Transient
@@ -44,11 +45,11 @@ public class Loan {
     @Temporal(javax.persistence.TemporalType.DATE)
     private Date effectiveDate;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name="client_id")
     private Client loanHolder;
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name="contract_id", referencedColumnName = "contract_id")
     private LoanContract loanContract;
 

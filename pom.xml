@@ -27,14 +27,21 @@
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-tx</artifactId>
-            <version>4.0.5.RELEASE</version>
+            <version>${org.springframework.version}</version>
         </dependency>
 
         <dependency>
             <groupId>org.springframework</groupId>
             <artifactId>spring-orm</artifactId>
-            <version>4.0.5.RELEASE</version>
+            <version>${org.springframework.version}</version>
         </dependency>
+
+        <dependency>
+            <groupId>org.springframework.hateoas</groupId>
+            <artifactId>spring-hateoas</artifactId>
+            <version>0.12.0.RELEASE</version>
+        </dependency>
+
 
         <!-- web -->
 
@@ -141,6 +148,20 @@
             <version>1.12</version>
         </dependency>
 
+        <dependency>
+            <groupId>com.sun.jersey</groupId>
+            <artifactId>jersey-server</artifactId>
+            <version>1.18.1</version>
+        </dependency>
+
+        <!-- H2.DB for tests-->
+        <dependency>
+            <groupId>com.h2database</groupId>
+            <artifactId>h2</artifactId>
+            <version>1.4.178</version>
+        </dependency>
+
+
         <!-- test scope -->
         <dependency>
             <groupId>org.springframework</groupId>
@@ -170,7 +191,38 @@
             <scope>test</scope>
         </dependency>
 
-	</dependencies>
+        <!--  Gson: Java to Json conversion -->
+        <dependency>
+            <groupId>com.google.code.gson</groupId>
+            <artifactId>gson</artifactId>
+            <version>2.2.4</version>
+            <scope>compile</scope>
+        </dependency>
+
+        <!-- Acceptance tests -->
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-api</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-java</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-firefox-driver</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+        <dependency>
+            <groupId>org.seleniumhq.selenium</groupId>
+            <artifactId>selenium-chrome-driver</artifactId>
+            <version>${selenium.version}</version>
+        </dependency>
+
+
+    </dependencies>
 
 	<build>
 		<finalName>spring-mvc-no-xml</finalName>
@@ -240,6 +292,7 @@
 		<rest-assured.version>2.3.1</rest-assured.version>
 
 		<!-- Maven plugins -->
+        <selenium.version>2.40.0</selenium.version>
 		<maven-compiler-plugin.version>3.1</maven-compiler-plugin.version>
 		<maven-war-plugin.version>2.4</maven-war-plugin.version>
 		<maven-surefire-plugin.version>2.17</maven-surefire-plugin.version>

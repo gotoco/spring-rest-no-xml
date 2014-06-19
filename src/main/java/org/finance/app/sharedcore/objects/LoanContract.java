@@ -3,12 +3,14 @@ package org.finance.app.sharedcore.objects;
 import org.finance.app.core.ddd.annotation.AggregateRoot;
 
 import javax.persistence.*;
+import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
 import java.util.List;
 
 @AggregateRoot
 @Entity
 @Table(name = "LoanContract")
+@XmlRootElement
 public class LoanContract {
 
     @Id
@@ -16,10 +18,10 @@ public class LoanContract {
     @Column(name="contract_id")
     private Long contractId;
 
-    @OneToMany(cascade=CascadeType.ALL, mappedBy="loanContract")
+    @OneToMany(cascade=CascadeType.ALL, fetch=FetchType.EAGER, mappedBy="loanContract")
     private List<Loan> loanPeriods = new ArrayList<Loan>();
 
-    @ManyToOne(cascade=CascadeType.ALL)
+    @ManyToOne(cascade=CascadeType.ALL, fetch=FetchType.EAGER)
     @JoinColumn(name="client_id")
     private Client contractHolder;
 

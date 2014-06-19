@@ -5,7 +5,17 @@
 requirejs.config({
 
     "paths": {
-        jquery:"./lib/jquery-1.11.1.min"
+        "jquery":"./lib/jquery-1.11.1.min",
+        "angular": "./lib/angular",
+        "angular-resource": "./lib/angular-resource"
+    },
+    shim: {
+        "angular": {
+            exports: "angular"
+        },
+        "angular-resource": {
+            deps: ["angular"]
+        }
     }
 });
 

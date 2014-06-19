@@ -1,9 +1,11 @@
 package org.finance.app.adapters.webservices.restful.root.loan;
 
+import org.finance.app.adapters.webservices.json.FormJSON;
 import org.finance.app.bports.services.LoanServiceApi;
 import org.joda.time.DateTime;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import javax.servlet.http.HttpServletRequest;
@@ -17,30 +19,31 @@ import javax.ws.rs.core.Response;
 @Consumes({MediaType.APPLICATION_JSON + "; charset=UTF-8"})
 public class LoanGrantRestWs {
 
-    LoanServiceApi loanServiceApi;
+    LoanServiceApi loanService;
 
-    //DEPRICATED SERVICE
-/*    @POST
-    @RequestMapping("/applyForLoan")
+    @POST
+    @RequestMapping("/loan/applyForLoan")
     public Response applyForLoan( @Context HttpServletRequest request, FormJSON form) {
 
         String ipAddress = request.getHeader("X-FORWARDED-FOR");
         if (ipAddress == null) {
             ipAddress = request.getRemoteAddr();
         }
+
         form.setApplyingIpAddress(ipAddress);
         DateTime applicationDate = new DateTime();
 
-        loanServiceApi.applyForLoan(form, applicationDate);
+        loanService.applyForLoan(form, applicationDate);
 
-        return Response.status(200)
-                       .entity("Application for a loan was approved from ip address : "  + ipAddress).build();
-    }*/
+        return Response.status(201)
+                .entity("Application for a loan was created from ip address : "  + ipAddress).build();
+    }
 
     @POST
-    @RequestMapping("/postForExtendLoan")
+    @RequestMapping("/loan/{id}/postForExtendLoan")
     public Response postForExtendLoan(
             @Context HttpServletRequest request,
+            @PathVariable final long id,
             @FormParam("loanId") Long loanId,
             @FormParam("userId") Long userId,
             @FormParam("date") String date) {
@@ -51,7 +54,7 @@ public class LoanGrantRestWs {
         }
 
         DateTime newExpirationDate = new DateTime(date);
-        loanServiceApi.extendTheLoan(loanId, userId, newExpirationDate);
+        loanService.extendTheLoan(loanId, userId, newExpirationDate);
 
         return Response
                 .status(200)
@@ -60,6 +63,6 @@ public class LoanGrantRestWs {
 
     @Autowired
     public LoanGrantRestWs(LoanServiceApi loanService) {
-        this.loanServiceApi = loanService;
+        this.loanService = loanService;
     }
 }

@@ -1,0 +1,6 @@
+baseUrl=http://localhost:8080
+webDriverClass=org.openqa.selenium.htmlunit.HtmlUnitDriver
+#adminUserName=admin@nestorurquiza.com
+#adminUserPassword=test
+#regularUserName=user@nestorurquiza.com
+#regularUserPassword=test

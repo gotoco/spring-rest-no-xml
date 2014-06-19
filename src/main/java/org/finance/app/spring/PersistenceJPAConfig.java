@@ -74,6 +74,7 @@ public class PersistenceJPAConfig {
     }
 
     final Properties additionalProperties() {
+        System.out.println("#@#@ : additionalProperties from : PersistenceJPAConfig");
         final Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
         hibernateProperties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));

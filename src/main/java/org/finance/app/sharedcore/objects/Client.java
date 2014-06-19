@@ -25,10 +25,10 @@ public class Client {
     @Column(name="address")
     private String address;
 
-    @OneToMany(cascade={CascadeType.ALL}, mappedBy="client")
+    @OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER,  mappedBy="client")
     private List<LoanApplicationData> loanScheduler = new ArrayList<LoanApplicationData>();
 
-    @OneToMany(cascade={CascadeType.ALL}, mappedBy="contractHolder")
+    @OneToMany(cascade={CascadeType.ALL}, fetch=FetchType.EAGER, mappedBy="contractHolder")
     private List<LoanContract> loanContracts = new ArrayList<LoanContract>();
 
     public String getLastName() {
@@ -121,5 +121,17 @@ public class Client {
         result = 31 * result + (address != null ? address.hashCode() : 0);
         result = 31 * result + (loanScheduler != null ? loanScheduler.hashCode() : 0);
         return result;
+    }
+
+    @Override
+    public String toString() {
+        return "Client{" +
+                "clientId=" + clientId +
+                ", firstName='" + firstName + '\'' +
+                ", lastName='" + lastName + '\'' +
+                ", address='" + address + '\'' +
+                ", loanScheduler=" + loanScheduler +
+                ", loanContracts=" + loanContracts +
+                '}';
     }
 }
