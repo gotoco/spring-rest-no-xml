@@ -44,7 +44,7 @@ public class LoanBuilder {
         this.interest = new Money(100);
         this.effectiveDate = new DateTime().toDate();
         this.expirationDate = new DateTime().plusDays(30).toDate();
-        this.loanHolder = new PersonalDataBuilder().withDefaultData().build();
+        this.loanHolder = new PersonalDataBuilder().withUniqueData().build();
 
         return this;
     }
@@ -52,6 +52,11 @@ public class LoanBuilder {
     public LoanBuilder withEffectiveDate(DateTime date){
         this.effectiveDate = date.toDate();
 
+        return this;
+    }
+
+    public LoanBuilder withHolder(Client holder){
+        this.loanHolder = holder;
         return this;
     }
 

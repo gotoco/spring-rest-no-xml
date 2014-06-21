@@ -28,15 +28,20 @@ public class LoanContractBuilder {
         return this;
     }
 
+    public LoanContractBuilder withUniqueHolder(){
+        this.contractHolder = new PersonalDataBuilder().withUniqueData().build();
+        return this;
+    }
+
     public LoanContractBuilder withDefaultLoan(){
         LoanContract contract = this.build();
-        Loan loan = new LoanBuilder().withDefaultData().build();
+        Loan loan = new LoanBuilder().withDefaultData().withHolder(contract.getContractHolder()).build();
         this.loanPeriods.add(loan);
         return this;
     }
 
     public LoanContractBuilder withDefaultData(){
-        return this.withDefaultHolder().withDefaultLoan();
+        return this.withUniqueHolder().withDefaultLoan();
     }
 
     public LoanContract build(){

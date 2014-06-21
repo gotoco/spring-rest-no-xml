@@ -30,7 +30,6 @@ public class PermanentDataLoader {
         Query query = entityManager.createQuery("from Risk");
         final List<Risk> existingRisks = query.getResultList();
 
-
         for(Risk risk : risks){
             if(!existingRisks.contains(risk)){
                 entityManager.persist(risk);

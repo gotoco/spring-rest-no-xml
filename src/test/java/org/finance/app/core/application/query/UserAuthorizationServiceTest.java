@@ -59,15 +59,28 @@ public class UserAuthorizationServiceTest extends UserBaseTest{
     }
 
     @Test
+    @Transactional
     @Rollback(true)
     public void shouldCreateNewClient() throws Exception {
-  /*      //Given
-        Client newClient = createSaveAndGetNewClient();
+        //Given
+        Integer numberOfClientsBeforeAuth = getNumbersOfClientsFromDb();
+        Client newClient = new PersonalDataBuilder().withUniqueData().build();
         FormJSON form = createFormForUser(newClient);
-        checkIfClientExistInDb(newClient);
-        //When
 
-        //Then*/
+        //When
+        Long clientIdFromRepo = userAuthorizationService.getOrCreateClient(form);
+        Integer numberOfClientsAfterAuth = getNumbersOfClientsFromDb();
+
+        //Then
+        Assert.assertNotNull(clientIdFromRepo);
+        Assert.assertEquals(1, numberOfClientsAfterAuth - numberOfClientsBeforeAuth);
     }
 
+    private Integer getNumbersOfClientsFromDb(){
+        String queryBody = "from Client c ";
+
+        Query selectedClients = entityManager.createQuery(queryBody);
+
+        return selectedClients.getResultList().size();
+    }
 }

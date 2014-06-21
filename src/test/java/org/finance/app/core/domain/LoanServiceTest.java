@@ -5,7 +5,9 @@ import org.finance.app.annotations.IntegrationTest;
 import org.finance.app.core.domain.events.customerservice.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.loanservice.LoanGrantedConfirmation;
 import org.finance.app.sharedcore.objects.Loan;
+import org.finance.app.sharedcore.objects.LoanContract;
 import org.finance.test.ConfigTest;
+import org.finance.test.builders.contracts.LoanContractBuilder;
 import org.finance.test.builders.events.ExtendTheLoanRequestBuilder;
 import org.finance.test.builders.events.LoanGrantedConfirmationBuilder;
 import org.finance.test.builders.loan.LoanBuilder;
@@ -55,7 +57,8 @@ public class LoanServiceTest {
     @Rollback(true)
     public void shouldExtendLoanForEvent(){
         //Given
-        Loan loanToExtend = new LoanBuilder().withDefaultData().build();
+        LoanContract baseContract = new LoanContractBuilder().withDefaultData().build();
+        Loan loanToExtend = baseContract.getLatestGrantedLoan();
         entityManager.persist(loanToExtend);
         ExtendTheLoanRequest request = new ExtendTheLoanRequestBuilder().withLoanFor7Days(loanToExtend).build();
 

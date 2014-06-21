@@ -5,6 +5,7 @@ import org.finance.app.core.ddd.annotation.AggregateRoot;
 import javax.persistence.*;
 import javax.xml.bind.annotation.XmlRootElement;
 import java.util.ArrayList;
+import java.util.Comparator;
 import java.util.List;
 
 @AggregateRoot
@@ -33,20 +34,8 @@ public class LoanContract {
         return loanPeriods;
     }
 
-    public void setContractId(Long contractId) {
-        this.contractId = contractId;
-    }
-
-    public void setLoanPeriods(List<Loan> loanPeriods) {
-        this.loanPeriods = loanPeriods;
-    }
-
     public Client getContractHolder() {
         return contractHolder;
-    }
-
-    public void setContractHolder(Client contractHolder) {
-        this.contractHolder = contractHolder;
     }
 
     public void addToLoansPeriods(Loan loan){
@@ -65,5 +54,22 @@ public class LoanContract {
     public LoanContract(List<Loan> loans, Client client){
         this.contractHolder = client;
         this.loanPeriods = loans;
+    }
+
+    public synchronized Loan getLatestGrantedLoan(){
+        this.loanPeriods.sort(new LoanByDateComparator());
+        return loanPeriods.get(loanPeriods.size()-1);
+    }
+
+    private class LoanByDateComparator implements Comparator<Loan> {
+        public int compare(Loan firstL, Loan secondL) {
+            if (firstL.getEffectiveDate().before(secondL.getEffectiveDate())) {
+                return -1;
+            } else if (firstL.getEffectiveDate().after(secondL.getEffectiveDate())) {
+                return 1;
+            } else {
+                return 0;
+            }
+        }
     }
 }

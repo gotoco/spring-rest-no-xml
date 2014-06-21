@@ -31,7 +31,6 @@ public class SimpleEventPublisher implements DomainEventPublisher {
 
     @Override
     public void registerEventHandlerByAttributes(Class<?> eventType, String beanName, Method method, BeanFactory beanFactory) {
-
         SpringEventHandler eventHandler = new SpringEventHandler(eventType, beanName, method, beanFactory);
         this.registerEventHandler(eventHandler);
     }

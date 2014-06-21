@@ -74,7 +74,6 @@ public class RiskAnalysisService {
         eventPublisher.publish(response);
     }
 
-
     public void analyzeRisk(DoRiskAnalysisRequest request){
         List<Risk> risks = riskAnalysisFunction.analyze(request, allRisks);
 

@@ -25,6 +25,7 @@ public class BasicExtendTheLoan implements ExtendTheLoanFunction{
         loan.setInterest(calculateInterests(oldLoan));
         loan.setValue(oldLoan.getValue());
         loan.setLoanHolder(oldLoan.getLoanHolder());
+        loan.setContract(oldLoan.getContract());
 
         return loan;
     }

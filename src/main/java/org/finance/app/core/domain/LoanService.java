@@ -102,8 +102,9 @@ public class LoanService {
         ExtendTheLoanRequest request = (ExtendTheLoanRequest)event;
         Loan oldLoan = request.getBaseLoan();
         Loan newLoan = extendTheLoanFunction.extend(oldLoan, request.getNewExpirationDate());
-
+        oldLoan.getContract().addToLoansPeriods(newLoan);
         entityManager.persist(newLoan);
+        entityManager.persist(oldLoan.getContract());
     }
 
     private Money calculateInterestForNewBusiness(){

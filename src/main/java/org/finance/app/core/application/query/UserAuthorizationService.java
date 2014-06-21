@@ -25,22 +25,19 @@ public class UserAuthorizationService {
         String clientLastName = formJSON.getLastName();
         String clientAddress = formJSON.getAddress();
 
-        String queryBody = "from Client c where " +
+        String selectClientsWhich = "from Client c where " +
                 "c.lastName=:clientLastName AND " +
                 "c.firstName=:clientFirstName  AND " +
                 "c.address=:clientAddress " ;
 
-        Query selectSpecifiedLoan = entityManager.createQuery(queryBody)
+        Query selectSpecifiedClient = entityManager.createQuery(selectClientsWhich)
                 .setParameter("clientLastName", clientLastName)
                 .setParameter("clientFirstName", clientFirstName)
                 .setParameter("clientAddress", clientAddress);
 
-        Client existingClient;
-
         try {
-            existingClient = (Client) selectSpecifiedLoan.getSingleResult();
+            Client existingClient = (Client) selectSpecifiedClient.getSingleResult();
             resultId = existingClient.getClientId();
-
         } catch (NoResultException noResultException) {
             Client client = new Client(clientFirstName, clientLastName, clientAddress);
             entityManager.persist(client);

@@ -28,6 +28,13 @@ public class UserBaseTest {
         return client;
     }
 
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    protected Client createSaveAndGetUniqueClient(){
+        Client client = new PersonalDataBuilder().withUniqueData().build();
+        entityManager.persist(client);
+        return client;
+    }
+
     @Transactional
     protected void checkIfClientExistInDb(Client client){
         Query selectClient = entityManager.createQuery("from Client c where c.firstName=:firstName AND c.lastName=:lastName AND c.address=:address")
