@@ -28,23 +28,17 @@ import static org.junit.Assert.fail;
         classes = ConfigTest.class)
 public class EventEngineFlowTest {
 
+    @Autowired
     private ApplicationContext applicationContext;
 
+    @Autowired
     private DomainEventPublisher eventPublisher;
 
     private static final String BaseEventHandlerName = "BaseEventReceiveNotifier" ;
     private static final String RandomEventHandlerName = "RandomEventReceiveNotifier" ;
 
-    @Autowired
-    public void setApplicationContext(ApplicationContext applicationContext){
-        this.applicationContext = applicationContext;
-    }
 
-    @Autowired
-    public void setEventPublisher(DomainEventPublisher domainEventPublisher){
-        this.eventPublisher = domainEventPublisher;
-    }
-
+//TODO: REFACTOR ME!!
     @Test
     public void publishedEventShouldBeReceivedByAppropriateHandler(){
         //Given

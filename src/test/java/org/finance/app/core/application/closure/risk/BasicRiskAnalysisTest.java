@@ -1,4 +1,4 @@
-package org.finance.app.core.application.risk;
+package org.finance.app.core.application.closure.risk;
 
 
 import junit.framework.Assert;

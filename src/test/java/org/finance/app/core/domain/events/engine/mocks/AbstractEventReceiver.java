@@ -1,8 +1,5 @@
 package org.finance.app.core.domain.events.engine.mocks;
 
-/**
- * Created by maciek on 03.06.14.
- */
 
 public abstract class AbstractEventReceiver {
 

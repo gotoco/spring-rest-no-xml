@@ -1,6 +1,5 @@
 package org.finance.app.core.application.query;
 
-import com.gargoylesoftware.htmlunit.javascript.host.css.CSSStyleSheet;
 import junit.framework.Assert;
 import org.finance.app.annotations.IntegrationTest;
 import org.finance.app.bports.crudes.ClientReaderService;
@@ -21,7 +20,6 @@ import org.springframework.transaction.annotation.Transactional;
 import javax.persistence.EntityManager;
 import javax.persistence.NoResultException;
 import javax.persistence.PersistenceContext;
-import javax.persistence.Query;
 
 import static junit.framework.TestCase.assertNull;
 
@@ -61,8 +59,8 @@ public class ClientFinderTest {
         Client newClient = createAndSaveClientRecordToDb();
         Long randomId = newClient.getClientId()+11;
         Client clientFromDB = null;
-
         try {
+
         //When
         clientFromDB = clientFinder.findClientById(randomId);
             Assert.fail();

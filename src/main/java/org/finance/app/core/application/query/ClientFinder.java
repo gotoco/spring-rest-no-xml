@@ -9,7 +9,7 @@ import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 
-@Component("ClientFinder")
+@Component("clientFinder")
 @ApplicationService
 public class ClientFinder implements ClientReaderService {
 
