@@ -68,31 +68,39 @@ public class RequestMultipleValidatorTest extends UserBaseTest {
 
     @Test
     @Transactional
-    public void validateIpWhenDbIsEmpty(){
-        //TODO: Pierwszy odczyt z bazy ma sie nie wypieprzac
+    @Rollback(true)
+    public void whenDbIsEmptyFirstEventShouldBeUpdated(){
 
         //Given
-        //Prepare Event
-        //Publish Event
+        AggregateId eventId = AggregateId.generate();
+        registerCheckedIpEventHandler();
+
         //When
-        //pick Event
+        submitSingleRequest(eventId);
+
         //Then
-        //should allow This request via IP
+        IpCheckedResponseHandler responseHandler = (IpCheckedResponseHandler)applicationContext.getBean(ipCheckedResponseHandlerName);
+        Assert.assertNotNull(responseHandler.isValidIpAddress());
     }
 
     @Test
     @Transactional
+    @Rollback(true)
     public void whenCheckIpEventTriggeredAllowAloneIp(){
-        //Given
-            //Prepare Event
-            //Publish Event
-        //When
-            //pick Event
-        //Then
-            //should allow This request via IP
-    }
 
-    //TODO: REFACTOR!
+        //Given
+        AggregateId eventId = AggregateId.generate();
+        submitSingleRequest(eventId);
+        CheckIpRequest checkIpRequest = new CheckIpRequest(eventId, "127.0.0.1", new DateTime());
+        registerCheckedIpEventHandler();
+
+        //When
+        eventPublisher.publish(checkIpRequest);
+
+        //Then
+        IpCheckedResponseHandler responseHandler = (IpCheckedResponseHandler)applicationContext.getBean(ipCheckedResponseHandlerName);
+        Assert.assertTrue(responseHandler.isValidIpAddress());
+    }
 
     @Test
     @Transactional
@@ -101,11 +109,7 @@ public class RequestMultipleValidatorTest extends UserBaseTest {
 
         //Given
         AggregateId eventId = AggregateId.generate();
-        prepareRequestsWithSameIp();
-        Client client = createAndSaveClientRecordToDb();
-        Form form = new FormBuilder().withCorrectlyFilledForm(client).build();
-        RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, eventId);
-        loanApplicationSagaManager.handleRequestWasSubmitted(requestWasSubmitted);
+        when5SubmitRequest(eventId);
         CheckIpRequest checkIpRequest = new CheckIpRequest(eventId, "127.0.0.1", new DateTime());
         registerCheckedIpEventHandler();
 
@@ -133,7 +137,7 @@ public class RequestMultipleValidatorTest extends UserBaseTest {
 
     }
 
-    @Transactional(propagation = Propagation.REQUIRES_NEW)
+    @Transactional
     private void prepareRequestsWithSameIp() {
         RequestWasSubmitted requestWasSubmitted;
 
@@ -158,5 +162,16 @@ public class RequestMultipleValidatorTest extends UserBaseTest {
         }
     }
 
+    private void when5SubmitRequest(AggregateId eventId){
+        prepareRequestsWithSameIp();
+        submitSingleRequest(eventId);
+    }
+
+    private void submitSingleRequest(AggregateId eventId){
+        Client client = createAndSaveClientRecordToDb();
+        Form form = new FormBuilder().withCorrectlyFilledForm(client).build();
+        RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, eventId);
+        loanApplicationSagaManager.handleRequestWasSubmitted(requestWasSubmitted);
+    }
 
 }
