@@ -30,12 +30,16 @@ import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.persistence.EntityManager;
 import javax.persistence.PersistenceContext;
+import javax.persistence.Query;
+import javax.persistence.TemporalType;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.List;
 
 @Category(IntegrationTest.class)
 @RunWith(SpringJUnit4ClassRunner.class)
@@ -47,6 +51,10 @@ public class RequestMultipleValidatorTest extends UserBaseTest {
     private static final String ipCheckedResponseHandlerName = "ipCheckedResponseHandler";
 
     @PersistenceContext
+    public void setEntityManager(EntityManager entityManager) {
+        this.entityManager = entityManager;
+    }
+
     EntityManager entityManager;
 
     @Autowired
@@ -56,7 +64,7 @@ public class RequestMultipleValidatorTest extends UserBaseTest {
     private DomainEventPublisher eventPublisher;
 
     @Autowired
-    private LoanApplicationSagaManager loanApplicationSagaManager;
+    private LoanSagaManager loanApplicationSagaManager;
 
     @Test
     @Transactional
@@ -125,7 +133,7 @@ public class RequestMultipleValidatorTest extends UserBaseTest {
 
     }
 
-    @Transactional
+    @Transactional(propagation = Propagation.REQUIRES_NEW)
     private void prepareRequestsWithSameIp() {
         RequestWasSubmitted requestWasSubmitted;
 
@@ -144,7 +152,9 @@ public class RequestMultipleValidatorTest extends UserBaseTest {
             DateTime submissionDate = new DateTime();
             Form form = new Form(personalData, applyingAmount, applyingIpAddress, maturityInDays, submissionDate);
             requestWasSubmitted = new RequestWasSubmitted(form, AggregateId.generate());
-            loanApplicationSagaManager.createAndFillNewSagaData(AggregateId.generate(), requestWasSubmitted);
+            LoanApplicationData createdNewSagaData = (LoanApplicationData)loanApplicationSagaManager.createAndFillNewSagaData(AggregateId.generate(), requestWasSubmitted);
+            createdNewSagaData.whenIpValidIsChecked(new IpCheckedResponse(AggregateId.generate() ,false) );
+            entityManager.persist(createdNewSagaData);
         }
     }
 

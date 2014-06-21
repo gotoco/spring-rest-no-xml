@@ -12,6 +12,7 @@ import org.finance.app.core.ddd.system.DomainEventPublisher;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
 import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Propagation;
 import org.springframework.transaction.annotation.Transactional;
 
 import javax.annotation.PostConstruct;
@@ -173,7 +174,6 @@ public class LoanApplicationSagaManager implements
 
     @Transactional
     public void handleRequestWasSubmitted(Object event) {
-
         RequestWasSubmitted requestEvent = (RequestWasSubmitted)event;
         LoanApplicationData sagaData;
         try{

@@ -21,6 +21,7 @@ import javax.persistence.PersistenceContext;
 import javax.persistence.Query;
 import javax.persistence.TemporalType;
 import java.lang.reflect.Method;
+import java.util.List;
 
 @DomainService
 @Component("requestMultipleValidator")
@@ -64,17 +65,27 @@ public class RequestMultipleValidator {
 
     @Transactional(propagation = Propagation.REQUIRES_NEW)
     private synchronized Boolean validate(AggregateId eventId, String ipAddress, DateTime startDate){
-        String queryBase = "FROM LoanApplicationData g WHERE g.dateOfApplication > :startDate AND g.ip = :ipAddress AND g.hasValidIp IS NOT NULL";
         Boolean result;
+        DateTime startOfBusinessDay = startDate.withTimeAtStartOfDay();
+        DateTime endOfBusinessDay = startDate.plusDays(1);
+        endOfBusinessDay.withTimeAtStartOfDay();
+
+        String queryBase = "FROM LoanApplicationData g WHERE g.dateOfApplication > :startOfBusinessDay " +
+                                                        "AND g.dateOfApplication < :endOfBusinessDay " +
+                                                        "AND g.ip = :ipAddress "  +
+                                                        "AND g.hasValidIp IS NOT NULL";
 
         Query eventsFromThisDayWithSameIp = entityManager.createQuery(queryBase)
-                    .setParameter("startDate", startDate.toDate(), TemporalType.DATE)
+                    .setParameter("startOfBusinessDay", startOfBusinessDay.toDate(), TemporalType.DATE)
+                    .setParameter("endOfBusinessDay", endOfBusinessDay.toDate(), TemporalType.DATE)
                     .setParameter("ipAddress", ipAddress);
         Integer similarEventsCount = eventsFromThisDayWithSameIp.getResultList().size();
+
         result = similarEventsCount < permittedNumberOfSubmissionsFromSingleNumber;
 
         Query selectEntityToUpdate = entityManager.createQuery("from LoanApplicationData where requestId=:requestId")
                                                   .setParameter("requestId", eventId);
+
         LoanApplicationData entityToUpdate = (LoanApplicationData) selectEntityToUpdate.getSingleResult();
 
         IpCheckedResponse response = new IpCheckedResponse(eventId, result);

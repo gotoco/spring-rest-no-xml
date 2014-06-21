@@ -27,4 +27,8 @@ public interface LoanSagaManager<T extends SagaInstance<D>, D> {
     public D loadSaga(ExtendTheLoanRequest event);
 
     public D createNewSagaData(AggregateId id );
+
+    public D createAndFillNewSagaData(AggregateId id, RequestWasSubmitted requestEvent);
+
+    public D createAndFillNewSagaData(AggregateId id, ExtendTheLoanRequest requestEvent);
 }

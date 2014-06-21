@@ -37,28 +37,6 @@ public class ConfigTest {
         super();
     }
 
-    // beans
-
-/*    @Bean
-    public LocalSessionFactoryBean sessionFactory() {
-        LocalSessionFactoryBean sessionFactory = new LocalSessionFactoryBean();
-        sessionFactory.setDataSource(dataSource());
-        sessionFactory.setPackagesToScan(new String[] { "org.finance.app" });
-        sessionFactory.setHibernateProperties(additionalProperties());
-
-        return sessionFactory;
-    }
-
-    @Bean
-    @Autowired
-    public HibernateTransactionManager transactionManager(SessionFactory sessionFactory) {
-        HibernateTransactionManager txManager = new HibernateTransactionManager();
-        txManager.setSessionFactory(sessionFactory);
-
-        return txManager;
-    }*/
-
-
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
         final LocalContainerEntityManagerFactoryBean em = new LocalContainerEntityManagerFactoryBean();
@@ -96,12 +74,10 @@ public class ConfigTest {
     }
 
     final Properties additionalProperties() {
-        System.out.println("#@#@ : additionalProperties from : PersistenceJPAConfig");
+        System.out.println("#@#@ : additionalProperties from : ConfigTest");
         final Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.test.hbm2ddl.auto", env.getProperty("hibernate.test.hbm2ddl.auto"));
         hibernateProperties.setProperty("hibernate.test.dialect", env.getProperty("hibernate.test.dialect"));
-/*        hibernateProperties.setProperty("hibernate.current_session_context_class", "thread");
-        hibernateProperties.setProperty("hibernate.globally_quoted_identifiers", "true");*/
         return hibernateProperties;
     }
 
