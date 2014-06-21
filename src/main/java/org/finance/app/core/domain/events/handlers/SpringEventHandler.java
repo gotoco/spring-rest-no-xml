@@ -6,8 +6,6 @@ import org.springframework.beans.factory.BeanFactory;
 
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
-import java.lang.reflect.Proxy;
-
 
 public class SpringEventHandler implements EventHandler {
 

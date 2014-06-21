@@ -32,8 +32,6 @@ import javax.persistence.PersistenceContext;
 import java.io.Serializable;
 import java.lang.reflect.Method;
 import java.math.BigDecimal;
-import java.net.InetAddress;
-import java.net.UnknownHostException;
 
 import static org.junit.Assert.assertFalse;
 import static org.junit.Assert.assertTrue;
@@ -91,7 +89,6 @@ public class CustomerServiceTest {
 
         //then
         assertTrue(requestSubmittedHandler.isRightEventOccurred());
-        requestSubmittedHandler.cleanUpEventShadow();
     }
 
     @Test
@@ -103,15 +100,10 @@ public class CustomerServiceTest {
         BaseEventReceiveNotifier requestSubmittedHandler = registerAndGetSubmittedRequestNotifier(event);
 
         //when
-        try {
-            applyForLoan(empty);
-            fail("Empty form can't apply for loan");
-        } catch (IllegalStateException ise){
+        tryToApplyForLoan(empty);
 
-        }
         //then
         assertFalse(requestSubmittedHandler.isRightEventOccurred());
-        requestSubmittedHandler.cleanUpEventShadow();
     }
 
     @Test
@@ -123,35 +115,33 @@ public class CustomerServiceTest {
         BaseEventReceiveNotifier extendedLoamRequestReceiveNotifier = registerAndGetSubmittedRequestNotifier(event);
 
         //when
-        requestForExtendLoan(basedLoan, new DateTime().plusMonths(3));
+        requestForExtendTheLoanForOneMonth(basedLoan);
 
         //then
         assertTrue(extendedLoamRequestReceiveNotifier.isRightEventOccurred());
-        extendedLoamRequestReceiveNotifier.cleanUpEventShadow();
+    }
+
+    private void tryToApplyForLoan(Form form){
+        //when
+        try {
+            customerService.applyForaLoan(form);
+            fail("Empty form can't apply for loan");
+        } catch (IllegalStateException ise){
+
+        }
     }
 
     private Form fillTheForm() {
         Client personalData = new PersonalDataBuilder().withCorrectlyFilledData().build();
-        Money applyingAmount = new Money(new BigDecimal(3000));
-        Integer maturityInDays = 30;
-        DateTime submissionDate = new DateTime();
-        InetAddress applyingIpAddress = null;
-        try {
-            applyingIpAddress = InetAddress.getByAddress(new byte[]{127, 0, 0, 1});
-        } catch (UnknownHostException e) {
-            e.printStackTrace();
-        }
-
-        return new Form(personalData, applyingAmount, applyingIpAddress, maturityInDays, submissionDate);
+        Form filledForm = new FormBuilder().withCorrectlyFilledForm(personalData).build();
+        return filledForm;
     }
 
     private BaseEventReceiveNotifier registerAndGetSubmittedRequestNotifier(Serializable event){
-
         return registerAndGetEventNotifier(event);
     }
 
     private BaseEventReceiveNotifier registerAndGetLoanExtendedNotifier(Serializable event){
-
         return registerAndGetEventNotifier(event);
     }
 
@@ -178,8 +168,8 @@ public class CustomerServiceTest {
         customerService.applyForaLoan(submittedForm);
     }
 
-    private void requestForExtendLoan(Loan loan, DateTime newExpirationDate){
-        customerService.extendTheLoan(loan, newExpirationDate);
+    private void requestForExtendTheLoanForOneMonth(Loan loan){
+        customerService.extendTheLoan(loan, new DateTime().plusMonths(1));
     }
 
     @Transactional
