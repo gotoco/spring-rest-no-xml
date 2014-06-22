@@ -25,6 +25,8 @@ public class LoanBuilder {
 
     private Long basedOnLoanId;
 
+    private Long thisId;
+
     public LoanBuilder(){
 
     }
@@ -55,6 +57,12 @@ public class LoanBuilder {
         return this;
     }
 
+    public LoanBuilder withExpirationDate(DateTime date){
+        this.expirationDate = date.toDate();
+
+        return this;
+    }
+
     public LoanBuilder withHolder(Client holder){
         this.loanHolder = holder;
         return this;
@@ -62,7 +70,7 @@ public class LoanBuilder {
 
     public Loan build(){
 
-        return new Loan(1L,
+        return new Loan(basedOnLoanId,
                         value,
                         interest,
                         new DateTime(expirationDate),
