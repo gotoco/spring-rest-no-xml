@@ -81,8 +81,8 @@ public class CustomerServiceFacadeTest extends UserBaseTest {
         List<LoanContract> extendedContracts = allContracts.stream()
                 .filter(loanContract -> !loanContract.getLoanPeriods()
                         .stream()
-                        .filter(loan -> loan.getBasedOnLoanId()
-                                .equals(baseLoan.getLoanId()))
+                        .filter(loan -> baseLoan.getLoanId()
+                                                .equals(loan.getBasedOnLoanId()))
                         .collect(Collectors.toList()).isEmpty())
                 .collect(Collectors.toList());
 
