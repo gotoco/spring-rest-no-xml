@@ -72,8 +72,8 @@ public class ConfigTest {
 
     final Properties additionalProperties() {
         final Properties hibernateProperties = new Properties();
-        hibernateProperties.setProperty("hibernate.test.hbm2ddl.auto", env.getProperty("hibernate.test.hbm2ddl.auto"));
-        hibernateProperties.setProperty("hibernate.test.dialect", env.getProperty("hibernate.test.dialect"));
+        hibernateProperties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.test.hbm2ddl.auto"));
+        hibernateProperties.setProperty("hibernate.dialect", env.getProperty("hibernate.test.dialect"));
         return hibernateProperties;
     }
 
