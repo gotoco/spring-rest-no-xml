@@ -1,20 +1,4 @@
-/*
- * Copyright 2012-2013 the original author or authors.
- *
- * Licensed under the Apache License, Version 2.0 (the "License");
- * you may not use this file except in compliance with the License.
- * You may obtain a copy of the License at
- *
- *      http://www.apache.org/licenses/LICENSE-2.0
- *
- * Unless required by applicable law or agreed to in writing, software
- * distributed under the License is distributed on an "AS IS" BASIS,
- * WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
- * See the License for the specific language governing permissions and
- * limitations under the License.
- */
-
-package sample.jetty;
+package org.finance.test;
 
 import java.sql.SQLException;
 import java.util.Properties;
@@ -26,34 +10,39 @@ import org.h2.Driver;
 import org.h2.tools.Server;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.SpringApplication;
-import org.springframework.boot.autoconfigure.EnableAutoConfiguration;
 import org.springframework.boot.builder.SpringApplicationBuilder;
 import org.springframework.boot.context.web.SpringBootServletInitializer;
-import org.springframework.boot.orm.jpa.EntityScan;
 import org.springframework.context.ApplicationContext;
 import org.springframework.context.annotation.*;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
-
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
+import org.springframework.transaction.annotation.EnableTransactionManagement;
+
 
 @Configuration
-@EnableAutoConfiguration
+@EnableTransactionManagement
+@PropertySource({ "classpath:persistence-test-pgsql.properties" })
 @ComponentScan({ "org.finance.app" })
-@EntityScan("org.finance.app")
-@PropertySource({ "classpath:persistence-pgsql.properties" })
-public class SampleJettyApplication extends SpringBootServletInitializer {
+public class ConfigTest extends SpringBootServletInitializer {
+
+    @Autowired
+    private Environment env;
+
+    public ConfigTest() {
+        super();
+    }
 
     @Override
     protected SpringApplicationBuilder configure(SpringApplicationBuilder application) {
-        return application.sources(SampleJettyApplication.class);
+        return application.sources(ConfigTest.class);
     }
 
     public static void main(String[] args) throws Exception {
-        ApplicationContext ctx = SpringApplication.run(SampleJettyApplication.class, args);
+        ApplicationContext ctx = SpringApplication.run(ConfigTest.class, args);
 
     }
 
@@ -79,9 +68,6 @@ public class SampleJettyApplication extends SpringBootServletInitializer {
         Server webServer = Server.createWebServer("-webAllowOthers","-webPort","8082").start();
         return webServer;
     }
-
-    @Autowired
-    private Environment env;
 
     @Bean
     public LocalContainerEntityManagerFactoryBean entityManagerFactoryBean() {
@@ -115,5 +101,5 @@ public class SampleJettyApplication extends SpringBootServletInitializer {
         // hibernateProperties.setProperty("hibernate.globally_quoted_identifiers", "true");
         return hibernateProperties;
     }
-
 }
+
