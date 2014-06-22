@@ -80,6 +80,7 @@ public class LoanApplicationSagaManagerTest {
 
     @Test
     @Transactional
+    @Rollback(true)
     public void loanExistExtendLoanRequestExistingSagaLoaded(){
 
         //Given
@@ -136,23 +137,33 @@ public class LoanApplicationSagaManagerTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(true)
     public void whenRandomSagaLoadedExceptionThrowed(){
 
         //Given
         AggregateId aggregateId = AggregateId.generate();
         RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(new FormBuilder().withEmptyForm().build(), aggregateId);
-        LoanApplicationData sagaData = null;
 
         //When
+        LoanApplicationData sagaData =  tryToLoadSagaDataForRequest(requestWasSubmitted);
+
+        //Then
+        Assert.assertNull(sagaData);
+
+    }
+
+    private LoanApplicationData tryToLoadSagaDataForRequest(RequestWasSubmitted requestWasSubmitted) {
+        LoanApplicationData sagaData = null;
         try {
             sagaData = loanSagaManager.loadSaga(requestWasSubmitted);
             fail("Random saga should not existed");
         }
-
-        //Then
         catch(NoResultException exception){
-            Assert.assertNull(sagaData);
+
         }
+
+        return sagaData;
     }
 
     @Transactional

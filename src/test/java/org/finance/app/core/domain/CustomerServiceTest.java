@@ -2,19 +2,17 @@ package org.finance.app.core.domain;
 
 import org.finance.app.annotations.IntegrationTest;
 import org.finance.app.core.domain.common.*;
-import org.finance.app.sharedcore.objects.Loan;
+import org.finance.app.sharedcore.objects.*;
 import org.finance.app.core.domain.events.engine.mocks.BaseEventReceiveNotifier;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
 import org.finance.app.core.domain.events.customerservice.ExtendTheLoanRequest;
 import org.finance.app.core.domain.events.customerservice.RequestWasSubmitted;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
-import org.finance.app.sharedcore.objects.Client;
-import org.finance.app.sharedcore.objects.Form;
-import org.finance.app.sharedcore.objects.Money;
 
 import org.finance.test.builders.FormBuilder;
 import org.finance.test.builders.PersonalDataBuilder;
 import org.finance.test.ConfigTest;
+import org.finance.test.builders.contracts.LoanContractBuilder;
 import org.joda.time.DateTime;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
@@ -22,6 +20,7 @@ import org.junit.runner.RunWith;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.ApplicationContext;
+import org.springframework.test.annotation.Rollback;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
 import org.springframework.test.context.web.WebAppConfiguration;
@@ -77,10 +76,11 @@ public class CustomerServiceTest {
 
     @Test
     @Transactional
+    @Rollback(true)
     public void whenFillFormCorrectlyEventFired(){
 
         //given
-        Form correctlyFilledForm = fillTheForm();
+        Form correctlyFilledForm = fillTheFormAndSave();
         RequestWasSubmitted event =  new RequestWasSubmitted(correctlyFilledForm, AggregateId.generate());
         BaseEventReceiveNotifier requestSubmittedHandler = registerAndGetSubmittedRequestNotifier(event);
 
@@ -92,6 +92,8 @@ public class CustomerServiceTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(true)
     public void whenEmptyFormSubmittedNoEventFired(){
 
         //given
@@ -107,22 +109,23 @@ public class CustomerServiceTest {
     }
 
     @Test
+    @Transactional
+    @Rollback(true)
     public void whenLoanExtendRequestSubmitEventFired(){
 
         //given
-        Loan basedLoan = prepareBasicLoan();
-        ExtendTheLoanRequest event = new ExtendTheLoanRequest(basedLoan, AggregateId.generate(), new DateTime().plusMonths(3));
+        Loan baseLoan = prepareBaseLoanWithDataToExtend();
+        ExtendTheLoanRequest event = new ExtendTheLoanRequest(baseLoan, AggregateId.generate(), new DateTime().plusMonths(3));
         BaseEventReceiveNotifier extendedLoamRequestReceiveNotifier = registerAndGetSubmittedRequestNotifier(event);
 
         //when
-        requestForExtendTheLoanForOneMonth(basedLoan);
+        requestForExtendTheLoanForOneMonth(baseLoan);
 
         //then
         assertTrue(extendedLoamRequestReceiveNotifier.isRightEventOccurred());
     }
 
     private void tryToApplyForLoan(Form form){
-        //when
         try {
             customerService.applyForaLoan(form);
             fail("Empty form can't apply for loan");
@@ -131,9 +134,20 @@ public class CustomerServiceTest {
         }
     }
 
-    private Form fillTheForm() {
+    @Transactional
+    private Loan prepareBaseLoanWithDataToExtend(){
+        LoanContract baseContract = new LoanContractBuilder().withDefaultData().build();
+        Loan baseLoan = baseContract.getLatestGrantedLoan();
+        entityManager.persist(baseContract);
+
+        return baseLoan;
+    }
+
+    @Transactional
+    private Form fillTheFormAndSave() {
         Client personalData = new PersonalDataBuilder().withCorrectlyFilledData().build();
         Form filledForm = new FormBuilder().withCorrectlyFilledForm(personalData).build();
+        entityManager.persist(personalData);
         return filledForm;
     }
 

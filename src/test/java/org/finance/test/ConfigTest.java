@@ -1,7 +1,10 @@
 package org.finance.test;
 
-import com.google.common.base.Preconditions;
-import org.hibernate.SessionFactory;
+import java.util.Properties;
+
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -10,25 +13,19 @@ import org.springframework.context.annotation.PropertySource;
 import org.springframework.core.env.Environment;
 import org.springframework.dao.annotation.PersistenceExceptionTranslationPostProcessor;
 import org.springframework.jdbc.datasource.DriverManagerDataSource;
-import org.springframework.orm.hibernate4.HibernateTransactionManager;
-import org.springframework.orm.hibernate4.LocalSessionFactoryBean;
 import org.springframework.orm.jpa.JpaTransactionManager;
 import org.springframework.orm.jpa.LocalContainerEntityManagerFactoryBean;
 import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-import java.util.Properties;
-
+import com.google.common.base.Preconditions;
 
 @Configuration
 @EnableTransactionManagement
 @PropertySource({ "classpath:persistence-test-pgsql.properties" })
 @ComponentScan({ "org.finance.app" })
 public class ConfigTest {
-
 
     @Autowired
     private Environment env;
@@ -74,7 +71,6 @@ public class ConfigTest {
     }
 
     final Properties additionalProperties() {
-        System.out.println("#@#@ : additionalProperties from : ConfigTest");
         final Properties hibernateProperties = new Properties();
         hibernateProperties.setProperty("hibernate.test.hbm2ddl.auto", env.getProperty("hibernate.test.hbm2ddl.auto"));
         hibernateProperties.setProperty("hibernate.test.dialect", env.getProperty("hibernate.test.dialect"));

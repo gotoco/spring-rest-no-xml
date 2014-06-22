@@ -5,7 +5,7 @@ import org.finance.app.adapters.webservices.json.FormJSON;
 import org.finance.app.annotations.IntegrationTest;
 import org.finance.app.bports.crudes.ContractSchedulerPort;
 import org.finance.app.bports.services.LoanService;
-import org.finance.app.core.application.parent.UserBaseTest;
+import org.finance.app.core.application.parent.ApplicationEnvSpecifiedFunctionalities;
 import org.finance.app.sharedcore.objects.Client;
 import org.finance.app.sharedcore.objects.Loan;
 import org.finance.app.sharedcore.objects.LoanContract;
@@ -31,7 +31,7 @@ import java.util.stream.Collectors;
 @WebAppConfiguration
 @ContextConfiguration(
         classes = ConfigTest.class)
-public class CustomerServiceFacadeTest extends UserBaseTest {
+public class CustomerServiceFacadeTest extends ApplicationEnvSpecifiedFunctionalities {
 
     @Autowired
     private LoanService customerServiceFacade;

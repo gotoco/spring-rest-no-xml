@@ -2,20 +2,18 @@ package org.finance.app.core.domain.businessprocess.loangrant;
 
 import junit.framework.Assert;
 import org.finance.app.annotations.IntegrationTest;
+import org.finance.app.core.application.parent.ApplicationEnvSpecifiedFunctionalities;
 import org.finance.app.core.domain.businessprocess.loangrant.mocks.CheckIpRequestHandler;
 import org.finance.app.core.domain.businessprocess.loangrant.mocks.DoRiskAnalysisRequestHandler;
-import org.finance.app.core.domain.common.AggregateId;
 import org.finance.app.core.domain.saga.LoanSagaManager;
-import org.finance.app.sharedcore.objects.Client;
-import org.finance.app.sharedcore.objects.Form;
 import org.finance.app.core.domain.events.handlers.SpringEventHandler;
 import org.finance.app.core.domain.events.customerservice.RequestWasSubmitted;
 import org.finance.app.core.domain.events.saga.CheckIpRequest;
 import org.finance.app.core.domain.events.saga.DoRiskAnalysisRequest;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
-import org.finance.test.ConfigTest;
-import org.finance.test.builders.FormBuilder;
-import org.finance.test.builders.PersonalDataBuilder;
+
+import org.finance.app.spring.ConfigTest;
+import org.finance.app.spring.PersistenceJPAConfig;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
 import org.junit.runner.RunWith;
@@ -36,8 +34,8 @@ import static org.junit.Assert.fail;
 @RunWith(SpringJUnit4ClassRunner.class)
 @WebAppConfiguration
 @ContextConfiguration(
-        classes = ConfigTest.class)
-public class LoanApplicationSagaTest {
+        classes = PersistenceJPAConfig.class)
+public class LoanApplicationSagaTest extends ApplicationEnvSpecifiedFunctionalities {
 
     private final static String checkIpRequestHandlerName = "checkIpRequestHandler";
     private final static String doRiskAnalysisRequestHandlerName = "doRiskAnalysisRequestHandler";
@@ -59,39 +57,38 @@ public class LoanApplicationSagaTest {
     public void onCompleteEventsTriggered(){
 
         //Given
-        Client client = new PersonalDataBuilder().withCorrectlyFilledData().build();
-        entityManager.persist(client);
-        Form form = new FormBuilder().withCorrectlyFilledForm(client).build();
-        AggregateId aggregateId = AggregateId.generate();
-        RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, aggregateId);
-//TODO: Fix to assembler method!
-        CheckIpRequestHandler checkIpEventNotifier = null;
-        DoRiskAnalysisRequestHandler riskAnalysisRequestNotifier = null;
-        try {
-            Method handleCheckIpMethod      = CheckIpRequestHandler.class.getMethod("handle", new Class[]{Object.class});
-            Method handleRiskAnalysisMethod = DoRiskAnalysisRequestHandler.class.getMethod("handle", new Class[]{Object.class});
+        RequestWasSubmitted requestWasSubmitted = prepareRequestWasSubmittedEvent();
 
-            SpringEventHandler checkIpEventHandler = new SpringEventHandler
-                    (CheckIpRequest.class, checkIpRequestHandlerName, handleCheckIpMethod, applicationContext);
-            SpringEventHandler riskAnalysisEventHandler = new SpringEventHandler
-                    (DoRiskAnalysisRequest.class, doRiskAnalysisRequestHandlerName, handleRiskAnalysisMethod, applicationContext);
-
-            eventPublisher.registerEventHandler(checkIpEventHandler);
-            eventPublisher.registerEventHandler(riskAnalysisEventHandler);
-
-            checkIpEventNotifier = (CheckIpRequestHandler) applicationContext.getBean(checkIpRequestHandlerName);
-            riskAnalysisRequestNotifier = (DoRiskAnalysisRequestHandler) applicationContext.getBean(doRiskAnalysisRequestHandlerName);
-
-        } catch(NoSuchMethodException ex) {
-            fail(ex.getMessage());
-        }
-
+        CheckIpRequestHandler checkIpEventNotifier = (CheckIpRequestHandler) createRegisterAndGetEventNotifier
+                (CheckIpRequestHandler.class, checkIpRequestHandlerName, CheckIpRequest.class);
+        DoRiskAnalysisRequestHandler riskAnalysisRequestNotifier = (DoRiskAnalysisRequestHandler) createRegisterAndGetEventNotifier
+                (DoRiskAnalysisRequestHandler.class, doRiskAnalysisRequestHandlerName, DoRiskAnalysisRequest.class);
         //When
         eventPublisher.publish(requestWasSubmitted);
 
         //Then
         Assert.assertTrue(checkIpEventNotifier.isRightEventOccurred());
         Assert.assertTrue(riskAnalysisRequestNotifier.isRightEventOccurred());
+    }
+
+    private Object createRegisterAndGetEventNotifier(Class<?> notifierClass, String notifierBeanName, Class<?> eventClass){
+
+        String notifiersBaseHandlingMethodName = "handle";
+
+        try {
+            Method notifierMethod = notifierClass.getMethod(notifiersBaseHandlingMethodName, new Class[]{Object.class});
+
+            SpringEventHandler eventHandler = new SpringEventHandler
+                    (eventClass, notifierBeanName, notifierMethod, applicationContext);
+
+            eventPublisher.registerEventHandler(eventHandler);
+
+            return applicationContext.getBean(notifierBeanName);
+
+        } catch(NoSuchMethodException ex) {
+            fail(ex.getMessage());
+        }
+        return null;
     }
 
 }

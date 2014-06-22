@@ -36,7 +36,8 @@ public class AopEventConsumer extends AbstractEventReceiver implements AopEventA
     public void transactionalMethod(Object event) {
         Query query = entityManager.createQuery("from Client c ");
 
-        System.out.println(query.getResultList().size());
-        handle(event);
+        if (query.getResultList().size() > -1){
+            handle(event);
+        }
     }
 }

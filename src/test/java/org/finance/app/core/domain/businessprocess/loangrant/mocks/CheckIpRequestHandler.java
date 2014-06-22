@@ -5,4 +5,13 @@ import org.springframework.stereotype.Component;
 
 @Component("checkIpRequestHandler")
 public class CheckIpRequestHandler extends AbstractEventReceiver {
+
+    public void handle(Object event) {
+        super.handle(event);
+    }
+
+    public Boolean isRightEventOccurred(){
+        return super.isRightEventOccurred();
+    }
+
 }

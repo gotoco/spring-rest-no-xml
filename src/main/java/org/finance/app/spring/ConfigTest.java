@@ -1,10 +1,6 @@
 package org.finance.app.spring;
 
-import java.util.Properties;
-
-import javax.persistence.EntityManagerFactory;
-import javax.sql.DataSource;
-
+import com.google.common.base.Preconditions;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.ComponentScan;
@@ -19,18 +15,20 @@ import org.springframework.orm.jpa.vendor.HibernateJpaVendorAdapter;
 import org.springframework.transaction.PlatformTransactionManager;
 import org.springframework.transaction.annotation.EnableTransactionManagement;
 
-import com.google.common.base.Preconditions;
+import javax.persistence.EntityManagerFactory;
+import javax.sql.DataSource;
+import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource({ "classpath:persistence-pgsql.properties" })
+@PropertySource({ "classpath:persistence-test-pgsql.properties" })
 @ComponentScan({ "org.finance.app" })
-public class PersistenceJPAConfig {
+public class ConfigTest {
 
     @Autowired
     private Environment env;
 
-    public PersistenceJPAConfig() {
+    public ConfigTest() {
         super();
     }
 
@@ -50,10 +48,10 @@ public class PersistenceJPAConfig {
     @Bean
     public DataSource dataSource() {
         final DriverManagerDataSource dataSource = new DriverManagerDataSource();
-        dataSource.setDriverClassName(Preconditions.checkNotNull(env.getProperty("jdbc.driverClassName")));
-        dataSource.setUrl(Preconditions.checkNotNull(env.getProperty("jdbc.url")));
-        dataSource.setUsername(Preconditions.checkNotNull(env.getProperty("jdbc.user")));
-        dataSource.setPassword(Preconditions.checkNotNull(env.getProperty("jdbc.pass")));
+        dataSource.setDriverClassName(Preconditions.checkNotNull(env.getProperty("jdbc.test.driverClassName")));
+        dataSource.setUrl(Preconditions.checkNotNull(env.getProperty("jdbc.test.url")));
+        dataSource.setUsername(Preconditions.checkNotNull(env.getProperty("jdbc.test.user")));
+        dataSource.setPassword(Preconditions.checkNotNull(env.getProperty("jdbc.test.pass")));
 
         return dataSource;
     }
@@ -71,12 +69,12 @@ public class PersistenceJPAConfig {
     }
 
     final Properties additionalProperties() {
-        System.out.println("#@#@ : additionalProperties from : PersistenceJPAConfig");
         final Properties hibernateProperties = new Properties();
-        hibernateProperties.setProperty("hibernate.hbm2ddl.auto", env.getProperty("hibernate.hbm2ddl.auto"));
-        hibernateProperties.setProperty("hibernate.dialect", env.getProperty("hibernate.dialect"));
-        // hibernateProperties.setProperty("hibernate.globally_quoted_identifiers", "true");
+        hibernateProperties.setProperty("hibernate.test.hbm2ddl.auto", env.getProperty("hibernate.test.hbm2ddl.auto"));
+        hibernateProperties.setProperty("hibernate.test.dialect", env.getProperty("hibernate.test.dialect"));
         return hibernateProperties;
     }
 
+
 }
+

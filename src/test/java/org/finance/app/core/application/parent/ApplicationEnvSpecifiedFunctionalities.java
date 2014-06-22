@@ -3,7 +3,11 @@ package org.finance.app.core.application.parent;
 
 import junit.framework.Assert;
 import org.finance.app.adapters.webservices.json.FormJSON;
+import org.finance.app.core.domain.common.AggregateId;
+import org.finance.app.core.domain.events.customerservice.RequestWasSubmitted;
 import org.finance.app.sharedcore.objects.Client;
+import org.finance.app.sharedcore.objects.Form;
+import org.finance.test.builders.FormBuilder;
 import org.finance.test.builders.PersonalDataBuilder;
 import org.finance.test.builders.external.FormJSONBuilder;
 import org.joda.time.DateTime;
@@ -16,7 +20,7 @@ import javax.persistence.Query;
 import java.math.BigDecimal;
 import java.util.List;
 
-public class UserBaseTest {
+public abstract class ApplicationEnvSpecifiedFunctionalities {
 
     @PersistenceContext
     protected EntityManager entityManager;
@@ -59,9 +63,19 @@ public class UserBaseTest {
     @Transactional
     protected Client createAndSaveClientRecordToDb(){
         Client client = new PersonalDataBuilder().withDefaultData().build();
-
         entityManager.persist(client);
 
         return client;
     }
+
+    protected RequestWasSubmitted prepareRequestWasSubmittedEvent(){
+        Client client = createAndSaveClientRecordToDb();
+        Form form = new FormBuilder().withCorrectlyFilledForm(client).build();
+        AggregateId aggregateId = AggregateId.generate();
+        RequestWasSubmitted requestWasSubmitted = new RequestWasSubmitted(form, aggregateId);
+
+        return requestWasSubmitted;
+    }
+
+
 }
