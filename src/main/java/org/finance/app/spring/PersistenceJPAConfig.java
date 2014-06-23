@@ -21,7 +21,7 @@ import java.util.Properties;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource({ "classpath:persistence-pgsql.properties" })
+@PropertySource({ "classpath:persistence.properties" })
 @ComponentScan({ "org.finance.app" })
 public class PersistenceJPAConfig {
 

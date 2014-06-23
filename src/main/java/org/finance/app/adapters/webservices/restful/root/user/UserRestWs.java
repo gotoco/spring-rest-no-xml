@@ -20,8 +20,9 @@ import javax.ws.rs.GET;
 import javax.ws.rs.Produces;
 import javax.ws.rs.core.Context;
 import javax.ws.rs.core.MediaType;
-import javax.ws.rs.core.Response;
 import java.util.List;
+
+import static org.springframework.hateoas.jaxrs.JaxRsLinkBuilder.linkTo;
 
 @Controller
 @Produces({MediaType.APPLICATION_JSON + "; charset=UTF-8"})
@@ -43,7 +44,7 @@ public class UserRestWs {
 
     @GET
     @RequestMapping("/user/{id}/loanHistory")
-    public Response getHistoryOfUser(
+    public ResponseEntity getHistoryOfUser(
             @Context HttpServletRequest request,
             @PathVariable final long id ) {
 
@@ -52,14 +53,14 @@ public class UserRestWs {
         List<LoanContract> allContracts = contractScheduler.getAllContractsOfUser(client);
 
         if(allContracts.isEmpty()){
-            return Response
-                    .status(404)
-                    .entity("No Contracts found for userId : " + id).build();
+            return new ResponseEntity<>("No Contracts found for userId : " + id, HttpStatus.NOT_FOUND);
         }
 
-        return Response
-                .status(200)
-                .entity(allContracts).build();
+        Gson gson = new Gson();
+        String json = gson.toJson(allContracts, LoanContract[].class);
+
+        return new ResponseEntity<>(json, HttpStatus.OK);
+
     }
 
 
@@ -74,12 +75,12 @@ public class UserRestWs {
         try{
             client = clientFinder.findClientById(id);
         } catch(NoResultException exception) {
-            return new ResponseEntity<String>("Client not found", HttpStatus.BAD_REQUEST);
+            return new ResponseEntity<>("Client not found", HttpStatus.BAD_REQUEST);
         }
         Gson gson = new Gson();
         String json = gson.toJson(client, Client.class);
 
-        return new ResponseEntity<String>(json, HttpStatus.OK);
+        return new ResponseEntity<>(json, HttpStatus.OK);
     }
 
 }

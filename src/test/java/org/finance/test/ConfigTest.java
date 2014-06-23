@@ -25,7 +25,7 @@ import org.springframework.transaction.annotation.EnableTransactionManagement;
 
 @Configuration
 @EnableTransactionManagement
-@PropertySource({ "classpath:persistence-test-pgsql.properties" })
+@PropertySource({ "classpath:persistence-test.properties" })
 @ComponentScan({ "org.finance.app" })
 public class ConfigTest extends SpringBootServletInitializer {
 

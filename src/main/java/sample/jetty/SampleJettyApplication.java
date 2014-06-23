@@ -44,7 +44,7 @@ import org.springframework.transaction.PlatformTransactionManager;
 @EnableAutoConfiguration
 @ComponentScan({ "org.finance.app" })
 @EntityScan("org.finance.app")
-@PropertySource({ "classpath:persistence-pgsql.properties" })
+@PropertySource({ "classpath:persistence.properties" })
 public class SampleJettyApplication extends SpringBootServletInitializer {
 
     @Override
