@@ -12,7 +12,6 @@ import org.finance.app.core.domain.events.saga.CheckIpRequest;
 import org.finance.app.core.domain.events.saga.DoRiskAnalysisRequest;
 import org.finance.app.core.ddd.system.DomainEventPublisher;
 
-import org.finance.app.spring.ConfigTest;
 import org.finance.app.spring.PersistenceJPAConfig;
 import org.junit.Test;
 import org.junit.experimental.categories.Category;
