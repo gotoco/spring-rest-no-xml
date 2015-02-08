@@ -18,7 +18,7 @@
 -TDD project completely covered by unit-tests
 
 ### Referential Materials
--VAUGHN VERNON : Implementing Domain-Driven Design
--SLAWOMIR SOBOTKA/BottegaIT : ddd-leaven-v2 Project
--DDD blog : http://ddd-cqrs-leaven.blogspot.com/
--Spring no-xml with baeldung.com and spring.io
+- VAUGHN VERNON : Implementing Domain-Driven Design
+- SLAWOMIR SOBOTKA/BottegaIT : ddd-leaven-v2 Project
+- DDD blog : http://ddd-cqrs-leaven.blogspot.com/
+- Spring no-xml with baeldung.com and spring.io
